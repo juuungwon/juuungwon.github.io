@@ -150,11 +150,21 @@
     .timeline { display: flex; flex-direction: column; }
     .timeline-item { display: flex; gap: 24px; padding-bottom: 36px; }
     .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 48px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 52px; }
     .timeline-dot {
       width: 14px; height: 14px; background: var(--accent); border-radius: 50%;
       border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--accent);
       flex-shrink: 0; margin-top: 4px;
+    }
+    .timeline-logo {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--white); border: 2px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .timeline-logo img {
+      width: 72%; height: 72%; object-fit: contain;
     }
     .timeline-line {
       width: 2px; flex: 1;
@@ -392,21 +402,30 @@
       <h2 class="section-title">Education</h2>
       <div class="timeline">
         <div class="timeline-item">
-          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-left">
+            <div class="timeline-logo">
+              <img src="images/hongik_emblem_black.png" alt="Hongik University" />
+            </div>
+            <div class="timeline-line"></div>
+          </div>
           <div class="timeline-body">
             <div class="timeline-period">2023 — Present</div>
-            <h3>M.S. in Civil &amp; Environmental Engineering</h3>
-            <div class="sub">○○ University, Dept. of Civil &amp; Environmental Engineering</div>
-            <p>Advisor: Prof. ○○○. Research on ○○○○ and environmental systems.</p>
+            <h3>M.S. in Civil Engineering</h3>
+            <div class="sub">Hongik University, Dept. of Civil Engineering</div>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-left">
+            <div class="timeline-logo">
+              <img src="images/hongik_emblem_black.png" alt="Hongik University" />
+            </div>
+            <div class="timeline-line"></div>
+          </div>
           <div class="timeline-body">
             <div class="timeline-period">2017 — 2023</div>
-            <h3>B.S. in Civil &amp; Environmental Engineering</h3>
-            <div class="sub">○○ University, Dept. of Civil &amp; Environmental Engineering</div>
-            <p>Graduated with honors. GPA: ○.○○ / 4.5.</p>
+            <h3>B.S. in Civil and Environmental Engineering</h3>
+            <div class="sub">Hongik University, Dept. of Civil and Environmental Engineering</div>
+            <p>Graduated with honors.</p>
           </div>
         </div>
       </div>
