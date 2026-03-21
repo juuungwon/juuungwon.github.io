@@ -364,6 +364,14 @@
     }
     footer a { color: var(--accent); text-decoration: none; }
 
+    /* IMAGE PROTECTION */
+    .hero-avatar img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+    }
+
     /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
@@ -401,8 +409,7 @@
     <!-- ABOUT / HERO -->
     <div class="hero" id="about">
       <div class="hero-avatar">
-        <!-- To add a photo: <img src="profile.jpg" alt="Jungwon LEE" /> -->
-        JL
+        <img src="images/jungwon.png" alt="Jungwon LEE" draggable="false" oncontextmenu="return false;" />
       </div>
       <div class="hero-text">
         <p class="role">M.S. Student · Hongik University</p>
@@ -956,6 +963,12 @@
 
     systemDark.addEventListener('change', () => {
       if (!localStorage.getItem('theme')) applyTheme(getEffectiveTheme());
+    });
+
+    // Image protection: block right-click save & drag on profile image
+    document.querySelectorAll('.hero-avatar img').forEach(img => {
+      img.addEventListener('contextmenu', e => e.preventDefault());
+      img.addEventListener('dragstart', e => e.preventDefault());
     });
   </script>
 </body>
