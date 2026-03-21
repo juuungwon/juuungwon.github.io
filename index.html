@@ -203,17 +203,20 @@
       border-color: rgba(75,112,245,0.22);
     }
     .research-header {
-      display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
     }
     .research-badge {
       flex-shrink: 0; font-family: 'Sora', sans-serif;
       font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;
       color: var(--white); background: var(--accent);
-      padding: 4px 11px; border-radius: 99px; margin-top: 3px;
+      padding: 4px 11px; border-radius: 99px;
     }
     .research-header h3 {
       font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700;
       color: var(--black); line-height: 1.45;
+    }
+    .research-badge.completed {
+      background: var(--gray-2); color: var(--gray-4);
     }
     .research-card > p {
       font-size: 0.885rem; color: var(--gray-4); line-height: 1.8; margin-bottom: 16px;
@@ -363,6 +366,7 @@
         <div class="research-card">
           <div class="research-header">
             <span class="research-badge">NRF</span>
+            <span class="research-badge completed">Completed</span>
             <h3>Knowledge Graph for Construction Job Safety Analysis</h3>
           </div>
           <p>
