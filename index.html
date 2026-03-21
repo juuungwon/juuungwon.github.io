@@ -27,6 +27,39 @@
       --radius: 20px;
       --radius-sm: 12px;
       --nav-h: 68px;
+      --nav-bg: rgba(247,248,252,0.82);
+    }
+    [data-theme="dark"] {
+      --black: #E8E9F0;
+      --accent-light: #1E2540;
+      --bg: #0F1117;
+      --white: #1A1D27;
+      --gray-1: #1E2130;
+      --gray-2: #2E3248;
+      --gray-3: #5A5F75;
+      --gray-4: #8A8FA8;
+      --card-bg: #1A1D27;
+      --border: rgba(75,112,245,0.15);
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+      --nav-bg: rgba(15,17,23,0.88);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --black: #E8E9F0;
+        --accent-light: #1E2540;
+        --bg: #0F1117;
+        --white: #1A1D27;
+        --gray-1: #1E2130;
+        --gray-2: #2E3248;
+        --gray-3: #5A5F75;
+        --gray-4: #8A8FA8;
+        --card-bg: #1A1D27;
+        --border: rgba(75,112,245,0.15);
+        --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+        --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+        --nav-bg: rgba(15,17,23,0.88);
+      }
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -49,7 +82,7 @@
       position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 clamp(24px, 5vw, 80px);
-      background: rgba(247,248,252,0.82); backdrop-filter: blur(20px);
+      background: var(--nav-bg); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border); z-index: 100; transition: box-shadow .3s;
     }
     nav.scrolled { box-shadow: var(--shadow-sm); }
@@ -95,6 +128,7 @@
       font-size: 0.975rem; color: var(--gray-4);
       max-width: 480px; line-height: 1.8; margin-bottom: 24px;
     }
+    .hero-text p a { color: inherit; }
     .hero-links { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
     /* BUTTONS */
@@ -273,6 +307,16 @@
     }
     .pub-content h3 a:hover { color: var(--accent); }
 
+    /* THEME TOGGLE */
+    .theme-toggle-wrap { display: flex; align-items: center; }
+    .theme-toggle {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.2rem; line-height: 1; padding: 6px;
+      border-radius: 50%; transition: background .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .theme-toggle:hover { background: var(--gray-1); }
+
     /* ─── PRINT / CV ─── */
     @media print {
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -347,6 +391,9 @@
       <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
     </ul>
+    <div class="theme-toggle-wrap">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☀️</button>
+    </div>
   </nav>
 
   <main>
@@ -358,7 +405,7 @@
         JL
       </div>
       <div class="hero-text">
-        <p class="role">M.S. Student · Civil &amp; Environmental Engineering</p>
+        <p class="role">M.S. Student · Hongik University</p>
         <h1>Jungwon <span>LEE</span></h1>
         <p>
           Hello! I am an M.S. student in the Department of Civil and Environmental Engineering at
@@ -661,7 +708,7 @@
             <span class="pub-year">2025</span>
             <div class="pub-content">
               <h3>System Requirements Analysis for a Digital Twin Platform for Geotechnical BIM-Based Maintenance</h3>
-              <div class="pub-venue">ICCEMP 2025</div>
+              <div class="pub-venue">ICCEPM 2025</div>
               <div class="pub-authors"><strong>Lee, J.</strong>, Kim, Y., Ahn, S., &amp; Kim, T.</div>
               <div class="pub-tags">
                 <span class="tag">Digital Twin</span>
@@ -735,7 +782,7 @@
           <div class="pub-card">
             <span class="pub-year">2025</span>
             <div class="pub-content">
-              <h3>고속도로 지반시설물의 유지관리를 위한 BIM기반 플랫폼</h3>
+              <h3>BIM-based Platform for Maintenance of Geotechnical Infrastructure in Express Way</h3>
               <div class="pub-venue">KBIM Magazine · 2025.10</div>
               <div class="pub-authors"><strong>Lee, J.</strong> &amp; Kim, Y.</div>
               <div class="pub-tags">
@@ -882,6 +929,34 @@
       if (toastTimer) clearTimeout(toastTimer);
       toastTimer = setTimeout(() => { toast.style.display = 'none'; }, 3000);
     }
+    // Dark mode toggle
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function getEffectiveTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved;
+      return systemDark.matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    applyTheme(getEffectiveTheme());
+
+    toggle.addEventListener('click', () => {
+      const current = getEffectiveTheme();
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    systemDark.addEventListener('change', () => {
+      if (!localStorage.getItem('theme')) applyTheme(getEffectiveTheme());
+    });
   </script>
 </body>
 </html>
