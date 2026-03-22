@@ -408,6 +408,49 @@
       .nav-links { display: none; }
       .interests-grid { grid-template-columns: 1fr; }
     }
+
+    /* POSTS */
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .post-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      overflow: hidden; text-decoration: none; color: inherit;
+      transition: all .25s; display: flex; flex-direction: column;
+    }
+    .post-card:hover {
+      box-shadow: var(--shadow-md); transform: translateY(-4px);
+      border-color: rgba(75,112,245,0.25);
+    }
+    .post-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--accent-light);
+      overflow: hidden; flex-shrink: 0;
+    }
+    .post-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .post-card:hover .post-thumb img { transform: scale(1.04); }
+    .post-thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--accent-mid);
+    }
+    .post-info {
+      padding: 18px 20px 20px;
+    }
+    .post-date {
+      font-size: 0.73rem; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 7px;
+    }
+    .post-info h3 {
+      font-family: 'Sora', sans-serif; font-size: 0.95rem; font-weight: 700;
+      color: var(--black); line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -420,6 +463,7 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
+      <li><a href="#posts">Posts</a></li>
     </ul>
     <div class="theme-toggle-wrap">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☀️</button>
@@ -899,6 +943,25 @@
         </div>
       </div>
 
+    </section>
+
+    <!-- POSTS -->
+    <section id="posts">
+      <div class="section-label">Posts</div>
+      <h2 class="section-title">What I Share</h2>
+      <div class="posts-grid">
+
+        <a href="posts/deeplearning-eng.html" class="post-card">
+          <div class="post-thumb">
+            <div class="post-thumb-placeholder">📄</div>
+          </div>
+          <div class="post-info">
+            <div class="post-date">2026 · 03</div>
+            <h3>Deep Learning for Construction Management Engineers</h3>
+          </div>
+        </a>
+
+      </div>
     </section>
 
   </main>
