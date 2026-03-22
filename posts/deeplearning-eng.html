@@ -351,7 +351,7 @@
           <p>This is the core tension: <strong>construction sites are perpetually unstructured environments</strong>, yet the very strength of deep learning comes from finding patterns in structure. Understanding this gap is the first step toward applying AI meaningfully in the field.</p>
         </div>
         <table class="compare-table">
-          <thead><tr><th></th><th>Manufacturing (conveyor-based)</th><th>Construction site</th></tr></thead>
+          <thead><tr><th></th><th>Manufacturing<br>(conveyor-based)</th><th>Construction site</th></tr></thead>
           <tbody>
             <tr><td>Environment</td><td>Fixed, controlled, indoors</td><td>Outdoors, changes daily</td></tr>
             <tr><td>Work type</td><td>Uniform, repeated tasks</td><td>Excavation → structure → finishing → MEP…</td></tr>
@@ -686,6 +686,164 @@
             <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="616" y="129" dominant-baseline="central" fill="#4B70F5">Cosine anneal</text>
             <line x1="592" y1="146" x2="612" y2="146" stroke="#1D9E75" stroke-width="2" stroke-dasharray="6 3"/>
             <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="616" y="149" dominant-baseline="central" fill="#1D9E75">Warmup+decay</text>
+          </svg>
+        </div>
+
+        <!-- LR effect on loss landscape (U-shaped convex bowl) -->
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="lr-r" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#F5844B"/></marker>
+              <marker id="lr-g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#1D9E75"/></marker>
+              <marker id="lr-b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#4B70F5"/></marker>
+            </defs>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="350" y="16" text-anchor="middle" fill="#3A3A3A">Effect of learning rate &#951; &#8212; convex loss bowl</text>
+
+            <!-- PANEL 1: eta too large -->
+            <rect x="12" y="28" width="206" height="195" rx="10" fill="#FFF5F0" stroke="#F5844B" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="115" y="46" text-anchor="middle" fill="#F5844B">&#951; too large</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="115" y="59" text-anchor="middle" fill="#8A8FA8">overshoots &#8212; oscillates</text>
+            <!-- U bowl: center=115, top=82, bottom=168 -->
+            <path d="M 28,82 C 50,82 75,125 92,148 C 103,162 109,168 115,168 C 121,168 127,162 138,148 C 155,125 180,82 202,82"
+                  fill="none" stroke="#C8CBD8" stroke-width="2"/>
+            <!-- min dot at bottom -->
+            <circle cx="115" cy="168" r="4" fill="#1D9E75"/>
+            <text font-family="Sora,sans-serif" font-size="8" x="115" y="180" text-anchor="middle" fill="#1D9E75">min</text>
+            <!-- start: on curve at x=52, y=122.9 -->
+            <circle cx="52" cy="95" r="5" fill="#F5844B" stroke="#fff" stroke-width="1.5"/>
+            <!-- step1: arc from (52,123) to symmetric point (178,123) — stays above curve -->
+            <path d="M 52,95 C 75,72 155,72 178,95" fill="none" stroke="#F5844B" stroke-width="1.6" stroke-dasharray="5 2" marker-end="url(#lr-r)"/>
+            <!-- step2: bounce back (178,123) to (54,116) -->
+            <path d="M 178,95 C 155,75 75,75 54,91" fill="none" stroke="#F5844B" stroke-width="1.6" stroke-dasharray="5 2" marker-end="url(#lr-r)"/>
+            <!-- step3: overshoot again (54,117) to (176,111) -->
+            <path d="M 54,91 C 77,70 153,70 176,87" fill="none" stroke="#F5844B" stroke-width="1.6" stroke-dasharray="5 2" marker-end="url(#lr-r)"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="115" y="215" text-anchor="middle" fill="#F5844B">oscillates &#8212; never converges</text>
+
+            <!-- PANEL 2: eta just right -->
+            <rect x="247" y="28" width="206" height="195" rx="10" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="350" y="46" text-anchor="middle" fill="#1D9E75">&#951; just right</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="350" y="59" text-anchor="middle" fill="#8A8FA8">smooth descent &#8594; minimum</text>
+            <!-- U bowl: center=350 -->
+            <path d="M 263,82 C 285,82 310,125 327,148 C 338,162 344,168 350,168 C 356,168 362,162 373,148 C 390,125 415,82 437,82"
+                  fill="none" stroke="#C8CBD8" stroke-width="2"/>
+            <circle cx="350" cy="168" r="4" fill="#1D9E75"/>
+            <text font-family="Sora,sans-serif" font-size="8" x="350" y="180" text-anchor="middle" fill="#1D9E75">min</text>
+            <!-- start: on curve at x=287, y=122.9 -->
+            <circle cx="287" cy="95" r="5" fill="#1D9E75" stroke="#fff" stroke-width="1.5"/>
+            <!-- step1: (287,123) → (308,148) — along curve -->
+            <line x1="287" y1="95" x2="300" y2="110" stroke="#1D9E75" stroke-width="1.6" marker-end="url(#lr-g)"/>
+            <!-- step2: (308,148) → (330,163.5) -->
+            <line x1="300" y1="110" x2="312" y2="127" stroke="#1D9E75" stroke-width="1.6" marker-end="url(#lr-g)"/>
+            <!-- step3: (330,164) → (344,167.6) -->
+            <line x1="312" y1="127" x2="328" y2="149" stroke="#1D9E75" stroke-width="1.6" marker-end="url(#lr-g)"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="350" y="215" text-anchor="middle" fill="#1D9E75">converges smoothly</text>
+
+            <!-- PANEL 3: eta too small -->
+            <rect x="482" y="28" width="206" height="195" rx="10" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="585" y="46" text-anchor="middle" fill="#4B70F5">&#951; too small</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="585" y="59" text-anchor="middle" fill="#8A8FA8">tiny steps &#8212; very slow</text>
+            <!-- U bowl: center=585 -->
+            <path d="M 498,82 C 520,82 545,125 562,148 C 573,162 579,168 585,168 C 591,168 597,162 608,148 C 625,125 650,82 672,82"
+                  fill="none" stroke="#C8CBD8" stroke-width="2"/>
+            <circle cx="585" cy="168" r="4" fill="#1D9E75"/>
+            <text font-family="Sora,sans-serif" font-size="8" x="585" y="180" text-anchor="middle" fill="#1D9E75">min</text>
+            <!-- start: on curve at x=522, y=122.9 -->
+            <circle cx="522" cy="95" r="5" fill="#4B70F5" stroke="#fff" stroke-width="1.5"/>
+            <!-- step1: (522,123) → (530,133.6) — along curve -->
+            <line x1="522" y1="95" x2="530" y2="104" stroke="#4B70F5" stroke-width="1.4" marker-end="url(#lr-b)"/>
+            <!-- step2: (530,134) → (538,142.9) -->
+            <line x1="530" y1="104" x2="538" y2="114" stroke="#4B70F5" stroke-width="1.4" marker-end="url(#lr-b)"/>
+            <!-- step3: (538,143) → (546,150.7) -->
+            <line x1="538" y1="114" x2="546" y2="125" stroke="#4B70F5" stroke-width="1.4" marker-end="url(#lr-b)"/>
+            <!-- dot indicator just below last arrow, on curve -->
+            <text font-family="Sora,sans-serif" font-size="11" x="553" y="138" fill="#4B70F5">&#183;&#183;&#183;</text>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="585" y="215" text-anchor="middle" fill="#4B70F5">takes forever to converge</text>
+
+            <text font-family="Sora,sans-serif" font-size="8.5" x="350" y="238" text-anchor="middle" fill="#C8CBD8">x-axis = weight w  &#183;  y-axis = loss L(w)  &#183;  bowl = quartic  L = (w &#8722; w*)&#8308;</text>
+          </svg>
+        </div>
+
+        <!-- Global vs Local Minima: W-shaped quartic -->
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 248" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="gm-b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#4B70F5"/></marker>
+              <marker id="gm-g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#1D9E75"/></marker>
+            </defs>
+
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="350" y="16" text-anchor="middle" fill="#3A3A3A">Local minimum vs. Global minimum &#8212; W-shaped quartic loss</text>
+
+            <!-- axes -->
+            <line x1="48" y1="25" x2="48" y2="182" stroke="#C8CBD8" stroke-width="1.2"/>
+            <line x1="48" y1="182" x2="668" y2="182" stroke="#C8CBD8" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="358" y="195" text-anchor="middle" fill="#8A8FA8">weight w &#8594;</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="30" y="103" text-anchor="middle" fill="#8A8FA8" transform="rotate(-90,30,103)">Loss L &#8593;</text>
+
+            <!--
+              W-shape: left valley local min at (220,148), hump at (370,74), global min at (520,162)
+              Curve rises steeply on both outer sides.
+            -->
+            <path d="M 58,55
+                     C 90,55  135,95  168,124
+                     C 192,142 208,148 220,148
+                     C 232,148 252,138 278,118
+                     C 312,90  344,75  370,74
+                     C 396,75  428,90  462,118
+                     C 488,138 508,158 520,162
+                     C 532,158 552,138 578,118
+                     C 612,90  642,58  658,48"
+                  fill="none" stroke="#7B97F8" stroke-width="2.4"/>
+
+            <!-- LOCAL MINIMUM at (220,148) -->
+            <circle cx="220" cy="148" r="6" fill="#F5844B" stroke="#fff" stroke-width="2"/>
+            <!-- dashed vertical drop to axis -->
+            <line x1="220" y1="154" x2="220" y2="182" stroke="#F5844B" stroke-width="1" stroke-dasharray="3 2"/>
+            <!-- label below, no overlap with curve -->
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="220" y="193" text-anchor="middle" fill="#F5844B">local min</text>
+
+            <!-- depth bracket: local min (shallow) — left side clear of text -->
+            <line x1="138" y1="80" x2="138" y2="148" stroke="#F5844B" stroke-width="0.9" stroke-dasharray="2 2"/>
+            <line x1="133" y1="80"  x2="143" y2="80"  stroke="#F5844B" stroke-width="1"/>
+            <line x1="133" y1="148" x2="143" y2="148" stroke="#F5844B" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="7.5" x="126" y="100" text-anchor="middle" fill="#F5844B" transform="rotate(-90,126,100)">shallow</text>
+
+            <!-- GLOBAL MINIMUM at (520,162) -->
+            <circle cx="520" cy="162" r="7" fill="#1D9E75" stroke="#fff" stroke-width="2"/>
+            <!-- dashed vertical drop -->
+            <line x1="520" y1="169" x2="520" y2="182" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="520" y="193" text-anchor="middle" fill="#1D9E75">global min &#9733;</text>
+
+            <!-- depth bracket: global min (deeper) — right side -->
+            <line x1="618" y1="48" x2="618" y2="162" stroke="#1D9E75" stroke-width="0.9" stroke-dasharray="2 2"/>
+            <line x1="613" y1="48"  x2="623" y2="48"  stroke="#1D9E75" stroke-width="1"/>
+            <line x1="613" y1="162" x2="623" y2="162" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="7.5" x="633" y="105" text-anchor="middle" fill="#1D9E75" transform="rotate(90,633,105)">deeper</text>
+
+            <!-- BARRIER / hump -->
+            <circle cx="370" cy="74" r="4" fill="#7F77DD" stroke="#fff" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="8" x="370" y="67" text-anchor="middle" fill="#7F77DD">barrier</text>
+
+            <!-- PATH A: small eta → descends into local min -->
+            <!-- start point: on curve left slope (115, 80) -->
+            <circle cx="115" cy="80" r="5" fill="#4B70F5" stroke="#fff" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="8" font-weight="700" x="115" y="72" text-anchor="middle" fill="#4B70F5">start</text>
+            <path d="M 115,80 C 148,105 180,130 212,147" fill="none" stroke="#4B70F5" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#gm-b)"/>
+            <!-- "small eta" label next to arrow midpoint, clear of other text -->
+            <text font-family="Sora,sans-serif" font-size="8" x="142" y="136" text-anchor="start" fill="#4B70F5">small &#951;</text>
+            <!-- "trapped" label above local min dot, not overlapping -->
+            <text font-family="Sora,sans-serif" font-size="8" font-weight="700" x="256" y="142" text-anchor="start" fill="#F5844B">&#8593; trapped</text>
+
+            <!-- PATH B: large eta → smooth arc over barrier to global min -->
+            <path d="M 115,80 C 180,50 310,42 420,58 C 468,70 500,106 516,157" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-dasharray="5 2" marker-end="url(#gm-g)"/>
+            <!-- label above the arc, centered and clear -->
+            <text font-family="Sora,sans-serif" font-size="8" font-weight="600" x="310" y="38" text-anchor="middle" fill="#1D9E75">large &#951; &#8212; clears barrier &#8594; global min</text>
+
+            <!-- legend box with tighter line spacing -->
+            <rect x="48" y="202" width="618" height="38" rx="7" fill="#F7F8FC" stroke="#E8E9F0" stroke-width="1"/>
+            <circle cx="66" cy="213" r="5" fill="#F5844B"/>
+            <text font-family="Sora,sans-serif" font-size="8.5" x="77" y="213" dominant-baseline="central" fill="#5A5F75">Local minimum &#8212; gradient = 0, loss is low but NOT the lowest; small &#951; gets stuck in this shallow bowl</text>
+            <circle cx="66" cy="230" r="5" fill="#1D9E75"/>
+            <text font-family="Sora,sans-serif" font-size="8.5" x="77" y="230" dominant-baseline="central" fill="#5A5F75">Global minimum &#8212; the deepest point; large &#951; or warmup schedulers help escape local minima to reach it</text>
           </svg>
         </div>
 
@@ -1074,7 +1232,7 @@
             <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Evaluate on test set</div>
-              <div class="step-desc">mAP@0.50, Precision, Recall — and understand why Recall matters more for safety.</div>
+              <div class="step-desc">mAP&#64;0.5, Precision, Recall — and understand why Recall matters more for safety.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('sc5')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="sc5">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Evaluate on test set</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -1089,8 +1247,8 @@
     imgsz   <span class="tok-op">=</span> <span class="tok-number">640</span>,
     verbose <span class="tok-op">=</span> <span class="tok-cls">False</span>,
 )
-<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50      : {val.box.map50:.4f}"</span>)
-<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50:0.95 : {val.box.map:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP&#64;0.50      : {val.box.map50:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP&#64;0.50:0.95 : {val.box.map:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Precision     : {val.box.mp:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Recall        : {val.box.mr:.4f}"</span>)</pre>
               </div>
@@ -1159,7 +1317,7 @@ plt.tight_layout(); plt.show()</pre>
         </div>
 
         <div class="metric-grid">
-          <div class="metric-card"><div class="metric-val">~0.90</div><div class="metric-label"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e885a9b8a8d8c6dd">[email&#160;protected]</a></div><div class="metric-sub">expected after 30 epochs</div></div>
+          <div class="metric-card"><div class="metric-val">~0.90</div><div class="metric-label">mAP&#64;0.5</div><div class="metric-sub">expected after 30 epochs</div></div>
           <div class="metric-card"><div class="metric-val">conf=0.3</div><div class="metric-label">Threshold</div><div class="metric-sub">recall-first setting</div></div>
           <div class="metric-card"><div class="metric-val">yolov8n</div><div class="metric-label">Backbone</div><div class="metric-sub">swap → s / m for +mAP</div></div>
           <div class="metric-card"><div class="metric-val">~15 k</div><div class="metric-label">Training Images</div><div class="metric-sub">Hard Hat Workers v12</div></div>
@@ -2300,7 +2458,7 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
             <div class="step-spine"><div class="step-dot">0</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Install dependencies</div>
-              <div class="step-desc"><code>unsloth</code> bundles <code>bitsandbytes</code>, <code>peft</code>, and <code>transformers</code> internally — only <code>datasets</code> and <code>trl</code> need separate installation. Pin versions for reproducibility.</div>
+              <div class="step-desc"><code>unsloth</code> · <code>datasets</code> · <code>trl</code> — pin versions to avoid breaking changes.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c0')"><span class="toggle-arrow">▶</span> Bash</button>
               <div class="step-inline-code" id="s7c0">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Bash</span><span class="code-label">Step 0 · Install</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2321,7 +2479,7 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
             <div class="step-spine"><div class="step-dot">1</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Load model &amp; apply LoRA</div>
-              <div class="step-desc">Load <strong>Qwen3-1.7B</strong> in 4-bit via <code>FastLanguageModel</code>, then immediately attach a LoRA adapter. Setting <code>use_gradient_checkpointing="unsloth"</code> squeezes out extra VRAM — keeping peak usage around 2 GB on T4.</div>
+              <div class="step-desc">Qwen3-1.7B in 4-bit + LoRA adapter — peak VRAM ~2 GB on T4.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c1')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c1">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 1 · Load model + LoRA</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2363,7 +2521,7 @@ model <span class="tok-op">=</span> FastLanguageModel.get_peft_model(
             <div class="step-spine"><div class="step-dot">2</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Load &amp; format dataset</div>
-              <div class="step-desc">Load the KOSHA QA dataset from HuggingFace Hub and convert each example to Qwen3 ChatML format. Column names are auto-detected, so <code>instruction/output</code>, <code>question/answer</code>, and <code>input/output</code> schemas all work without manual changes.</div>
+              <div class="step-desc">KOSHA QA pairs → Qwen3 ChatML format. Column names auto-detected — no manual mapping needed.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c2')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c2">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 2 · Dataset</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2412,7 +2570,7 @@ val_ds   <span class="tok-op">=</span> dataset[<span class="tok-string">"test"</
             <div class="step-spine"><div class="step-dot">3</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Configure SFTTrainer &amp; train</div>
-              <div class="step-desc">Set hyperparameters via <code>SFTConfig</code>. <code>bf16</code>/<code>fp16</code> switches automatically based on GPU capability. Effective batch size is 2 × 4 = 8 — stable on a T4 with ~6 hours of total training time.</div>
+              <div class="step-desc"><code>SFTConfig</code> + <code>SFTTrainer</code> — effective batch 2×4 = 8, cosine LR, ~6 hrs on T4.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c3')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c3">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 3 · Train</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2459,7 +2617,7 @@ trainer_stats <span class="tok-op">=</span> trainer.train()
             <div class="step-spine"><div class="step-dot">4</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Plot loss curve</div>
-              <div class="step-desc">Visualise training and validation loss over steps. A widening gap between the two lines signals overfitting — lower rank or fewer epochs can help.</div>
+              <div class="step-desc">Train vs. val loss — a widening gap means overfitting; reduce rank or epochs.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c4')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c4">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 4 · Loss curve</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2487,7 +2645,7 @@ plt.tight_layout(); plt.show()</pre>
             <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Save LoRA adapter</div>
-              <div class="step-desc">Save only the trained LoRA weights — typically a few tens of MB. Optionally back up to Google Drive so the adapter survives a Colab session reset.</div>
+              <div class="step-desc">LoRA weights only (~tens of MB). Optional Drive backup to survive session resets.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c5')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c5">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Save adapter</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2513,7 +2671,7 @@ SAVE_TO_DRIVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
             <div class="step-spine"><div class="step-dot">6</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Inference test</div>
-              <div class="step-desc">Switch to inference mode with <code>FastLanguageModel.for_inference()</code> — this roughly doubles generation speed. Run a handful of construction safety questions to compare the model's tone before and after fine-tuning.</div>
+              <div class="step-desc"><code>FastLanguageModel.for_inference()</code> for 2× speed — test a few construction safety questions.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c6')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c6">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 6 · Inference</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2625,7 +2783,7 @@ TEST_QS <span class="tok-op">=</span> [
     <p>© 2026 Jungwon LEE · <a href="/cdn-cgi/l/email-protection#701f1b41424248404030171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="7b14104a4949434b4b3b1c161a121755181416">[email&#160;protected]</span></a></p>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -2703,16 +2861,4 @@ TEST_QS <span class="tok-op">=</span> [
     }
 
     function copyCode(btn) {
-      const pre = btn.closest('.step-inline-code')
-        ? btn.closest('.step-inline-code').querySelector('pre')
-        : btn.closest('.code-block-wrap').querySelector('pre');
-      if (!pre) return;
-      navigator.clipboard.writeText(pre.innerText).then(() => {
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
-      });
-    }
-  </script>
-</body>
-</html>
+      const pre = btn.closest('.step-i
