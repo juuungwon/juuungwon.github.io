@@ -1,1 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Learning for Construction Management · Jungwon LEE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #3A3A3A; --accent: #4B70F5; --accent-light: #EEF1FF;
+      --accent-mid: #7B97F8; --bg: #F7F8FC; --white: #FFFFFF;
+      --gray-1: #F0F1F6; --gray-2: #C8CBD8; --gray-3: #8A8FA8; --gray-4: #5A5F75;
+      --card-bg: #FFFFFF; --border: rgba(75,112,245,0.10);
+      --shadow-sm: 0 2px 12px rgba(75,112,245,0.07);
+      --shadow-md: 0 8px 32px rgba(75,112,245,0.12);
+      --radius: 20px; --radius-sm: 12px; --nav-h: 68px;
+      --nav-bg: rgba(247,248,252,0.82);
+    }
+    [data-theme="dark"] {
+      --black: #E8E9F0; --accent-light: #1E2540; --bg: #0F1117; --white: #1A1D27;
+      --gray-1: #1E2130; --gray-2: #2E3248; --gray-3: #5A5F75; --gray-4: #8A8FA8;
+      --card-bg: #1A1D27; --border: rgba(75,112,245,0.15);
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.3); --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+      --nav-bg: rgba(15,17,23,0.88);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --black: #E8E9F0; --accent-light: #1E2540; --bg: #0F1117; --white: #1A1D27;
+        --gray-1: #1E2130; --gray-2: #2E3248; --gray-3: #5A5F75; --gray-4: #8A8FA8;
+        --card-bg: #1A1D27; --border: rgba(75,112,245,0.15);
+        --shadow-sm: 0 2px 12px rgba(0,0,0,0.3); --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+        --nav-bg: rgba(15,17,23,0.88);
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', 'Sora', sans-serif; background: var(--bg); color: var(--black); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--accent-mid); border-radius: 99px; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 80px);
+      background: var(--nav-bg); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+    }
+    .nav-logo { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--accent); letter-spacing: -0.02em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.875rem; font-weight: 500; color: var(--gray-4);
+      text-decoration: none; padding: 7px 16px; border-radius: 99px;
+      background: var(--gray-1); transition: background .2s, color .2s;
+    }
+    .nav-back:hover { background: var(--accent-light); color: var(--accent); }
+    .theme-toggle {
+      background: none; border: none; cursor: pointer; font-size: 1.2rem;
+      padding: 6px; border-radius: 50%; transition: background .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .theme-toggle:hover { background: var(--gray-1); }
+    .page-outer {
+      max-width: 1100px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 56px) clamp(20px, 4vw, 48px) 120px;
+      position: relative;
+    }
+    /* ✅ FIXED TOC SIDEBAR */
+    .toc-sidebar {
+      position: fixed;
+      top: calc(var(--nav-h) + 40px);
+      left: max(16px, calc(50vw - 640px));
+      width: 220px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px 18px 24px;
+      box-shadow: var(--shadow-sm);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - var(--nav-h) - 80px); /* ✅ 이게 핵심 */
+      overflow-y: auto;                                /* ✅ 내용 넘치면 스크롤 */
+    }
+    .post-content { max-width: 720px; margin: 0 auto; }
+    @media (min-width: 1001px) { .post-content { margin-left: 210px; } }
+    @media (max-width: 1000px) { .toc-sidebar { display: none; } }
+    .toc-title {
+      font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
+    }
+    .toc-title::before { content: ''; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+    .toc-sidebar ol { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .toc-sidebar li { font-size: 0.82rem; }
+    .toc-sidebar a {
+      display: flex; flex-direction: column;
+      color: var(--gray-3); text-decoration: none;
+      padding: 7px 10px; border-radius: 8px;
+      transition: background .15s, color .15s; line-height: 1.45;
+    }
+    .toc-sidebar a:hover { background: var(--accent-light); color: var(--accent); }
+    .toc-sidebar a.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+    .toc-num {
+      font-family: 'Sora', sans-serif; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.08em; color: var(--accent); opacity: 0.6; margin-bottom: 2px;
+    }
+    .toc-sidebar a.active .toc-num { opacity: 1; }
+    .toc-wip { font-size: 0.68rem; color: var(--gray-2); margin-top: 2px; font-style: italic; }
+    .post-content { min-width: 0; }
+    .post-header { margin-bottom: 52px; animation: fadeUp .8s ease both; }
+    .post-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .post-tag {
+      font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.08em; color: var(--accent); background: var(--accent-light);
+      padding: 4px 12px; border-radius: 99px;
+    }
+    .post-date-label { font-size: 0.78rem; color: var(--gray-3); font-weight: 500; }
+    .post-header h1 {
+      font-family: 'Sora', sans-serif; font-size: clamp(1.7rem, 3.5vw, 2.2rem);
+      font-weight: 700; letter-spacing: -0.03em; color: var(--black);
+      line-height: 1.3; margin-bottom: 16px;
+    }
+    .post-header h1 span { color: var(--accent); }
+    .post-desc { font-size: 1rem; color: var(--gray-3); line-height: 1.75; max-width: 600px; }
+    .post-section { margin-bottom: 64px; animation: fadeUp .7s ease both; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    .section-label::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+    .post-section h2 {
+      font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 700;
+      letter-spacing: -0.02em; color: var(--black); margin-bottom: 28px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .post-section h3 { font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--black); margin: 32px 0 12px; }
+    .post-section p { font-size: 0.95rem; color: var(--gray-4); line-height: 1.95; margin-bottom: 16px; }
+    .post-section strong { color: var(--black); font-weight: 700; }
+    .callout {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--accent-light); border: 1px solid rgba(75,112,245,0.2);
+      border-radius: var(--radius-sm); padding: 18px 22px; margin: 24px 0;
+    }
+    .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+    .callout p { font-size: 0.9rem; color: var(--black); margin: 0; line-height: 1.75; }
+    .callout strong { color: var(--accent); }
+    .compare-table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.88rem; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .compare-table th {
+      background: var(--accent); color: #fff;
+      font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.8rem;
+      padding: 12px 18px; text-align: left; letter-spacing: 0.04em;
+    }
+    .compare-table td {
+      background: var(--card-bg); padding: 12px 18px;
+      border-bottom: 1px solid var(--border); color: var(--gray-4); line-height: 1.6;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--black); }
+    .diagram-wrap {
+      margin: 28px 0; background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 20px 16px; box-shadow: var(--shadow-sm);
+    }
+    .page-footer-nav { display: flex; justify-content: flex-start; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); }
+    footer { text-align: center; padding: 48px 24px; color: var(--gray-3); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 640px) { .compare-table { font-size: 0.8rem; } .compare-table th, .compare-table td { padding: 10px 12px; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="../index.html">JL.</a>
+    <div class="nav-right">
+      <a class="nav-back" href="../index.html#posts">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Posts
+      </a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☀️</button>
+    </div>
+  </nav>
 
+  <div class="page-outer">
+    <nav class="toc-sidebar" aria-label="Table of contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#sec1"><span class="toc-num">01</span>Why Deep Learning for Construction?</a></li>
+        <li><a href="#sec2"><span class="toc-num">02</span>What is Deep Learning?</a></li>
+        <li><a href="#sec3"><span class="toc-num">03</span>Key Concepts &amp; Math</a></li>
+        <li><a href="#sec4"><span class="toc-num">04</span>CNN — Seeing the Site<span class="toc-wip">coming soon</span></a></li>
+        <li><a href="#sec5"><span class="toc-num">05</span>NLP — Reading the Documents<span class="toc-wip">coming soon</span></a></li>
+        <li><a href="#sec6"><span class="toc-num">06</span>LLM &amp; RAG — Talking to Knowledge<span class="toc-wip">coming soon</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="post-content">
+      <div class="post-header">
+        <div class="post-meta">
+          <span class="post-tag">Deep Learning</span>
+          <span class="post-tag">Construction</span>
+          <span class="post-date-label">2025</span>
+        </div>
+        <h1>Deep Learning for Construction Management<br><span>Researchers and Engineers</span></h1>
+        <p class="post-desc">A concept-first guide to deep learning for those coming from civil and construction engineering backgrounds — no prior AI experience required.</p>
+      </div>
+
+      <div class="post-section" id="sec1">
+        <div class="section-label">Section 01</div>
+        <h2>Why Deep Learning for Construction?</h2>
+        <h3>Construction is Not a Factory</h3>
+        <p>When people think about applying AI to industry, manufacturing tends to come to mind first — and for good reason. A conveyor-belt assembly line is highly structured: the same parts arrive in the same order, under the same lighting, at the same station, day after day. The environment is <strong>controlled, repetitive, and predictable</strong>.</p>
+        <p>A construction site is the opposite. Every project is a one-off. The physical environment changes daily — earthworks give way to foundations, then structural frames, then cladding. Even the same safety hazard looks different at 8 AM in summer sunlight versus 4 PM on an overcast day in winter.</p>
+        <div class="callout">
+          <span class="callout-icon">🏗️</span>
+          <p>This is the core tension: <strong>construction sites are perpetually unstructured environments</strong>, yet the very strength of deep learning comes from finding patterns in structure. Understanding this gap is the first step toward applying AI meaningfully in the field.</p>
+        </div>
+        <table class="compare-table">
+          <thead><tr><th></th><th>Manufacturing (conveyor-based)</th><th>Construction site</th></tr></thead>
+          <tbody>
+            <tr><td>Environment</td><td>Fixed, controlled, indoors</td><td>Outdoors, changes daily</td></tr>
+            <tr><td>Work type</td><td>Uniform, repeated tasks</td><td>Excavation → structure → finishing → MEP…</td></tr>
+            <tr><td>Workforce</td><td>Stable, trained operators</td><td>Rotating subcontractors, mixed skill levels</td></tr>
+            <tr><td>Visual scene</td><td>Near-identical frame to frame</td><td>Lighting, clutter, layout change constantly</td></tr>
+            <tr><td>Data distribution</td><td>Narrow and stable</td><td>Wide and continuously shifting</td></tr>
+          </tbody>
+        </table>
+        <h3>Why This Makes Deep Learning Hard to Apply</h3>
+        <p>The unstructured nature of construction sites creates a fundamental challenge at the data level. In manufacturing, a dataset collected over two weeks may generalize well for years. In construction, a dataset collected at one project type, in one phase, under one set of conditions can fail badly when deployed at a different site.</p>
+        <div class="callout">
+          <span class="callout-icon">📊</span>
+          <p>This does <em>not</em> mean deep learning is the wrong tool — it means we must be deliberate about <strong>what we train on, where we deploy, and what we claim the model can do</strong>. Domain adaptation, transfer learning, and site-specific fine-tuning are necessities in construction AI.</p>
+        </div>
+        <h3>What Deep Learning Can (and Cannot) Do</h3>
+        <p>Despite these challenges, deep learning remains the most capable tool available for processing the kinds of data construction sites generate. Deep learning discovers features automatically, given sufficient data. The models do not replace expert judgment — they <strong>extend its reach across time, scale, and data volume</strong> in ways no human team can match alone.</p>
+        <table class="compare-table">
+          <thead><tr><th>Approach</th><th>Strength</th><th>Limitation</th></tr></thead>
+          <tbody>
+            <tr><td>Rule-based (checklist)</td><td>Transparent, easy to audit</td><td>Cannot generalize; misses edge cases</td></tr>
+            <tr><td>Traditional ML</td><td>Works well on structured/tabular data</td><td>Requires manual feature engineering</td></tr>
+            <tr><td>Deep Learning</td><td>Handles images, text, and sequences natively</td><td>Needs diverse data; hard to generalize across sites</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="post-section" id="sec2">
+        <div class="section-label">Section 02</div>
+        <h2>What is Deep Learning?</h2>
+        <h3>Machine Learning vs. Deep Learning</h3>
+        <p>Machine learning is a broad field where algorithms learn patterns from data rather than following hard-coded rules. Deep learning is a subset that uses <strong>neural networks with many layers</strong>. Each layer learns progressively more abstract features.</p>
+        <div class="diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 220">
+            <rect x="30" y="16" width="620" height="188" rx="18" fill="#F7F8FC" stroke="#C8CBD8" stroke-width="1.2" stroke-dasharray="6 4"/>
+            <text font-family="Sora, sans-serif" font-size="11" font-weight="700" letter-spacing="0.08em" x="54" y="38" fill="#8A8FA8">ARTIFICIAL INTELLIGENCE</text>
+            <rect x="70" y="52" width="540" height="136" rx="14" fill="#EEF1FF" stroke="#7B97F8" stroke-width="1" stroke-dasharray="4 3"/>
+            <text font-family="Sora, sans-serif" font-size="11" font-weight="700" letter-spacing="0.08em" x="94" y="74" fill="#7B97F8">MACHINE LEARNING</text>
+            <rect x="116" y="88" width="448" height="84" rx="10" fill="#4B70F5"/>
+            <text font-family="Sora, sans-serif" font-size="13" font-weight="700" x="340" y="124" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Deep Learning</text>
+            <text font-family="Sora, sans-serif" font-size="11" x="340" y="146" text-anchor="middle" dominant-baseline="central" fill="rgba(255,255,255,0.75)">Neural networks with multiple layers</text>
+          </svg>
+        </div>
+        <h3>How a Neural Network Works</h3>
+        <p>A neural network is made up of <strong>layers of nodes</strong> (neurons). Each node receives inputs, multiplies them by weights, adds a bias, and passes the result through an <strong>activation function</strong>. The key insight is that <strong>the network learns which weights matter</strong> — you don't tell it what features to look for.</p>
+        <div class="diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 260">
+            <text font-family="Sora,sans-serif" font-size="11" x="100" y="26" text-anchor="middle" fill="#8A8FA8">Input layer</text>
+            <text font-family="Sora,sans-serif" font-size="11" x="280" y="26" text-anchor="middle" fill="#8A8FA8">Hidden layer 1</text>
+            <text font-family="Sora,sans-serif" font-size="11" x="460" y="26" text-anchor="middle" fill="#8A8FA8">Hidden layer 2</text>
+            <text font-family="Sora,sans-serif" font-size="11" x="600" y="26" text-anchor="middle" fill="#8A8FA8">Output layer</text>
+            <g stroke="#4B70F5" stroke-width="0.5" opacity="0.25" fill="none">
+              <line x1="118" y1="80" x2="262" y2="65"/><line x1="118" y1="80" x2="262" y2="115"/><line x1="118" y1="80" x2="262" y2="165"/><line x1="118" y1="80" x2="262" y2="215"/>
+              <line x1="118" y1="140" x2="262" y2="65"/><line x1="118" y1="140" x2="262" y2="115"/><line x1="118" y1="140" x2="262" y2="165"/><line x1="118" y1="140" x2="262" y2="215"/>
+              <line x1="118" y1="200" x2="262" y2="65"/><line x1="118" y1="200" x2="262" y2="115"/><line x1="118" y1="200" x2="262" y2="165"/><line x1="118" y1="200" x2="262" y2="215"/>
+            </g>
+            <g stroke="#7F77DD" stroke-width="0.5" opacity="0.25" fill="none">
+              <line x1="298" y1="65" x2="442" y2="65"/><line x1="298" y1="65" x2="442" y2="115"/><line x1="298" y1="65" x2="442" y2="165"/><line x1="298" y1="65" x2="442" y2="215"/>
+              <line x1="298" y1="115" x2="442" y2="65"/><line x1="298" y1="115" x2="442" y2="115"/><line x1="298" y1="115" x2="442" y2="165"/><line x1="298" y1="115" x2="442" y2="215"/>
+              <line x1="298" y1="165" x2="442" y2="65"/><line x1="298" y1="165" x2="442" y2="115"/><line x1="298" y1="165" x2="442" y2="165"/><line x1="298" y1="165" x2="442" y2="215"/>
+              <line x1="298" y1="215" x2="442" y2="65"/><line x1="298" y1="215" x2="442" y2="115"/><line x1="298" y1="215" x2="442" y2="165"/><line x1="298" y1="215" x2="442" y2="215"/>
+            </g>
+            <g stroke="#1D9E75" stroke-width="0.6" opacity="0.35" fill="none">
+              <line x1="478" y1="65" x2="580" y2="140"/><line x1="478" y1="115" x2="580" y2="140"/><line x1="478" y1="165" x2="580" y2="140"/><line x1="478" y1="215" x2="580" y2="140"/>
+            </g>
+            <circle cx="100" cy="80" r="18" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <circle cx="100" cy="140" r="18" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <circle cx="100" cy="200" r="18" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="12" x="100" y="80" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₁</text>
+            <text font-family="Sora,sans-serif" font-size="12" x="100" y="140" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₂</text>
+            <text font-family="Sora,sans-serif" font-size="12" x="100" y="200" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₃</text>
+            <circle cx="280" cy="65" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="280" cy="115" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="280" cy="165" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="280" cy="215" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="460" cy="65" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="460" cy="115" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="460" cy="165" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="460" cy="215" r="18" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <circle cx="600" cy="140" r="20" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="13" x="600" y="140" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">ŷ</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="340" y="250" text-anchor="middle" fill="#8A8FA8">← weights connect every node to every node in the next layer →</text>
+          </svg>
+        </div>
+        <h3>Activation Functions</h3>
+        <p>Without activation functions, stacking layers would be mathematically equivalent to a single linear equation. Activation functions introduce <strong>non-linearity</strong>, allowing deep networks to model complex real-world patterns. Common choices: ReLU, Sigmoid, and Softmax.</p>
+        <div class="diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 170">
+            <rect x="30" y="10" width="190" height="150" rx="10" fill="#F7F8FC" stroke="#C8CBD8" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="125" y="32" text-anchor="middle" fill="#4B70F5">ReLU</text>
+            <line x1="52" y1="110" x2="208" y2="110" stroke="#C8CBD8" stroke-width="0.8"/>
+            <line x1="125" y1="44" x2="125" y2="116" stroke="#C8CBD8" stroke-width="0.8"/>
+            <polyline points="52,110 125,110 205,48" fill="none" stroke="#4B70F5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="125" y="148" text-anchor="middle" fill="#8A8FA8">f(x) = max(0, x)</text>
+            <rect x="245" y="10" width="190" height="150" rx="10" fill="#F7F8FC" stroke="#C8CBD8" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="340" y="32" text-anchor="middle" fill="#7F77DD">Sigmoid</text>
+            <line x1="267" y1="80" x2="423" y2="80" stroke="#C8CBD8" stroke-width="0.8"/>
+            <line x1="340" y1="44" x2="340" y2="116" stroke="#C8CBD8" stroke-width="0.8"/>
+            <path d="M267,112 Q290,112 310,96 Q328,80 352,64 Q372,50 395,48 L420,47" fill="none" stroke="#7F77DD" stroke-width="2.2" stroke-linecap="round"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="340" y="148" text-anchor="middle" fill="#8A8FA8">f(x) = 1 / (1 + e⁻ˣ)</text>
+            <rect x="460" y="10" width="190" height="150" rx="10" fill="#F7F8FC" stroke="#C8CBD8" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="555" y="32" text-anchor="middle" fill="#1D9E75">Softmax</text>
+            <rect x="484" y="52" width="28" height="56" rx="3" fill="#1D9E75" opacity="0.75"/>
+            <rect x="520" y="72" width="28" height="36" rx="3" fill="#1D9E75" opacity="0.55"/>
+            <rect x="556" y="84" width="28" height="24" rx="3" fill="#1D9E75" opacity="0.4"/>
+            <rect x="592" y="92" width="28" height="16" rx="3" fill="#1D9E75" opacity="0.28"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="498" y="48" text-anchor="middle" fill="#1D9E75">0.56</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="534" y="68" text-anchor="middle" fill="#1D9E75">0.25</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="570" y="80" text-anchor="middle" fill="#1D9E75">0.12</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="606" y="88" text-anchor="middle" fill="#1D9E75">0.07</text>
+            <line x1="478" y1="110" x2="632" y2="110" stroke="#C8CBD8" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="555" y="148" text-anchor="middle" fill="#8A8FA8">outputs sum to 1.0</text>
+          </svg>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🏗️</span>
+          <p>In a construction inspection model, the output layer might use <strong>Softmax</strong> to produce probabilities across classes like <em>safe / minor violation / critical violation</em>. The class with the highest probability becomes the model's prediction.</p>
+        </div>
+      </div>
+
+      <div class="page-footer-nav">
+        <a class="nav-back" href="../index.html#posts">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Posts
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Jungwon LEE · <a href="mailto:ok122800@gmail.com">ok122800@gmail.com</a></p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+    function getEffectiveTheme() {
+      const saved = localStorage.getItem('theme');
+      return saved || (systemDark.matches ? 'dark' : 'light');
+    }
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+    applyTheme(getEffectiveTheme());
+    toggle.addEventListener('click', () => {
+      const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next); applyTheme(next);
+    });
+    systemDark.addEventListener('change', () => {
+      if (!localStorage.getItem('theme')) applyTheme(getEffectiveTheme());
+    });
+    const tocLinks = document.querySelectorAll('.toc-sidebar a[href^="#"]');
+    const sections = document.querySelectorAll('.post-section[id]');
+    const onScroll = () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      tocLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.post-section').forEach(el => {
+      el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
