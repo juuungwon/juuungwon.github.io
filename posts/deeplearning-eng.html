@@ -105,7 +105,7 @@
     .toc-sidebar a.active .toc-num { opacity: 1; }
     .toc-wip { font-size: 0.68rem; color: var(--gray-2); margin-top: 2px; font-style: italic; }
     .post-content { min-width: 0; }
-    .post-header { margin-bottom: 52px; animation: fadeUp .8s ease both; }
+    .post-header { margin-bottom: 52px; animation: fadeUp .8s ease both; padding-top: calc(var(--nav-h) + 80px); }
     .post-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
     .post-tag {
       font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800;
@@ -325,6 +325,7 @@
       <li><a href="#sec4"><span class="toc-num">04</span>CNN — Seeing the Site</a></li>
       <li><a href="#sec5"><span class="toc-num">05</span>NLP — Reading the Documents</a></li>
       <li><a href="#sec6"><span class="toc-num">06</span>LLM &amp; RAG — Talking to Knowledge</a></li>
+      <li><a href="#sec7"><span class="toc-num">07</span>Fine-tuning — Teaching the Model</a></li>
     </ol>
   </div>
     <div class="post-content">
@@ -1071,7 +1072,7 @@
             <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Evaluate on test set</div>
-              <div class="step-desc">mAP@0.5, Precision, Recall — and understand why Recall matters more for safety.</div>
+              <div class="step-desc"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86ebc7d6c6b6a8b3">[email&#160;protected]</a>, Precision, Recall — and understand why Recall matters more for safety.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('sc5')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="sc5">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Evaluate on test set</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -1086,8 +1087,8 @@
     imgsz   <span class="tok-op">=</span> <span class="tok-number">640</span>,
     verbose <span class="tok-op">=</span> <span class="tok-cls">False</span>,
 )
-<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50      : {val.box.map50:.4f}"</span>)
-<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50:0.95 : {val.box.map:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8de0ccddcdbda3b8bd">[email&#160;protected]</a>      : {val.box.map50:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f8d4c5d5a5bba0a5">[email&#160;protected]</a>:0.95 : {val.box.map:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Precision     : {val.box.mp:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Recall        : {val.box.mr:.4f}"</span>)</pre>
               </div>
@@ -1156,7 +1157,7 @@ plt.tight_layout(); plt.show()</pre>
         </div>
 
         <div class="metric-grid">
-          <div class="metric-card"><div class="metric-val">~0.90</div><div class="metric-label">mAP@0.5</div><div class="metric-sub">expected after 30 epochs</div></div>
+          <div class="metric-card"><div class="metric-val">~0.90</div><div class="metric-label"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e885a9b8a8d8c6dd">[email&#160;protected]</a></div><div class="metric-sub">expected after 30 epochs</div></div>
           <div class="metric-card"><div class="metric-val">conf=0.3</div><div class="metric-label">Threshold</div><div class="metric-sub">recall-first setting</div></div>
           <div class="metric-card"><div class="metric-val">yolov8n</div><div class="metric-label">Backbone</div><div class="metric-sub">swap → s / m for +mAP</div></div>
           <div class="metric-card"><div class="metric-val">~15 k</div><div class="metric-label">Training Images</div><div class="metric-sub">Hard Hat Workers v12</div></div>
@@ -1715,37 +1716,61 @@ search(<span class="tok-string">"Who is responsible if a worker falls from heigh
         <p>An LLM doesn't read words — it reads <strong>tokens</strong> (roughly word fragments). Each token is converted to an embedding vector, then processed through many <strong>Transformer layers</strong>. The key mechanism is <strong>self-attention</strong>: every token can directly attend to every other token in the context window, capturing long-range relationships that RNNs struggled with.</p>
 
         <div class="diagram-wrap">
-          <svg width="100%" viewBox="0 0 680 200">
+          <svg width="100%" viewBox="0 0 760 250">
             <defs>
               <marker id="r6a" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="#4B70F5"/></marker>
               <marker id="r6g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="#1D9E75"/></marker>
             </defs>
-            <rect x="10"  y="80" width="72" height="32" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
-            <rect x="90"  y="80" width="72" height="32" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
-            <rect x="170" y="80" width="72" height="32" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
-            <rect x="250" y="80" width="72" height="32" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="46"  y="96" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"fall"</text>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="126" y="96" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"prot"</text>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="206" y="96" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"ection"</text>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="286" y="96" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"height"</text>
-            <text font-family="Sora,sans-serif" font-size="9" x="155" y="68" text-anchor="middle" fill="#8A8FA8">Tokens (word fragments)</text>
-            <path d="M 46,80 Q 46,50 286,80"  fill="none" stroke="#4B70F5" stroke-width="1.2" opacity="0.5" stroke-dasharray="4 2"/>
-            <path d="M 126,80 Q 126,42 286,80" fill="none" stroke="#4B70F5" stroke-width="1.2" opacity="0.35" stroke-dasharray="4 2"/>
-            <path d="M 206,80 Q 220,56 286,80" fill="none" stroke="#4B70F5" stroke-width="1.6" opacity="0.7"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="220" y="46" text-anchor="middle" fill="#4B70F5" opacity="0.8">self-attention</text>
-            <line x1="330" y1="96" x2="356" y2="96" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#r6a)"/>
-            <rect x="360" y="56" width="140" height="80" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="430" y="78" text-anchor="middle" fill="#7F77DD">Transformer</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="430" y="96" text-anchor="middle" fill="#8A8FA8">Multi-Head Attention</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="430" y="114" text-anchor="middle" fill="#8A8FA8">+ Feed Forward</text>
-            <text font-family="Sora,sans-serif" font-size="9" x="430" y="148" text-anchor="middle" fill="#8A8FA8">× N layers</text>
-            <line x1="500" y1="96" x2="526" y2="96" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#r6g)"/>
-            <rect x="530" y="60" width="140" height="72" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.4"/>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="600" y="84" text-anchor="middle" fill="#1D9E75">Next Token</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="600" y="102" text-anchor="middle" fill="#8A8FA8">Prob. distribution</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="600" y="118" text-anchor="middle" fill="#1D9E75">"requirement" 0.61</text>
-            <rect x="10" y="126" width="312" height="24" rx="5" fill="none" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 2"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="156" y="138" text-anchor="middle" fill="#8A8FA8">context window — all tokens visible to each other</text>
+
+            <!-- Title — top -->
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="380" y="20" text-anchor="middle" fill="#3A3A3A">How an LLM processes text — Token → Transformer → Output</text>
+
+            <!-- self-attention label — clearly above arcs -->
+            <text font-family="Sora,sans-serif" font-size="9" x="200" y="48" text-anchor="middle" fill="#4B70F5" opacity="0.75">self-attention</text>
+
+            <!-- Self-attention arcs — start at y=60 (top of boxes) -->
+            <path d="M 46,100 Q 46,60 298,100"  fill="none" stroke="#4B70F5" stroke-width="1.2" opacity="0.40" stroke-dasharray="4 2"/>
+            <path d="M 128,100 Q 128,54 298,100" fill="none" stroke="#4B70F5" stroke-width="1.2" opacity="0.28" stroke-dasharray="4 2"/>
+            <path d="M 213,100 Q 235,66 298,100" fill="none" stroke="#4B70F5" stroke-width="1.6" opacity="0.62"/>
+
+            <!-- Tokens label — sits above boxes, below arcs -->
+            <text font-family="Sora,sans-serif" font-size="9" x="165" y="90" text-anchor="middle" fill="#8A8FA8">Tokens (word fragments)</text>
+
+            <!-- Token boxes -->
+            <rect x="10"  y="100" width="72" height="36" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="92"  y="100" width="72" height="36" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="174" y="100" width="78" height="36" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="262" y="100" width="72" height="36" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+
+            <!-- Token text -->
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="46"  y="118" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"fall"</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="128" y="118" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"prot"</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="213" y="118" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"ection"</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="600" x="298" y="118" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"height"</text>
+
+            <!-- Context window bracket — below boxes -->
+            <rect x="10" y="148" width="326" height="22" rx="5" fill="none" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="173" y="159" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">context window — all tokens visible to each other</text>
+
+            <!-- Arrow to Transformer -->
+            <line x1="344" y1="118" x2="368" y2="118" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#r6a)"/>
+
+            <!-- Transformer block -->
+            <rect x="372" y="88" width="160" height="100" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="452" y="116" text-anchor="middle" fill="#7F77DD">Transformer</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="452" y="136" text-anchor="middle" fill="#8A8FA8">Multi-Head Attention</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="452" y="154" text-anchor="middle" fill="#8A8FA8">+ Feed Forward</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="452" y="178" text-anchor="middle" fill="#8A8FA8">× N layers stacked</text>
+
+            <!-- Arrow to Output -->
+            <line x1="532" y1="138" x2="556" y2="138" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#r6g)"/>
+
+            <!-- Output block -->
+            <rect x="560" y="90" width="190" height="98" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="655" y="118" text-anchor="middle" fill="#1D9E75">Next Token</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="655" y="138" text-anchor="middle" fill="#8A8FA8">Probability distribution</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="655" y="158" text-anchor="middle" fill="#1D9E75">"requirement"  0.61</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="655" y="176" text-anchor="middle" fill="#8A8FA8">"rule"  0.18 · "limit"  0.09</text>
           </svg>
         </div>
 
@@ -2116,7 +2141,7 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
 
         <div class="callout">
           <span class="callout-icon">🏗️</span>
-          <p>We use <strong>EXAONE 3.5 2.4B</strong> — LG AI Research's bilingual Korean/English model — fine-tuned on the <strong>DBCMLAB/Constructionsafety_QApairs</strong> dataset: 5,114 construction safety QA pairs derived from KOSHA guidelines. Both run on a free Colab T4 GPU.</p>
+          <p>We use <strong>Qwen3-1.7B</strong> via <strong>unsloth</strong> — 4-bit quantised, ~2 GB VRAM — fine-tuned on the <strong>DBCMLAB/Constructionsafety_QApairs</strong> dataset: 5,114 construction safety QA pairs derived from KOSHA guidelines. LoRA rank-16 keeps trainable parameters at <strong>~1%</strong> of the total. Estimated training time ~6 hours on a free Colab T4 GPU.</p>
         </div>
 
         <h3>Part 1 · RAG vs. Fine-tuning — When to Choose Which</h3>
@@ -2136,34 +2161,40 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
         </table>
 
         <div class="diagram-wrap">
-          <svg viewBox="0 0 680 148" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <marker id="s7-arr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#C8CBD8"/></marker>
               <marker id="s7-arr-b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#4B70F5"/></marker>
               <marker id="s7-arr-g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#1D9E75"/></marker>
             </defs>
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">How to decide: RAG, Fine-tuning, or both?</text>
-            <polygon points="120,48 170,72 120,96 70,72" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1.2"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="120" y="68" text-anchor="middle" fill="#5A5F75">Need to update</text>
-            <text font-family="Sora,sans-serif" font-size="9" x="120" y="80" text-anchor="middle" fill="#5A5F75">knowledge often?</text>
-            <line x1="170" y1="72" x2="234" y2="72" stroke="#4B70F5" stroke-width="1.3" marker-end="url(#s7-arr-b)"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="202" y="66" text-anchor="middle" fill="#4B70F5">Yes</text>
-            <rect x="238" y="54" width="96" height="36" rx="8" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
-            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="286" y="72" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">RAG</text>
-            <line x1="120" y1="96" x2="120" y2="118" stroke="#C8CBD8" stroke-width="1.3" marker-end="url(#s7-arr)"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="108" y="110" text-anchor="end" fill="#8A8FA8">No</text>
-            <polygon points="120,120 170,136 120,148 70,136" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1.2" transform="translate(0,-4)"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="120" y="133" text-anchor="middle" fill="#5A5F75">Need domain</text>
-            <text font-family="Sora,sans-serif" font-size="9" x="120" y="143" text-anchor="middle" fill="#5A5F75">tone/style?</text>
-            <line x1="170" y1="136" x2="234" y2="136" stroke="#1D9E75" stroke-width="1.3" marker-end="url(#s7-arr-g)"/>
-            <text font-family="Sora,sans-serif" font-size="9" x="202" y="130" text-anchor="middle" fill="#1D9E75">Yes</text>
-            <rect x="238" y="118" width="96" height="36" rx="8" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/>
-            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="286" y="136" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">Fine-tune</text>
-            <line x1="334" y1="72"  x2="390" y2="104" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 3"/>
-            <line x1="334" y1="136" x2="390" y2="104" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 3"/>
-            <rect x="394" y="84" width="144" height="40" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.4"/>
-            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="466" y="100" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">RAG + Fine-tune</text>
-            <text font-family="Sora,sans-serif" font-size="9" x="466" y="116" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">best of both worlds</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="18" text-anchor="middle" fill="#3A3A3A">How to decide: RAG, Fine-tuning, or both?</text>
+            <!-- First diamond -->
+            <polygon points="120,56 175,84 120,112 65,84" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="120" y="80" text-anchor="middle" fill="#5A5F75">Need to update</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="120" y="92" text-anchor="middle" fill="#5A5F75">knowledge often?</text>
+            <!-- Yes arrow right -->
+            <line x1="175" y1="84" x2="240" y2="84" stroke="#4B70F5" stroke-width="1.3" marker-end="url(#s7-arr-b)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="207" y="78" text-anchor="middle" fill="#4B70F5">Yes</text>
+            <rect x="244" y="66" width="96" height="36" rx="8" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="292" y="84" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">RAG</text>
+            <!-- No arrow down -->
+            <line x1="120" y1="112" x2="120" y2="136" stroke="#C8CBD8" stroke-width="1.3" marker-end="url(#s7-arr)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="108" y="127" text-anchor="end" fill="#8A8FA8">No</text>
+            <!-- Second diamond -->
+            <polygon points="120,138 175,158 120,178 65,158" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="120" y="154" text-anchor="middle" fill="#5A5F75">Need domain</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="120" y="165" text-anchor="middle" fill="#5A5F75">tone/style?</text>
+            <!-- Yes arrow right -->
+            <line x1="175" y1="158" x2="240" y2="158" stroke="#1D9E75" stroke-width="1.3" marker-end="url(#s7-arr-g)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="207" y="152" text-anchor="middle" fill="#1D9E75">Yes</text>
+            <rect x="244" y="140" width="96" height="36" rx="8" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="292" y="158" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">Fine-tune</text>
+            <!-- Both arrows converge -->
+            <line x1="340" y1="84"  x2="398" y2="118" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 3"/>
+            <line x1="340" y1="158" x2="398" y2="118" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 3"/>
+            <rect x="402" y="98" width="160" height="40" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="482" y="114" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">RAG + Fine-tune</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="482" y="130" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">best of both worlds</text>
           </svg>
         </div>
 
@@ -2217,31 +2248,6 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
         <h3>Part 3 · Dataset — KOSHA Construction Safety QA</h3>
         <p>The <code>DBCMLAB/Constructionsafety_QApairs</code> dataset contains <strong>5,114 Korean QA pairs</strong> generated from KOSHA (한국산업안전보건공단) construction safety guidelines using GPT-3.5-turbo. Topics include earth anchoring, excavation, shoring, pipeline work, PPE compliance, and equipment safety — exactly the vocabulary a general LLM lacks.</p>
 
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 680 148" xmlns="http://www.w3.org/2000/svg">
-            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">Dataset structure — Alpaca instruction format</text>
-            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="20" y="38" fill="#8A8FA8">HuggingFace columns</text>
-            <rect x="20"  y="46" width="88" height="28" rx="5" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1"/>
-            <rect x="114" y="46" width="64" height="28" rx="5" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1"/>
-            <rect x="184" y="46" width="88" height="28" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
-            <text font-family="Sora,sans-serif" font-size="10" x="64"  y="60" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">instruction</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="146" y="60" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">input</text>
-            <text font-family="Sora,sans-serif" font-size="10" x="228" y="60" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">output</text>
-            <text font-family="Sora,sans-serif" font-size="8" x="64"  y="80" text-anchor="middle" fill="#8A8FA8">질문 (10–77자)</text>
-            <text font-family="Sora,sans-serif" font-size="8" x="146" y="80" text-anchor="middle" fill="#C8CBD8">항상 빈칸</text>
-            <text font-family="Sora,sans-serif" font-size="8" x="228" y="80" text-anchor="middle" fill="#8A8FA8">답변 (10–440자)</text>
-            <text font-family="Sora,sans-serif" font-size="18" x="310" y="62" text-anchor="middle" dominant-baseline="central" fill="#C8CBD8">→</text>
-            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="340" y="38" fill="#8A8FA8">변환 후 학습 텍스트</text>
-            <rect x="330" y="44" width="330" height="88" rx="8" fill="#1E2130" stroke="#4B70F5" stroke-width="1"/>
-            <text font-family="monospace" font-size="8.5" x="342" y="62"  fill="#7B97F8">[|system|]</text>
-            <text font-family="monospace" font-size="8.5" x="342" y="74"  fill="#C8CBD8">당신은 건설 안전 전문가입니다...</text>
-            <text font-family="monospace" font-size="8.5" x="342" y="88"  fill="#7B97F8">[|user|]</text>
-            <text font-family="monospace" font-size="8.5" x="342" y="100" fill="#C8CBD8">정착장이란 무엇을 의미하나요?</text>
-            <text font-family="monospace" font-size="8.5" x="342" y="114" fill="#7B97F8">[|assistant|]</text>
-            <text font-family="monospace" font-size="8.5" x="342" y="126" fill="#7ec8a4">정착장은 지반의 붕괴예상선 안쪽에...</text>
-          </svg>
-        </div>
-
         <div class="callout callout-warn">
           <span class="callout-icon">⚠️</span>
           <p>This dataset is <strong>synthetically generated</strong> by GPT-3.5-turbo, not written by domain experts. It is excellent for demonstrating fine-tuning mechanics and learning construction vocabulary, but <strong>do not use the resulting model for real safety decisions</strong> without human expert verification.</p>
@@ -2291,28 +2297,20 @@ naive <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_
           <div class="step-item">
             <div class="step-spine"><div class="step-dot">0</div><div class="step-line"></div></div>
             <div class="step-body">
-              <div class="step-title">GPU check &amp; install dependencies</div>
-              <div class="step-desc">Verify T4 VRAM, then install <code>bitsandbytes</code>, <code>peft</code>, <code>trl</code>, and <code>accelerate</code> with pinned versions.</div>
-              <button class="step-code-toggle" onclick="toggleStepCode('s7c0')"><span class="toggle-arrow">▶</span> Python / Bash</button>
+              <div class="step-title">Install dependencies</div>
+              <div class="step-desc"><code>unsloth</code> bundles <code>bitsandbytes</code>, <code>peft</code>, and <code>transformers</code> internally — only <code>datasets</code> and <code>trl</code> need separate installation. Pin versions for reproducibility.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('s7c0')"><span class="toggle-arrow">▶</span> Bash</button>
               <div class="step-inline-code" id="s7c0">
-                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 0 · GPU check + install</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                <pre class="code-body"><span class="tok-keyword">import</span> torch
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Bash</span><span class="code-label">Step 0 · Install</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-op">!</span>pip install <span class="tok-string">"datasets&gt;=3.4.1,&lt;4.4.0"</span>
+<span class="tok-op">!</span>pip install <span class="tok-string">"trl&gt;=0.18.2,&lt;=0.24.0"</span>
+<span class="tok-op">!</span>pip install unsloth
 
-<span class="tok-keyword">if not</span> torch.cuda.is_available():
-    <span class="tok-keyword">raise</span> RuntimeError(<span class="tok-string">"GPU not found. Runtime → Change runtime type → T4 GPU"</span>)
-
-gpu_name <span class="tok-op">=</span> torch.cuda.get_device_name(<span class="tok-number">0</span>)
-vram_gb  <span class="tok-op">=</span> torch.cuda.get_device_properties(<span class="tok-number">0</span>).total_memory <span class="tok-op">/</span> <span class="tok-number">1e9</span>
-<span class="tok-func">print</span>(<span class="tok-string">f"GPU  : {gpu_name}"</span>)
-<span class="tok-func">print</span>(<span class="tok-string">f"VRAM : {vram_gb:.1f} GB"</span>)
-
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> bitsandbytes<span class="tok-op"></span>
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">transformers</span>
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> peft<span class="tok-op"></span>
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">trl</span>
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">datasets</span>
-<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> accelerate<span class="tok-op"></span>
-<span class="tok-func">print</span>(<span class="tok-string">"✓ Environment ready"</span>)</pre>
+<span class="tok-comment"># version check</span>
+<span class="tok-keyword">import</span> datasets, trl, unsloth
+<span class="tok-func">print</span>(<span class="tok-string">f"datasets: {datasets.__version__}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"trl:      {trl.__version__}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"unsloth:  {unsloth.__version__}"</span>)</pre>
               </div>
             </div>
           </div>
@@ -2320,42 +2318,41 @@ vram_gb  <span class="tok-op">=</span> torch.cuda.get_device_properties(<span cl
           <div class="step-item">
             <div class="step-spine"><div class="step-dot">1</div><div class="step-line"></div></div>
             <div class="step-body">
-              <div class="step-title">Load &amp; explore the dataset</div>
-              <div class="step-desc">Load from HuggingFace Hub, visualise Q/A length distributions, then convert to Alpaca chat format using EXAONE's template.</div>
+              <div class="step-title">Load model &amp; apply LoRA</div>
+              <div class="step-desc">Load <strong>Qwen3-1.7B</strong> in 4-bit via <code>FastLanguageModel</code>, then immediately attach a LoRA adapter. Setting <code>use_gradient_checkpointing="unsloth"</code> squeezes out extra VRAM — keeping peak usage around 2 GB on T4.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c1')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c1">
-                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 1 · Dataset</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                <pre class="code-body"><span class="tok-keyword">from</span> datasets <span class="tok-keyword">import</span> load_dataset
-<span class="tok-keyword">import</span> matplotlib.pyplot <span class="tok-keyword">as</span> plt
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 1 · Load model + LoRA</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> torch
+<span class="tok-keyword">from</span> unsloth <span class="tok-keyword">import</span> FastLanguageModel
+<span class="tok-keyword">from</span> datasets <span class="tok-keyword">import</span> load_dataset
+<span class="tok-keyword">from</span> trl <span class="tok-keyword">import</span> SFTTrainer, SFTConfig
 
-ds <span class="tok-op">=</span> load_dataset(<span class="tok-string">"DBCMLAB/Constructionsafety_QApairs"</span>)
-df <span class="tok-op">=</span> ds[<span class="tok-string">"train"</span>].to_pandas()
-<span class="tok-func">print</span>(<span class="tok-string">f"총 샘플 수: {len(df):,}   컬럼: {list(df.columns)}"</span>)
+MAX_SEQ_LEN <span class="tok-op">=</span> <span class="tok-number">2048</span>
+MODEL_NAME  <span class="tok-op">=</span> <span class="tok-string">"unsloth/Qwen3-1.7B"</span>   <span class="tok-comment"># fits comfortably on a free T4</span>
+<span class="tok-comment"># MODEL_NAME = "unsloth/Qwen3-4B-bnb-4bit"  # swap to 4B if you have more VRAM</span>
 
-df[<span class="tok-string">"q_len"</span>] <span class="tok-op">=</span> df[<span class="tok-string">"instruction"</span>].str.len()
-df[<span class="tok-string">"a_len"</span>] <span class="tok-op">=</span> df[<span class="tok-string">"output"</span>].str.len()
+<span class="tok-comment"># ── load with 4-bit quantisation ─────────────────────────────</span>
+model, tokenizer <span class="tok-op">=</span> FastLanguageModel.from_pretrained(
+    model_name     <span class="tok-op">=</span> MODEL_NAME,
+    max_seq_length <span class="tok-op">=</span> MAX_SEQ_LEN,
+    load_in_4bit   <span class="tok-op">=</span> <span class="tok-cls">True</span>,   <span class="tok-comment"># key to saving T4 VRAM</span>
+    dtype          <span class="tok-op">=</span> <span class="tok-cls">None</span>,   <span class="tok-comment"># auto-detect dtype</span>
+)
 
-fig, axes <span class="tok-op">=</span> plt.subplots(<span class="tok-number">1</span>, <span class="tok-number">2</span>, figsize<span class="tok-op">=</span>(<span class="tok-number">12</span>, <span class="tok-number">4</span>))
-fig.suptitle(<span class="tok-string">"DBCMLAB/Constructionsafety_QApairs"</span>)
-axes[<span class="tok-number">0</span>].hist(df[<span class="tok-string">"q_len"</span>], bins<span class="tok-op">=</span><span class="tok-number">40</span>, color<span class="tok-op">=</span><span class="tok-string">"#4B70F5"</span>)
-axes[<span class="tok-number">0</span>].set_title(<span class="tok-string">"질문 길이"</span>); axes[<span class="tok-number">0</span>].set_xlabel(<span class="tok-string">"문자 수"</span>)
-axes[<span class="tok-number">1</span>].hist(df[<span class="tok-string">"a_len"</span>], bins<span class="tok-op">=</span><span class="tok-number">40</span>, color<span class="tok-op">=</span><span class="tok-string">"#1D9E75"</span>)
-axes[<span class="tok-number">1</span>].set_title(<span class="tok-string">"답변 길이"</span>); axes[<span class="tok-number">1</span>].set_xlabel(<span class="tok-string">"문자 수"</span>)
-plt.tight_layout(); plt.show()
-
-SYSTEM_PROMPT <span class="tok-op">=</span> <span class="tok-string">"당신은 건설 안전 전문가입니다. KOSHA 지침을 기반으로 정확하고 간결하게 답변하세요."</span>
-
-<span class="tok-keyword">def</span> <span class="tok-func">format_alpaca</span>(example):
-    <span class="tok-keyword">return</span> {<span class="tok-string">"text"</span>: (
-        <span class="tok-string">f"[|system|]\n{SYSTEM_PROMPT}\n"</span>
-        <span class="tok-string">f"[|user|]\n{example['instruction']}\n"</span>
-        <span class="tok-string">f"[|assistant|]\n{example['output']}"</span>
-    )}
-
-ds_fmt <span class="tok-op">=</span> ds[<span class="tok-string">"train"</span>].map(format_alpaca, remove_columns<span class="tok-op">=</span>ds[<span class="tok-string">"train"</span>].column_names)
-split  <span class="tok-op">=</span> ds_fmt.train_test_split(test_size<span class="tok-op">=</span><span class="tok-number">0.1</span>, seed<span class="tok-op">=</span><span class="tok-number">42</span>)
-train_ds, val_ds <span class="tok-op">=</span> split[<span class="tok-string">"train"</span>], split[<span class="tok-string">"test"</span>]
-<span class="tok-func">print</span>(<span class="tok-string">f"학습: {len(train_ds):,}   검증: {len(val_ds):,}"</span>)</pre>
+<span class="tok-comment"># ── attach LoRA adapter ───────────────────────────────────────</span>
+model <span class="tok-op">=</span> FastLanguageModel.get_peft_model(
+    model,
+    r              <span class="tok-op">=</span> <span class="tok-number">16</span>,
+    target_modules <span class="tok-op">=</span> [<span class="tok-string">"q_proj"</span>, <span class="tok-string">"k_proj"</span>, <span class="tok-string">"v_proj"</span>, <span class="tok-string">"o_proj"</span>,
+                      <span class="tok-string">"gate_proj"</span>, <span class="tok-string">"up_proj"</span>, <span class="tok-string">"down_proj"</span>],
+    lora_alpha     <span class="tok-op">=</span> <span class="tok-number">16</span>,
+    lora_dropout   <span class="tok-op">=</span> <span class="tok-number">0.05</span>,
+    bias           <span class="tok-op">=</span> <span class="tok-string">"none"</span>,
+    use_gradient_checkpointing <span class="tok-op">=</span> <span class="tok-string">"unsloth"</span>,  <span class="tok-comment"># extra memory saving from unsloth</span>
+    random_state   <span class="tok-op">=</span> <span class="tok-number">42</span>,
+)
+<span class="tok-func">print</span>(model.print_trainable_parameters())</pre>
               </div>
             </div>
           </div>
@@ -2363,56 +2360,48 @@ train_ds, val_ds <span class="tok-op">=</span> split[<span class="tok-string">"t
           <div class="step-item">
             <div class="step-spine"><div class="step-dot">2</div><div class="step-line"></div></div>
             <div class="step-body">
-              <div class="step-title">Load EXAONE 3.5 2.4B in 4-bit &amp; capture baseline</div>
-              <div class="step-desc">Load with <code>BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4")</code> — this is the Q in QLoRA. Record answers before training.</div>
+              <div class="step-title">Load &amp; format dataset</div>
+              <div class="step-desc">Load the KOSHA QA dataset from HuggingFace Hub and convert each example to Qwen3 ChatML format. Column names are auto-detected, so <code>instruction/output</code>, <code>question/answer</code>, and <code>input/output</code> schemas all work without manual changes.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c2')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c2">
-                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 2 · Load model + baseline</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                <pre class="code-body"><span class="tok-keyword">import</span> torch
-<span class="tok-keyword">from</span> transformers <span class="tok-keyword">import</span> AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 2 · Dataset</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body">dataset <span class="tok-op">=</span> load_dataset(<span class="tok-string">"DBCMLAB/Constructionsafety_QApairs"</span>, split<span class="tok-op">=</span><span class="tok-string">"train"</span>)
+<span class="tok-func">print</span>(dataset)
+<span class="tok-func">print</span>(dataset[<span class="tok-number">0</span>])  <span class="tok-comment"># inspect column structure</span>
 
-MODEL_ID   <span class="tok-op">=</span> <span class="tok-string">"LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct"</span>
-bnb_config <span class="tok-op">=</span> BitsAndBytesConfig(
-    load_in_4bit<span class="tok-op">=</span><span class="tok-cls">True</span>,
-    bnb_4bit_quant_type<span class="tok-op">=</span><span class="tok-string">"nf4"</span>,
-    bnb_4bit_compute_dtype<span class="tok-op">=</span>torch.bfloat16,
-    bnb_4bit_use_double_quant<span class="tok-op">=</span><span class="tok-cls">True</span>,
-)
+<span class="tok-keyword">def</span> <span class="tok-func">format_prompt</span>(example):
+    <span class="tok-string">"""Convert to Qwen3 ChatML format. Auto-detects column names."""</span>
+    col_names <span class="tok-op">=</span> <span class="tok-func">list</span>(example.keys())
+    <span class="tok-keyword">if</span>   <span class="tok-string">"instruction"</span> <span class="tok-keyword">in</span> col_names <span class="tok-keyword">and</span> <span class="tok-string">"output"</span>   <span class="tok-keyword">in</span> col_names:
+        q, a <span class="tok-op">=</span> example[<span class="tok-string">"instruction"</span>], example[<span class="tok-string">"output"</span>]
+    <span class="tok-keyword">elif</span> <span class="tok-string">"question"</span>    <span class="tok-keyword">in</span> col_names <span class="tok-keyword">and</span> <span class="tok-string">"answer"</span>    <span class="tok-keyword">in</span> col_names:
+        q, a <span class="tok-op">=</span> example[<span class="tok-string">"question"</span>],    example[<span class="tok-string">"answer"</span>]
+    <span class="tok-keyword">elif</span> <span class="tok-string">"input"</span>       <span class="tok-keyword">in</span> col_names <span class="tok-keyword">and</span> <span class="tok-string">"output"</span>    <span class="tok-keyword">in</span> col_names:
+        q, a <span class="tok-op">=</span> example[<span class="tok-string">"input"</span>],       example[<span class="tok-string">"output"</span>]
+    <span class="tok-keyword">else</span>:
+        q, a <span class="tok-op">=</span> example[col_names[<span class="tok-number">0</span>]],  example[col_names[<span class="tok-number">1</span>]]
 
-tokenizer  <span class="tok-op">=</span> AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code<span class="tok-op">=</span><span class="tok-cls">True</span>)
-base_model <span class="tok-op">=</span> AutoModelForCausalLM.from_pretrained(
-    MODEL_ID, quantization_config<span class="tok-op">=</span>bnb_config,
-    device_map<span class="tok-op">=</span><span class="tok-string">"auto"</span>, trust_remote_code<span class="tok-op">=</span><span class="tok-cls">True</span>)
-base_model.config.use_cache <span class="tok-op">=</span> <span class="tok-cls">False</span>
-<span class="tok-func">print</span>(<span class="tok-string">f"사용 VRAM: {torch.cuda.memory_allocated()/1e9:.2f} GB"</span>)
+    text <span class="tok-op">=</span> (
+        <span class="tok-string">"&lt;|im_start|&gt;system
+"</span>
+        <span class="tok-string">"You are a construction safety expert. Answer questions accurately and in detail.&lt;|im_end|&gt;
+"</span>
+        <span class="tok-string">f"&lt;|im_start|&gt;user
+{q}&lt;|im_end|&gt;
+"</span>
+        <span class="tok-string">f"&lt;|im_start|&gt;assistant
+{a}&lt;|im_end|&gt;"</span>
+    )
+    <span class="tok-keyword">return</span> {<span class="tok-string">"text"</span>: text}
 
-<span class="tok-keyword">def</span> <span class="tok-func">generate_answer</span>(model, question, max_new_tokens<span class="tok-op">=</span><span class="tok-number">200</span>):
-    messages  <span class="tok-op">=</span> [
-        {<span class="tok-string">"role"</span>: <span class="tok-string">"system"</span>, <span class="tok-string">"content"</span>: SYSTEM_PROMPT},
-        {<span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>,   <span class="tok-string">"content"</span>: question},
-    ]
-    input_ids <span class="tok-op">=</span> tokenizer.apply_chat_template(
-        messages, tokenize<span class="tok-op">=</span><span class="tok-cls">True</span>, add_generation_prompt<span class="tok-op">=</span><span class="tok-cls">True</span>,
-        return_tensors<span class="tok-op">=</span><span class="tok-string">"pt"</span>).to(model.device)
-    <span class="tok-keyword">with</span> torch.no_grad():
-        out <span class="tok-op">=</span> model.generate(input_ids, max_new_tokens<span class="tok-op">=</span>max_new_tokens,
-                              do_sample<span class="tok-op">=</span><span class="tok-cls">False</span>,
-                              eos_token_id<span class="tok-op">=</span>tokenizer.eos_token_id,
-                              pad_token_id<span class="tok-op">=</span>tokenizer.eos_token_id)
-    <span class="tok-keyword">return</span> tokenizer.decode(out[<span class="tok-number">0</span>][input_ids.shape[<span class="tok-op">-</span><span class="tok-number">1</span>]:], skip_special_tokens<span class="tok-op">=</span><span class="tok-cls">True</span>).strip()
+dataset      <span class="tok-op">=</span> dataset.map(format_prompt, remove_columns<span class="tok-op">=</span>dataset.column_names)
+<span class="tok-func">print</span>(dataset[<span class="tok-number">0</span>][<span class="tok-string">"text"</span>][:<span class="tok-number">300</span>])
 
-TEST_QS <span class="tok-op">=</span> [
-    <span class="tok-string">"어스앵커 천공 작업 전 반드시 확인해야 할 지하매설물은 무엇인가요?"</span>,
-    <span class="tok-string">"굴착깊이 1.5m 이상일 때 필요한 안전 설비는?"</span>,
-    <span class="tok-string">"흙막이지보공이란 무엇인가요?"</span>,
-    <span class="tok-string">"작업자가 PPE를 미착용한 경우 관리감독자의 의무는?"</span>,
-    <span class="tok-string">"강선을 절단할 때 주의해야 할 사항은 무엇인가요?"</span>,
-]
-
-baseline <span class="tok-op">=</span> {}
-<span class="tok-keyword">for</span> q <span class="tok-keyword">in</span> TEST_QS:
-    baseline[q] <span class="tok-op">=</span> <span class="tok-func">generate_answer</span>(base_model, q)
-    <span class="tok-func">print</span>(<span class="tok-string">f"❓ {q}\n💬 {baseline[q]}\n"</span>)</pre>
+<span class="tok-comment"># 90/10 train/val split</span>
+dataset  <span class="tok-op">=</span> dataset.train_test_split(test_size<span class="tok-op">=</span><span class="tok-number">0.1</span>, seed<span class="tok-op">=</span><span class="tok-number">42</span>)
+train_ds <span class="tok-op">=</span> dataset[<span class="tok-string">"train"</span>]
+val_ds   <span class="tok-op">=</span> dataset[<span class="tok-string">"test"</span>]
+<span class="tok-func">print</span>(<span class="tok-string">f"Train: {len(train_ds):,}   Eval: {len(val_ds):,}"</span>)</pre>
               </div>
             </div>
           </div>
@@ -2420,56 +2409,46 @@ baseline <span class="tok-op">=</span> {}
           <div class="step-item">
             <div class="step-spine"><div class="step-dot">3</div><div class="step-line"></div></div>
             <div class="step-body">
-              <div class="step-title">Configure LoRA &amp; train with SFTTrainer</div>
-              <div class="step-desc">Apply <code>LoraConfig(r=8)</code> targeting all attention + MLP projections. Only ~0.5% of parameters update.</div>
+              <div class="step-title">Configure SFTTrainer &amp; train</div>
+              <div class="step-desc">Set hyperparameters via <code>SFTConfig</code>. <code>bf16</code>/<code>fp16</code> switches automatically based on GPU capability. Effective batch size is 2 × 4 = 8 — stable on a T4 with ~6 hours of total training time.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c3')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c3">
-                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 3 · QLoRA training</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                <pre class="code-body"><span class="tok-keyword">from</span> peft <span class="tok-keyword">import</span> LoraConfig, get_peft_model, prepare_model_for_kbit_training
-<span class="tok-keyword">from</span> transformers <span class="tok-keyword">import</span> TrainingArguments
-<span class="tok-keyword">from</span> trl <span class="tok-keyword">import</span> SFTTrainer
-
-model <span class="tok-op">=</span> prepare_model_for_kbit_training(base_model, use_gradient_checkpointing<span class="tok-op">=</span><span class="tok-cls">True</span>)
-
-lora_cfg <span class="tok-op">=</span> LoraConfig(
-    r<span class="tok-op">=</span><span class="tok-number">8</span>, lora_alpha<span class="tok-op">=</span><span class="tok-number">16</span>,
-    target_modules<span class="tok-op">=</span>[<span class="tok-string">"q_proj"</span>, <span class="tok-string">"k_proj"</span>, <span class="tok-string">"v_proj"</span>, <span class="tok-string">"o_proj"</span>,
-                    <span class="tok-string">"gate_proj"</span>, <span class="tok-string">"up_proj"</span>, <span class="tok-string">"down_proj"</span>],
-    lora_dropout<span class="tok-op">=</span><span class="tok-number">0.05</span>, bias<span class="tok-op">=</span><span class="tok-string">"none"</span>, task_type<span class="tok-op">=</span><span class="tok-string">"CAUSAL_LM"</span>,
-)
-model <span class="tok-op">=</span> get_peft_model(model, lora_cfg)
-
-trainable <span class="tok-op">=</span> <span class="tok-func">sum</span>(p.numel() <span class="tok-keyword">for</span> p <span class="tok-keyword">in</span> model.parameters() <span class="tok-keyword">if</span> p.requires_grad)
-total     <span class="tok-op">=</span> <span class="tok-func">sum</span>(p.numel() <span class="tok-keyword">for</span> p <span class="tok-keyword">in</span> model.parameters())
-<span class="tok-func">print</span>(<span class="tok-string">f"학습 파라미터: {trainable:,} / {total:,}  ({100*trainable/total:.2f}%)"</span>)
-
-training_args <span class="tok-op">=</span> TrainingArguments(
-    output_dir<span class="tok-op">=</span><span class="tok-string">"./exaone-construction-qlora"</span>,
-    num_train_epochs<span class="tok-op">=</span><span class="tok-number">2</span>,
-    per_device_train_batch_size<span class="tok-op">=</span><span class="tok-number">4</span>,
-    gradient_accumulation_steps<span class="tok-op">=</span><span class="tok-number">4</span>,
-    warmup_ratio<span class="tok-op">=</span><span class="tok-number">0.05</span>,
-    learning_rate<span class="tok-op">=</span><span class="tok-number">2e-4</span>,
-    lr_scheduler_type<span class="tok-op">=</span><span class="tok-string">"cosine"</span>,
-    fp16<span class="tok-op">=</span><span class="tok-cls">True</span>,
-    logging_steps<span class="tok-op">=</span><span class="tok-number">50</span>,
-    eval_strategy<span class="tok-op">=</span><span class="tok-string">"steps"</span>, eval_steps<span class="tok-op">=</span><span class="tok-number">200</span>,
-    save_strategy<span class="tok-op">=</span><span class="tok-string">"steps"</span>, save_steps<span class="tok-op">=</span><span class="tok-number">200</span>,
-    load_best_model_at_end<span class="tok-op">=</span><span class="tok-cls">True</span>,
-    optim<span class="tok-op">=</span><span class="tok-string">"paged_adamw_8bit"</span>,
-    group_by_length<span class="tok-op">=</span><span class="tok-cls">True</span>, report_to<span class="tok-op">=</span><span class="tok-string">"none"</span>,
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 3 · Train</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body">training_args <span class="tok-op">=</span> SFTConfig(
+    output_dir             <span class="tok-op">=</span> <span class="tok-string">"./qwen3_construction_safety"</span>,
+    num_train_epochs       <span class="tok-op">=</span> <span class="tok-number">3</span>,
+    per_device_train_batch_size <span class="tok-op">=</span> <span class="tok-number">2</span>,   <span class="tok-comment"># stable on T4</span>
+    per_device_eval_batch_size  <span class="tok-op">=</span> <span class="tok-number">2</span>,
+    gradient_accumulation_steps <span class="tok-op">=</span> <span class="tok-number">4</span>,   <span class="tok-comment"># effective batch size = 8</span>
+    learning_rate          <span class="tok-op">=</span> <span class="tok-number">2e-4</span>,
+    lr_scheduler_type      <span class="tok-op">=</span> <span class="tok-string">"cosine"</span>,
+    warmup_ratio           <span class="tok-op">=</span> <span class="tok-number">0.05</span>,
+    fp16                   <span class="tok-op">=</span> <span class="tok-keyword">not</span> torch.cuda.is_bf16_supported(),
+    bf16                   <span class="tok-op">=</span> torch.cuda.is_bf16_supported(),
+    logging_steps          <span class="tok-op">=</span> <span class="tok-number">10</span>,
+    eval_strategy          <span class="tok-op">=</span> <span class="tok-string">"steps"</span>,
+    eval_steps             <span class="tok-op">=</span> <span class="tok-number">50</span>,
+    save_strategy          <span class="tok-op">=</span> <span class="tok-string">"steps"</span>,
+    save_steps             <span class="tok-op">=</span> <span class="tok-number">100</span>,
+    save_total_limit       <span class="tok-op">=</span> <span class="tok-number">2</span>,
+    load_best_model_at_end <span class="tok-op">=</span> <span class="tok-cls">True</span>,
+    report_to              <span class="tok-op">=</span> <span class="tok-string">"none"</span>,
+    max_seq_length         <span class="tok-op">=</span> MAX_SEQ_LEN,
+    dataset_text_field     <span class="tok-op">=</span> <span class="tok-string">"text"</span>,
+    packing                <span class="tok-op">=</span> <span class="tok-cls">False</span>,
+    seed                   <span class="tok-op">=</span> <span class="tok-number">42</span>,
 )
 
 trainer <span class="tok-op">=</span> SFTTrainer(
-    model<span class="tok-op">=</span>model, tokenizer<span class="tok-op">=</span>tokenizer,
-    train_dataset<span class="tok-op">=</span>train_ds, eval_dataset<span class="tok-op">=</span>val_ds,
-    dataset_text_field<span class="tok-op">=</span><span class="tok-string">"text"</span>, max_seq_length<span class="tok-op">=</span><span class="tok-number">384</span>,
-    args<span class="tok-op">=</span>training_args,
+    model         <span class="tok-op">=</span> model,
+    tokenizer     <span class="tok-op">=</span> tokenizer,
+    train_dataset <span class="tok-op">=</span> train_ds,
+    eval_dataset  <span class="tok-op">=</span> val_ds,
+    args          <span class="tok-op">=</span> training_args,
 )
 
-result <span class="tok-op">=</span> trainer.train()
-<span class="tok-func">print</span>(<span class="tok-string">f"\n✓ 완료  |  시간: {result.metrics['train_runtime']:.0f}s  |  "
-      f"loss: {result.metrics['train_loss']:.4f}"</span>)</pre>
+trainer_stats <span class="tok-op">=</span> trainer.train()
+<span class="tok-func">print</span>(trainer_stats)</pre>
               </div>
             </div>
           </div>
@@ -2477,11 +2456,11 @@ result <span class="tok-op">=</span> trainer.train()
           <div class="step-item">
             <div class="step-spine"><div class="step-dot">4</div><div class="step-line"></div></div>
             <div class="step-body">
-              <div class="step-title">Loss curve &amp; before/after comparison</div>
-              <div class="step-desc">Plot training/validation loss, then compare answers to the same 5 questions + 3 unseen questions to check generalisation.</div>
+              <div class="step-title">Plot loss curve</div>
+              <div class="step-desc">Visualise training and validation loss over steps. A widening gap between the two lines signals overfitting — lower rank or fewer epochs can help.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c4')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c4">
-                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 4 · Loss curve + comparison</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 4 · Loss curve</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
                 <pre class="code-body"><span class="tok-keyword">import</span> matplotlib.pyplot <span class="tok-keyword">as</span> plt
 
 log      <span class="tok-op">=</span> trainer.state.log_history
@@ -2495,29 +2474,9 @@ ax.plot(t_steps, t_losses, color<span class="tok-op">=</span><span class="tok-st
 <span class="tok-keyword">if</span> v_losses:
     ax.plot(v_steps, v_losses, color<span class="tok-op">=</span><span class="tok-string">"#F5844B"</span>, marker<span class="tok-op">=</span><span class="tok-string">"o"</span>, label<span class="tok-op">=</span><span class="tok-string">"Val loss"</span>)
 ax.set(xlabel<span class="tok-op">=</span><span class="tok-string">"Step"</span>, ylabel<span class="tok-op">=</span><span class="tok-string">"Loss"</span>,
-       title<span class="tok-op">=</span><span class="tok-string">"QLoRA Fine-tuning — EXAONE 3.5 2.4B on Construction Safety"</span>)
+       title<span class="tok-op">=</span><span class="tok-string">"QLoRA Fine-tuning — Qwen3-1.7B on Construction Safety"</span>)
 ax.legend(); ax.grid(<span class="tok-cls">True</span>, alpha<span class="tok-op">=</span><span class="tok-number">0.3</span>)
-plt.tight_layout(); plt.show()
-
-ft_model <span class="tok-op">=</span> trainer.model; ft_model.eval()
-
-<span class="tok-func">print</span>(<span class="tok-string">"=" * 68</span>)
-<span class="tok-func">print</span>(<span class="tok-string">"BEFORE vs AFTER fine-tuning"</span>)
-<span class="tok-func">print</span>(<span class="tok-string">"=" * 68</span>)
-<span class="tok-keyword">for</span> q <span class="tok-keyword">in</span> TEST_QS:
-    after <span class="tok-op">=</span> <span class="tok-func">generate_answer</span>(ft_model, q)
-    <span class="tok-func">print</span>(<span class="tok-string">f"\n❓ {q}"</span>)
-    <span class="tok-func">print</span>(<span class="tok-string">f"[BEFORE] {baseline[q]}"</span>)
-    <span class="tok-func">print</span>(<span class="tok-string">f"[AFTER ] {after}"</span>)
-
-NEW_QS <span class="tok-op">=</span> [
-    <span class="tok-string">"콘크리트 타설 작업 중 근로자가 준수해야 할 안전 수칙은?"</span>,
-    <span class="tok-string">"타워크레인 작업반경 내 안전관리 방법을 설명해주세요."</span>,
-    <span class="tok-string">"산소결핍 위험 장소에서 작업 전 확인해야 할 사항은?"</span>,
-]
-<span class="tok-func">print</span>(<span class="tok-string">"\n일반화 테스트 — 학습 데이터에 없는 새 질문"</span>)
-<span class="tok-keyword">for</span> q <span class="tok-keyword">in</span> NEW_QS:
-    <span class="tok-func">print</span>(<span class="tok-string">f"\n❓ {q}\n💬 {generate_answer(ft_model, q)}"</span>)</pre>
+plt.tight_layout(); plt.show()</pre>
               </div>
             </div>
           </div>
@@ -2526,52 +2485,84 @@ NEW_QS <span class="tok-op">=</span> [
             <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Save LoRA adapter</div>
-              <div class="step-desc">Save only the trained LoRA weights — a few tens of MB. Optional: merge into base model for peft-free inference.</div>
+              <div class="step-desc">Save only the trained LoRA weights — typically a few tens of MB. Optionally back up to Google Drive so the adapter survives a Colab session reset.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('s7c5')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="s7c5">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Save adapter</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                <pre class="code-body"><span class="tok-keyword">import</span> os
+                <pre class="code-body">model.save_pretrained(<span class="tok-string">"./qwen3_safety_lora"</span>)
+tokenizer.save_pretrained(<span class="tok-string">"./qwen3_safety_lora"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">"✅ Adapter saved!"</span>)
 
-SAVE_DIR <span class="tok-op">=</span> <span class="tok-string">"./exaone-construction-qlora-final"</span>
-trainer.model.save_pretrained(SAVE_DIR)
-tokenizer.save_pretrained(SAVE_DIR)
-
-total_mb <span class="tok-op">=</span> <span class="tok-func">sum</span>(os.path.getsize(os.path.join(SAVE_DIR, f))
-               <span class="tok-keyword">for</span> f <span class="tok-keyword">in</span> os.listdir(SAVE_DIR)) <span class="tok-op">/</span> <span class="tok-number">1e6</span>
-<span class="tok-func">print</span>(<span class="tok-string">f"✓ 저장 완료: {SAVE_DIR}  ({total_mb:.1f} MB)"</span>)
-
-<span class="tok-comment"># ── (선택) Google Drive에 백업 ──────────────────────────────────</span>
+<span class="tok-comment"># ── (optional) back up to Google Drive ───────────────────────</span>
 SAVE_TO_DRIVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
 <span class="tok-keyword">if</span> SAVE_TO_DRIVE:
     <span class="tok-keyword">from</span> google.colab <span class="tok-keyword">import</span> drive
     <span class="tok-keyword">import</span> shutil
     drive.mount(<span class="tok-string">"/content/drive"</span>)
-    shutil.copytree(SAVE_DIR, <span class="tok-string">"/content/drive/MyDrive/exaone-construction-qlora"</span>,
+    shutil.copytree(<span class="tok-string">"./qwen3_safety_lora"</span>,
+                    <span class="tok-string">"/content/drive/MyDrive/qwen3_safety_lora"</span>,
                     dirs_exist_ok<span class="tok-op">=</span><span class="tok-cls">True</span>)
-    <span class="tok-func">print</span>(<span class="tok-string">"✓ Drive 저장 완료"</span>)
+    <span class="tok-func">print</span>(<span class="tok-string">"✅ Backed up to Drive"</span>)</pre>
+              </div>
+            </div>
+          </div>
 
-<span class="tok-comment"># ── (선택) 어댑터 병합 ──────────────────────────────────────────</span>
-MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
-<span class="tok-keyword">if</span> MERGE_AND_SAVE:
-    <span class="tok-keyword">from</span> peft <span class="tok-keyword">import</span> PeftModel
-    base_for_merge <span class="tok-op">=</span> AutoModelForCausalLM.from_pretrained(
-        MODEL_ID, torch_dtype<span class="tok-op">=</span>torch.float16,
-        trust_remote_code<span class="tok-op">=</span><span class="tok-cls">True</span>, device_map<span class="tok-op">=</span><span class="tok-string">"cpu"</span>)
-    merged <span class="tok-op">=</span> PeftModel.from_pretrained(base_for_merge, SAVE_DIR).merge_and_unload()
-    merged.save_pretrained(<span class="tok-string">"./exaone-construction-merged"</span>)
-    tokenizer.save_pretrained(<span class="tok-string">"./exaone-construction-merged"</span>)
-    <span class="tok-func">print</span>(<span class="tok-string">"✓ 병합 모델 저장 완료"</span>)</pre>
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">6</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Inference test</div>
+              <div class="step-desc">Switch to inference mode with <code>FastLanguageModel.for_inference()</code> — this roughly doubles generation speed. Run a handful of construction safety questions to compare the model's tone before and after fine-tuning.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('s7c6')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="s7c6">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 6 · Inference</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body">FastLanguageModel.for_inference(model)  <span class="tok-comment"># switch to inference mode (~2× faster generation)</span>
+
+<span class="tok-keyword">def</span> <span class="tok-func">ask</span>(question: <span class="tok-func">str</span>, max_new_tokens: <span class="tok-func">int</span> <span class="tok-op">=</span> <span class="tok-number">512</span>):
+    messages <span class="tok-op">=</span> [
+        {<span class="tok-string">"role"</span>: <span class="tok-string">"system"</span>,
+         <span class="tok-string">"content"</span>: <span class="tok-string">"You are a construction safety expert. Answer questions accurately and in detail."</span>},
+        {<span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>, <span class="tok-string">"content"</span>: question},
+    ]
+    input_ids <span class="tok-op">=</span> tokenizer.apply_chat_template(
+        messages,
+        tokenize              <span class="tok-op">=</span> <span class="tok-cls">True</span>,
+        add_generation_prompt <span class="tok-op">=</span> <span class="tok-cls">True</span>,
+        return_tensors        <span class="tok-op">=</span> <span class="tok-string">"pt"</span>,
+    ).to(<span class="tok-string">"cuda"</span>)
+
+    outputs <span class="tok-op">=</span> model.generate(
+        input_ids,
+        max_new_tokens <span class="tok-op">=</span> max_new_tokens,
+        temperature    <span class="tok-op">=</span> <span class="tok-number">0.7</span>,
+        top_p          <span class="tok-op">=</span> <span class="tok-number">0.9</span>,
+        do_sample      <span class="tok-op">=</span> <span class="tok-cls">True</span>,
+    )
+    decoded <span class="tok-op">=</span> tokenizer.decode(
+        outputs[<span class="tok-number">0</span>][input_ids.shape[<span class="tok-op">-</span><span class="tok-number">1</span>]:], skip_special_tokens<span class="tok-op">=</span><span class="tok-cls">True</span>
+    )
+    <span class="tok-keyword">return</span> decoded
+
+<span class="tok-comment"># test questions</span>
+TEST_QS <span class="tok-op">=</span> [
+    <span class="tok-string">"What safety measures are required to prevent falls at a construction site?"</span>,
+    <span class="tok-string">"What safety equipment is required when excavation depth exceeds 1.5 m?"</span>,
+    <span class="tok-string">"What is earth-retaining shoring (흙막이지보공)?"</span>,
+]
+<span class="tok-keyword">for</span> q <span class="tok-keyword">in</span> TEST_QS:
+    <span class="tok-func">print</span>(<span class="tok-string">f"\n❓ {q}"</span>)
+    <span class="tok-func">print</span>(<span class="tok-string">f"&#128172; {ask(q)}"</span>)</pre>
               </div>
             </div>
           </div>
 
         </div>
+        </div>
 
         <div class="metric-grid">
-          <div class="metric-card"><div class="metric-val">2.4B</div><div class="metric-label">EXAONE 3.5</div><div class="metric-sub">한국어 특화 bilingual</div></div>
-          <div class="metric-card"><div class="metric-val">~0.5%</div><div class="metric-label">Trainable params</div><div class="metric-sub">LoRA rank-8</div></div>
-          <div class="metric-card"><div class="metric-val">~6 GB</div><div class="metric-label">VRAM (QLoRA)</div><div class="metric-sub">T4 무료 Colab 가능</div></div>
-          <div class="metric-card"><div class="metric-val">~40 min</div><div class="metric-label">Training time</div><div class="metric-sub">2 epochs · 4,600 샘플</div></div>
+          <div class="metric-card"><div class="metric-val">1.7B</div><div class="metric-label">Qwen3-1.7B</div><div class="metric-sub">unsloth 4-bit 최적화</div></div>
+          <div class="metric-card"><div class="metric-val">~1%</div><div class="metric-label">Trainable params</div><div class="metric-sub">LoRA rank-16</div></div>
+          <div class="metric-card"><div class="metric-val">~2 GB</div><div class="metric-label">VRAM (QLoRA)</div><div class="metric-sub">T4 무료 Colab 가능</div></div>
+          <div class="metric-card"><div class="metric-val">~6 hr</div><div class="metric-label">Training time</div><div class="metric-sub">3 epochs · 4,600 샘플</div></div>
         </div>
 
         <h3>Part 5 · Limitations &amp; Production Considerations</h3>
@@ -2591,7 +2582,7 @@ MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
             <text font-family="Sora,sans-serif" font-size="9"  x="202" y="68" text-anchor="middle" fill="#7B97F8">KOSHA docs · specs</text>
             <line x1="263" y1="58" x2="294" y2="58" stroke="#7F77DD" stroke-width="1.3" marker-end="url(#s7-comb)"/>
             <rect x="298" y="28" width="150" height="60" rx="8" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
-            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="373" y="50" text-anchor="middle" fill="#1D9E75">Fine-tuned EXAONE</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="373" y="50" text-anchor="middle" fill="#1D9E75">Fine-tuned Qwen3-1.7B</text>
             <text font-family="Sora,sans-serif" font-size="9"  x="373" y="64" text-anchor="middle" fill="#8A8FA8">domain language ✓</text>
             <text font-family="Sora,sans-serif" font-size="9"  x="373" y="78" text-anchor="middle" fill="#8A8FA8">grounded by retrieved context</text>
             <line x1="449" y1="58" x2="480" y2="58" stroke="#7F77DD" stroke-width="1.3" marker-end="url(#s7-comb)"/>
@@ -2615,7 +2606,7 @@ MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
 
         <div class="callout callout-green">
           <span class="callout-icon">✅</span>
-          <p>The practical stack for a construction safety assistant: <strong>fine-tune EXAONE 3.5 2.4B on domain QA pairs</strong> (this section) to get the right tone and vocabulary, then <strong>add RAG</strong> (Section 6) to keep factual answers grounded in the latest verified documents. Each layer compensates for the other's weakness.</p>
+          <p>The practical stack for a construction safety assistant: <strong>fine-tune Qwen3-1.7B on domain QA pairs</strong> (this section) to get the right tone and vocabulary, then <strong>add RAG</strong> (Section 6) to keep factual answers grounded in the latest verified documents. Each layer compensates for the other's weakness.</p>
         </div>
       </div>
 
@@ -2632,7 +2623,7 @@ MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
     <p>© 2026 Jungwon LEE · <a href="/cdn-cgi/l/email-protection#701f1b41424248404030171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="7b14104a4949434b4b3b1c161a121755181416">[email&#160;protected]</span></a></p>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -2655,36 +2646,37 @@ MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
     const tocLinks = document.querySelectorAll('.toc-sidebar a[href^="#"]');
     const sections = document.querySelectorAll('.post-section[id]');
 
-    // 스크롤 위치 기반 하이라이트 (IntersectionObserver 방식)
+    // 현재 보이는 섹션 기준으로 TOC 하이라이트
+    function updateTOC() {
+      const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 68;
+      const scrollY = window.scrollY;
+      const winH   = window.innerHeight;
+
+      // 페이지 맨 아래에 다다른 경우 → 마지막 섹션
+      if ((scrollY + winH) >= document.body.scrollHeight - 10) {
+        activateLink(sections[sections.length - 1].id);
+        return;
+      }
+
+      // 화면 상단 30% 지점을 기준으로 가장 가까운 섹션 찾기
+      let activeId = sections[0].id;
+      const threshold = navH + winH * 0.30;
+      sections.forEach(s => {
+        const top = s.getBoundingClientRect().top + scrollY;
+        if (top - scrollY <= threshold) activeId = s.id;
+      });
+      activateLink(activeId);
+    }
+
     const activateLink = (id) => {
       tocLinks.forEach(a => {
-        const isActive = a.getAttribute('href') === '#' + id;
-        a.classList.toggle('active', isActive);
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
       });
     };
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) activateLink(e.target.id);
-      });
-    }, {
-      rootMargin: '-20% 0px -70% 0px',
-      threshold: 0
-    });
-    sections.forEach(s => sectionObserver.observe(s));
-
-    // 페이지 최하단 도달 시 마지막 섹션 하이라이트
-    window.addEventListener('scroll', () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
-        const last = sections[sections.length - 1];
-        if (last) activateLink(last.id);
-      }
-    }, { passive: true });
-
-    // 초기 하이라이트
-    const firstVisible = [...sections].find(s => s.getBoundingClientRect().top >= 0);
-    if (firstVisible) activateLink(firstVisible.id);
-    else if (sections.length) activateLink(sections[0].id);
+    window.addEventListener('scroll', updateTOC, { passive: true });
+    window.addEventListener('resize', updateTOC, { passive: true });
+    updateTOC(); // 초기 실행
 
     // 애니메이션 옵저버
     const observer = new IntersectionObserver((entries) => {
@@ -2698,20 +2690,26 @@ MERGE_AND_SAVE <span class="tok-op">=</span> <span class="tok-cls">False</span>
       observer.observe(el);
     });
 
-    function copyCode(btn) {
-      const pre = btn.closest('.step-inline-code') ? btn.closest('.step-inline-code').querySelector('pre') : btn.closest('.code-block-wrap').querySelector('pre');
-      navigator.clipboard.writeText(pre.innerText).then(() => {
-        btn.textContent = 'Copied!'; btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-      });
+    function toggleStepCode(id) {
+      const el  = document.getElementById(id);
+      const btn = el ? el.previousElementSibling : null;
+      if (!el) return;
+      const isOpen = el.classList.toggle('open');
+      if (btn && btn.classList.contains('step-code-toggle')) {
+        btn.classList.toggle('open', isOpen);
+      }
     }
 
-    function toggleStepCode(id) {
-      const code = document.getElementById(id);
-      const btn  = code.previousElementSibling;
-      const isOpen = code.classList.contains('open');
-      code.classList.toggle('open', !isOpen);
-      btn.classList.toggle('open', !isOpen);
+    function copyCode(btn) {
+      const pre = btn.closest('.step-inline-code')
+        ? btn.closest('.step-inline-code').querySelector('pre')
+        : btn.closest('.code-block-wrap').querySelector('pre');
+      if (!pre) return;
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+      });
     }
   </script>
 </body>
