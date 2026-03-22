@@ -272,17 +272,31 @@
       color: var(--white); background: var(--accent);
       padding: 4px 11px; border-radius: 99px;
     }
+    .research-badge.completed {
+      background: var(--gray-2); color: var(--gray-4);
+    }
     .research-header h3 {
       font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700;
       color: var(--black); line-height: 1.45;
     }
-    .research-badge.completed {
-      background: var(--gray-2); color: var(--gray-4);
-    }
     .research-card > p {
       font-size: 0.885rem; color: var(--gray-4); line-height: 1.8; margin-bottom: 16px;
     }
-    .research-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .research-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0; }
+    .research-detail-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 16px;
+      font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700;
+      color: var(--accent); text-decoration: none;
+      padding: 8px 16px; border-radius: 99px;
+      background: var(--accent-light); border: 1.5px solid var(--accent);
+      transition: background .2s, transform .2s, box-shadow .2s;
+    }
+    .research-detail-btn:hover {
+      background: var(--accent); color: #fff;
+      transform: translateX(3px);
+      box-shadow: 0 4px 14px rgba(75,112,245,0.3);
+    }
 
     /* PUB TABS */
     .pub-tabs {
@@ -581,6 +595,10 @@
             <span class="tag">Ontology</span>
             <span class="tag">Safety Management</span>
           </div>
+          <a href="research-nrf-cognitive-agent.html" class="research-detail-btn">
+            View Details
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
 
         <div class="research-card">
