@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --black: #3A3A3A; --accent: #4B70F5; --accent-light: #EEF1FF;
@@ -17,6 +18,10 @@
       --shadow-md: 0 8px 32px rgba(75,112,245,0.12);
       --radius: 20px; --radius-sm: 12px; --nav-h: 68px;
       --nav-bg: rgba(247,248,252,0.82);
+      --purple: #7F77DD; --purple-light: #EEEDFE;
+      --green: #1D9E75; --green-light: #EDFAF4;
+      --orange: #F5844B; --orange-light: #FFF0E8;
+      --amber: #D4820A; --amber-light: #FFF8EE;
     }
     [data-theme="dark"] {
       --black: #E8E9F0; --accent-light: #1E2540; --bg: #0F1117; --white: #1A1D27;
@@ -62,40 +67,30 @@
     }
     .theme-toggle:hover { background: var(--gray-1); }
     .page-outer {
-      max-width: 1100px; margin: 0 auto;
+      max-width: 960px; margin: 0 auto;
       padding: calc(var(--nav-h) + 56px) clamp(20px, 4vw, 48px) 120px;
-      position: relative;
     }
-    /* ✅ FIXED TOC SIDEBAR */
     .toc-sidebar {
       position: fixed;
       top: calc(var(--nav-h) + 40px);
-      left: max(16px, calc(50vw - 640px));
-      width: 220px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 20px 18px 24px;
-      box-shadow: var(--shadow-sm);
-      z-index: 50;
+      left: calc(50% - 480px - 220px);
+      width: 200px;
+      padding: 4px 0;
       display: flex;
       flex-direction: column;
-      max-height: calc(100vh - var(--nav-h) - 80px); /* ✅ 이게 핵심 */
-      overflow-y: auto;                                /* ✅ 내용 넘치면 스크롤 */
     }
-    .post-content { max-width: 720px; margin: 0 auto; }
-    @media (min-width: 1001px) { .post-content { margin-left: 210px; } }
-    @media (max-width: 1000px) { .toc-sidebar { display: none; } }
+    .post-content { max-width: 680px; margin: 0 auto; }
+    @media (max-width: 1200px) { .toc-sidebar { display: none; } }
     .toc-title {
       font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800;
       letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
-      margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
+      margin-bottom: 14px;
+      padding-left: 10px;
     }
-    .toc-title::before { content: ''; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
     .toc-sidebar ol { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
     .toc-sidebar li { font-size: 0.82rem; }
     .toc-sidebar a {
-      display: flex; flex-direction: column;
+      display: block;
       color: var(--gray-3); text-decoration: none;
       padding: 7px 10px; border-radius: 8px;
       transition: background .15s, color .15s; line-height: 1.45;
@@ -103,6 +98,7 @@
     .toc-sidebar a:hover { background: var(--accent-light); color: var(--accent); }
     .toc-sidebar a.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
     .toc-num {
+      display: block;
       font-family: 'Sora', sans-serif; font-size: 0.65rem; font-weight: 700;
       letter-spacing: 0.08em; color: var(--accent); opacity: 0.6; margin-bottom: 2px;
     }
@@ -171,6 +167,141 @@
     footer a { color: var(--accent); text-decoration: none; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
     @media (max-width: 640px) { .compare-table { font-size: 0.8rem; } .compare-table th, .compare-table td { padding: 10px 12px; } }
+
+    /* Section 3 additional styles */
+    .callout-warn  { background: var(--amber-light);  border-color: rgba(212,130,10,0.25); }
+    .callout-green { background: var(--green-light);  border-color: rgba(29,158,117,0.25); }
+    .callout-warn  strong { color: var(--amber); }
+    .callout-green strong { color: var(--green); }
+    .callout-warn  p { color: #5C3D0A; }
+    .callout-green p { color: #14452E; }
+    .subsec-title {
+      font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray-3); margin: 56px 0 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .subsec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .formula-box {
+      background: var(--gray-1); border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 22px; margin: 20px 0;
+    }
+    .formula-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .formula-main { font-family: 'Sora', monospace; font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.7; }
+    .formula-sub { font-size: 0.82rem; color: var(--gray-3); margin-top: 6px; line-height: 1.65; }
+    .formula-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+    @media (max-width: 560px) { .formula-row { grid-template-columns: 1fr; } }
+    .step-flow { display: flex; flex-direction: column; margin: 24px 0; }
+    .step-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--card-bg); border: 1px solid var(--border);
+      padding: 16px 20px; margin-bottom: -1px;
+    }
+    .step-item:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+    .step-item:last-child  { border-radius: 0 0 var(--radius-sm) var(--radius-sm); margin-bottom: 0; }
+    .step-num {
+      width: 28px; height: 28px; min-width: 28px; background: var(--accent); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-size: 0.75rem; font-weight: 700;
+    }
+    .step-body strong { font-size: 0.9rem; color: var(--black); display: block; margin-bottom: 4px; }
+    .step-body p { font-size: 0.85rem; color: var(--gray-4); margin: 0; line-height: 1.65; }
+    code {
+      font-family: 'Sora', monospace; font-size: 0.85em;
+      background: var(--gray-1); color: var(--accent);
+      padding: 2px 7px; border-radius: 5px;
+    }
+    .compare-table tr:hover td { background: var(--gray-1); }
+
+    /* ── Code blocks ── */
+    .code-block-wrap { margin: 28px 0; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-md); }
+    .code-block-header { display: flex; align-items: center; justify-content: space-between; background: #1a1d2e; padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .code-block-header-left { display: flex; align-items: center; gap: 10px; }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .code-dots span:nth-child(1) { background: #FF5F57; }
+    .code-dots span:nth-child(2) { background: #FEBC2E; }
+    .code-dots span:nth-child(3) { background: #28C840; }
+    .code-lang { font-family: 'Sora', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-mid); background: rgba(75,112,245,0.15); padding: 3px 10px; border-radius: 99px; }
+    .code-label { font-family: 'Sora', sans-serif; font-size: 0.75rem; color: #5A6080; }
+    .copy-btn { font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 600; color: #5A6080; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; cursor: pointer; transition: all .2s; letter-spacing: 0.03em; }
+    .copy-btn:hover { color: #fff; background: rgba(75,112,245,0.3); border-color: rgba(75,112,245,0.5); }
+    .copy-btn.copied { color: #28C840; border-color: rgba(40,200,64,0.4); }
+    pre.code-body { background: #0d0f1a; margin: 0; padding: 22px 24px; overflow-x: auto; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; font-size: 0.82rem; line-height: 1.75; tab-size: 4; }
+    pre.code-body::-webkit-scrollbar { height: 5px; }
+    pre.code-body::-webkit-scrollbar-thumb { background: #2e3248; border-radius: 99px; }
+    .tok-comment { color: #4a5280; font-style: italic; } .tok-keyword { color: #7B97F8; font-weight: 600; } .tok-string { color: #7ec8a4; } .tok-number { color: #f5a623; } .tok-func { color: #e8b86d; } .tok-cls { color: #c792ea; } .tok-var { color: #e8e9f0; } .tok-op { color: #89DDFF; } .tok-plain { color: #cdd3f0; }
+    /* ── Step timeline ── */
+    .step-list { display: flex; flex-direction: column; gap: 0; margin: 28px 0; }
+    .step-item { display: flex; gap: 0; }
+    .step-spine { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+    .step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-size: 0.75rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .step-line { width: 2px; background: var(--border); flex: 1; min-height: 16px; }
+    .step-item:last-child .step-line { display: none; }
+    .step-body { padding: 4px 0 24px 16px; flex: 1; min-width: 0; }
+    .step-title { font-family: 'Sora', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+    .step-desc { font-size: 0.85rem; color: var(--gray-3); line-height: 1.65; }
+    /* ── Metric cards ── */
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 16px; text-align: center; box-shadow: var(--shadow-sm); }
+    .metric-val { font-family: 'Sora', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; }
+    .metric-label { font-size: 0.75rem; color: var(--gray-3); margin-top: 4px; font-weight: 500; }
+    .metric-sub { font-size: 0.7rem; color: var(--gray-2); margin-top: 2px; }
+
+    /* ── Step inline code accordion ── */
+    .step-code-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 8px; padding: 5px 12px;
+      background: var(--accent-light); border: 1px solid rgba(75,112,245,0.2);
+      border-radius: 6px; cursor: pointer; font-family: 'Sora', sans-serif;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      transition: background .15s;
+    }
+    .step-code-toggle:hover { background: rgba(75,112,245,0.15); }
+    .step-code-toggle .toggle-arrow { font-size: 0.65rem; transition: transform .2s; display: inline-block; }
+    .step-code-toggle.open .toggle-arrow { transform: rotate(90deg); }
+    .step-inline-code { display: none; margin-top: 12px; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-sm); max-width: 100%; width: 100%; }
+    .step-inline-code.open { display: block; }
+    .step-inline-code pre.code-body { overflow-x: auto; max-width: 100%; }
+
+    /* ── Code block header ── */
+    .code-block-header { display: flex; align-items: center; justify-content: space-between; background: #1a1d2e; padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .code-block-header-left { display: flex; align-items: center; gap: 10px; }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .code-dots span:nth-child(1) { background: #FF5F57; }
+    .code-dots span:nth-child(2) { background: #FEBC2E; }
+    .code-dots span:nth-child(3) { background: #28C840; }
+    .code-lang { font-family: 'Sora', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-mid); background: rgba(75,112,245,0.15); padding: 3px 10px; border-radius: 99px; }
+    .code-label { font-family: 'Sora', sans-serif; font-size: 0.75rem; color: #5A6080; }
+    .copy-btn { font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 600; color: #5A6080; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; cursor: pointer; transition: all .2s; letter-spacing: 0.03em; }
+    .copy-btn:hover { color: #fff; background: rgba(75,112,245,0.3); border-color: rgba(75,112,245,0.5); }
+    .copy-btn.copied { color: #28C840; border-color: rgba(40,200,64,0.4); }
+
+    /* ── Dark always for code ── */
+    pre.code-body { background: #0d0f1a; margin: 0; padding: 22px 24px; overflow-x: auto; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; font-size: 0.82rem; line-height: 1.75; tab-size: 4; }
+    pre.code-body::-webkit-scrollbar { height: 5px; }
+    pre.code-body::-webkit-scrollbar-thumb { background: #2e3248; border-radius: 99px; }
+
+    /* Dark mode tokens */
+    .tok-comment { color: #4a5280; font-style: italic; } .tok-keyword { color: #7B97F8; font-weight: 600; } .tok-string { color: #7ec8a4; } .tok-number { color: #f5a623; } .tok-func { color: #e8b86d; } .tok-cls { color: #c792ea; } .tok-var { color: #e8e9f0; } .tok-op { color: #89DDFF; } .tok-plain { color: #cdd3f0; }
+
+    /* ── Light mode overrides ── */
+    :root:not([data-theme="dark"]) pre.code-body { background: #f0f4ff; }
+    :root:not([data-theme="dark"]) .code-block-header { background: #dde4f8; border-bottom: 1px solid #c8d1f0; }
+    :root:not([data-theme="dark"]) .code-label { color: #6b72a0; }
+    :root:not([data-theme="dark"]) .copy-btn { color: #6b72a0; background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); }
+    :root:not([data-theme="dark"]) .copy-btn:hover { color: #4B70F5; background: var(--accent-light); border-color: var(--accent); }
+    :root:not([data-theme="dark"]) .tok-keyword { color: #2d5fd4; font-weight: 600; }
+    :root:not([data-theme="dark"]) .tok-string  { color: #1a7a4a; }
+    :root:not([data-theme="dark"]) .tok-number  { color: #b45c00; }
+    :root:not([data-theme="dark"]) .tok-func    { color: #7c4d00; }
+    :root:not([data-theme="dark"]) .tok-cls     { color: #7040a0; }
+    :root:not([data-theme="dark"]) .tok-var     { color: #1a1d2e; }
+    :root:not([data-theme="dark"]) .tok-op      { color: #0070a0; }
+    :root:not([data-theme="dark"]) .tok-plain   { color: #1a1d2e; }
+    :root:not([data-theme="dark"]) .tok-comment { color: #7a85a8; }
   </style>
 </head>
 <body>
@@ -185,19 +316,17 @@
     </div>
   </nav>
 
-  <div class="page-outer">
-    <nav class="toc-sidebar" aria-label="Table of contents">
-      <div class="toc-title">Contents</div>
-      <ol>
-        <li><a href="#sec1"><span class="toc-num">01</span>Why Deep Learning for Construction?</a></li>
-        <li><a href="#sec2"><span class="toc-num">02</span>What is Deep Learning?</a></li>
-        <li><a href="#sec3"><span class="toc-num">03</span>Key Concepts &amp; Math</a></li>
-        <li><a href="#sec4"><span class="toc-num">04</span>CNN — Seeing the Site<span class="toc-wip">coming soon</span></a></li>
-        <li><a href="#sec5"><span class="toc-num">05</span>NLP — Reading the Documents<span class="toc-wip">coming soon</span></a></li>
-        <li><a href="#sec6"><span class="toc-num">06</span>LLM &amp; RAG — Talking to Knowledge<span class="toc-wip">coming soon</span></a></li>
-      </ol>
-    </nav>
-
+  <div class="toc-sidebar" aria-label="Table of contents">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#sec1"><span class="toc-num">01</span>Why Deep Learning for Construction?</a></li>
+      <li><a href="#sec2"><span class="toc-num">02</span>What is Deep Learning?</a></li>
+      <li><a href="#sec3"><span class="toc-num">03</span>Key Concepts &amp; Math</a></li>
+      <li><a href="#sec4"><span class="toc-num">04</span>CNN — Seeing the Site</a></li>
+      <li><a href="#sec5"><span class="toc-num">05</span>NLP — Reading the Documents</a></li>
+      <li><a href="#sec6"><span class="toc-num">06</span>LLM &amp; RAG — Talking to Knowledge<span class="toc-wip">coming soon</span></a></li>
+    </ol>
+  </div>
     <div class="post-content">
       <div class="post-header">
         <div class="post-meta">
@@ -340,6 +469,1232 @@
         </div>
       </div>
 
+      <div class="post-section" id="sec3">
+        <div class="section-label">Section 03</div>
+        <h2>Key Concepts &amp; Math</h2>
+        <p>This section builds the vocabulary you need before diving into specific architectures. We cover the essential math (kept intuitive), the training loop, regularisation strategies, and how each concept translates to a construction-domain problem.</p>
+
+        <div class="subsec-title">Part 1 · Math Foundations</div>
+
+        <h3>Vectors, Matrices &amp; Tensors — the language of data</h3>
+        <p>Every piece of data a network processes is ultimately an <strong>array of numbers</strong>. Understanding the shape of data at each stage is the first practical skill in deep learning — it tells you why certain operations are legal and how information flows through a model.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 720 292" xmlns="http://www.w3.org/2000/svg">
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="90" y="18" text-anchor="middle" fill="#4B70F5">Vector</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="90" y="32" text-anchor="middle" fill="#8A8FA8">1-D · shape (n,)</text>
+            <rect x="58" y="52"  width="64" height="28" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <rect x="58" y="84"  width="64" height="28" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <rect x="58" y="116" width="64" height="28" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <rect x="58" y="148" width="64" height="28" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <rect x="58" y="180" width="64" height="28" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="600" x="90" y="66"  text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.8</text>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="600" x="90" y="98"  text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.3</text>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="600" x="90" y="130" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">1.2</text>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="600" x="90" y="162" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">−0.5</text>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="600" x="90" y="194" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.1</text>
+            <line x1="128" y1="52"  x2="134" y2="52"  stroke="#4B70F5" stroke-width="1"/><line x1="128" y1="208" x2="134" y2="208" stroke="#4B70F5" stroke-width="1"/><line x1="131" y1="52"  x2="131" y2="208" stroke="#4B70F5" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="138" y="130" dominant-baseline="central" fill="#4B70F5">n=5</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="90" y="248" text-anchor="middle" fill="#8A8FA8">5 sensor readings,</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="90" y="262" text-anchor="middle" fill="#8A8FA8">or a word embedding</text>
+            <line x1="180" y1="12" x2="180" y2="285" stroke="#E8E9F0" stroke-width="1" stroke-dasharray="4 3"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="320" y="18" text-anchor="middle" fill="#7F77DD">Matrix</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="320" y="32" text-anchor="middle" fill="#8A8FA8">2-D · shape (rows, cols)</text>
+            <rect x="238" y="72"  width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="280" y="72"  width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="322" y="72"  width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="364" y="72"  width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+            <rect x="238" y="106" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="280" y="106" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="322" y="106" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="364" y="106" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+            <rect x="238" y="140" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="280" y="140" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="322" y="140" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="364" y="140" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+            <rect x="238" y="174" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="280" y="174" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="322" y="174" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/><rect x="364" y="174" width="38" height="28" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+            <line x1="238" y1="64" x2="402" y2="64" stroke="#7F77DD" stroke-width="1"/><line x1="238" y1="62" x2="238" y2="66" stroke="#7F77DD" stroke-width="1"/><line x1="402" y1="62" x2="402" y2="66" stroke="#7F77DD" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="320" y="59" text-anchor="middle" fill="#7F77DD">cols = 4</text>
+            <line x1="410" y1="72"  x2="410" y2="202" stroke="#7F77DD" stroke-width="1"/><line x1="408" y1="72"  x2="412" y2="72"  stroke="#7F77DD" stroke-width="1"/><line x1="408" y1="202" x2="412" y2="202" stroke="#7F77DD" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="418" y="137" dominant-baseline="central" fill="#7F77DD">rows=4</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="320" y="248" text-anchor="middle" fill="#8A8FA8">4 projects × 4 features,</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="320" y="262" text-anchor="middle" fill="#8A8FA8">or weight matrix W of one layer</text>
+            <line x1="460" y1="12" x2="460" y2="285" stroke="#E8E9F0" stroke-width="1" stroke-dasharray="4 3"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="590" y="18" text-anchor="middle" fill="#1D9E75">Tensor</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="590" y="32" text-anchor="middle" fill="#8A8FA8">3-D · shape (C, H, W)</text>
+            <g opacity="0.40"><rect x="565" y="98"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="596" y="98"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="627" y="98"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="565" y="123" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="596" y="123" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="627" y="123" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="565" y="148" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="596" y="148" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="627" y="148" width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/></g>
+            <g opacity="0.68"><rect x="555" y="108"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="586" y="108"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="617" y="108"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="555" y="133"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="586" y="133"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="617" y="133"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="555" y="158"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="586" y="158"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/><rect x="617" y="158"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/></g>
+            <rect x="545" y="118"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="576" y="118"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="607" y="118"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
+            <rect x="545" y="143"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="576" y="143"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="607" y="143"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
+            <rect x="545" y="168"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="576" y="168"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/><rect x="607" y="168"  width="28" height="22" rx="3" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
+            <line x1="635" y1="118" x2="655" y2="98" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="659" y="96" dominant-baseline="central" fill="#1D9E75">C</text>
+            <line x1="539" y1="118" x2="539" y2="190" stroke="#1D9E75" stroke-width="1"/><line x1="537" y1="118" x2="541" y2="118" stroke="#1D9E75" stroke-width="1"/><line x1="537" y1="190" x2="541" y2="190" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="533" y="154" text-anchor="end" dominant-baseline="central" fill="#1D9E75">H</text>
+            <line x1="545" y1="198" x2="635" y2="198" stroke="#1D9E75" stroke-width="1"/><line x1="545" y1="196" x2="545" y2="200" stroke="#1D9E75" stroke-width="1"/><line x1="635" y1="196" x2="635" y2="200" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="590" y="210" text-anchor="middle" fill="#1D9E75">W</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="590" y="248" text-anchor="middle" fill="#8A8FA8">e.g. one RGB image: (3, 224, 224)</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="590" y="262" text-anchor="middle" fill="#8A8FA8">each slice = one colour channel</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="590" y="276" text-anchor="middle" fill="#8A8FA8">add batch dim → 4-D tensor</text>
+          </svg>
+        </div>
+
+        <h3>Loss Functions — measuring the error</h3>
+        <p>Before we can talk about gradients, we need something to differentiate. A <strong>loss function</strong> L collapses the gap between the model's prediction ŷ and the ground-truth label y into a <strong>single number</strong>. The entire training process is an optimisation loop that minimises this number.</p>
+        <div class="formula-row">
+          <div class="formula-box">
+            <div class="formula-label">MSE — Regression</div>
+            <div class="formula-main">L = (1/n) Σ (yᵢ − ŷᵢ)²</div>
+            <div class="formula-sub">Squared errors penalise large deviations strongly.<br>Use for: schedule delay prediction, cost estimation.</div>
+          </div>
+          <div class="formula-box">
+            <div class="formula-label">Cross-Entropy — Classification</div>
+            <div class="formula-main">L = −Σ yᵢ · log(ŷᵢ)</div>
+            <div class="formula-sub">Punishes confident wrong predictions sharply.<br>Use for: safety class (safe / minor / critical).</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🏗️</span>
+          <p>For PPE detection on a construction site, use <strong>Cross-Entropy</strong>. For predicting the number of delay days or final project cost, use <strong>MSE</strong> (or MAE for reduced sensitivity to outliers).</p>
+        </div>
+
+        <h3>Partial Derivatives &amp; Gradient — which way is downhill?</h3>
+        <p>Now that we have a loss value L, the question is: <strong>which weights should change, and in which direction?</strong> A partial derivative ∂L/∂w answers this for a single weight. Stacking all partial derivatives into one vector gives the <em>gradient</em> — an arrow pointing in the steepest uphill direction. We move in the <strong>opposite direction</strong> to reduce the loss.</p>
+        <div class="formula-box">
+          <div class="formula-label">Gradient definition</div>
+          <div class="formula-main">∇<sub>w</sub>L = [ ∂L/∂w₁,  ∂L/∂w₂,  …,  ∂L/∂wₙ ]</div>
+          <div class="formula-sub">L = loss,  w = weight vector. Each component tells you how much that one weight is responsible for the current error.</div>
+        </div>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="d2-dn" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#1D9E75"/></marker>
+              <marker id="d2-up" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#F5844B"/></marker>
+            </defs>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="350" y="16" text-anchor="middle" fill="#3A3A3A">Loss Landscape (conceptual cross-section)</text>
+            <path d="M 44,28 C 110,28 200,170 350,170 C 500,170 590,28 658,28" fill="none" stroke="#C8CBD8" stroke-width="1.2"/>
+            <path d="M 88,28  C 148,28  220,150 350,150 C 480,150 552,28  614,28" fill="none" stroke="#DDE0EE" stroke-width="0.9" stroke-dasharray="5 3"/>
+            <path d="M 140,28 C 192,28  244,130 350,130 C 456,130 508,28  562,28" fill="none" stroke="#C8CBD8" stroke-width="0.9" stroke-dasharray="5 3"/>
+            <path d="M 196,28 C 238,28  270,110 350,110 C 430,110 462,28  506,28" fill="none" stroke="#B8BCCE" stroke-width="0.9" stroke-dasharray="4 3"/>
+            <path d="M 252,28 C 284,28  304,92  350,92  C 396,92  416,28  450,28" fill="none" stroke="#9FA5C0" stroke-width="0.9" stroke-dasharray="4 3"/>
+            <path d="M 302,28 C 322,28  334,78  350,78  C 366,78  378,28  400,28" fill="none" stroke="#7B97F8" stroke-width="1.1" stroke-dasharray="3 3"/>
+            <circle cx="350" cy="170" r="7" fill="#4B70F5" stroke="#fff" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="350" y="186" text-anchor="middle" fill="#4B70F5">global minimum</text>
+            <circle cx="192" cy="92" r="8" fill="#F5844B" stroke="#fff" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="172" y="80" text-anchor="end" fill="#F5844B">current  w</text>
+            <line x1="192" y1="92" x2="148" y2="72" stroke="#F5844B" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#d2-up)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="134" y="66" text-anchor="end" fill="#F5844B">∇L  (ascent)</text>
+            <line x1="192" y1="92" x2="246" y2="118" stroke="#1D9E75" stroke-width="2.2" marker-end="url(#d2-dn)"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="258" y="132" fill="#1D9E75">−∇L  (descent)</text>
+            <rect x="430" y="96" width="152" height="40" rx="8" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="506" y="112" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">w ← w − η · ∇L</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="506" y="128" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">gradient descent step</text>
+            <line x1="40" y1="210" x2="660" y2="210" stroke="#E8E9F0" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="350" y="224" text-anchor="middle" fill="#C8CBD8">contour lines = equal-loss weight combinations</text>
+            <line x1="30" y1="24" x2="30" y2="178" stroke="#E8E9F0" stroke-width="0.8"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="26" y="100" text-anchor="middle" fill="#C8CBD8" transform="rotate(-90,26,100)">Loss  L ↑</text>
+          </svg>
+        </div>
+
+        <div class="subsec-title">Part 2 · Training Mechanics</div>
+
+        <h3>Forward → Loss → Backward → Update</h3>
+        <p>Every iteration of training follows the same four-step cycle.</p>
+        <div class="step-flow">
+          <div class="step-item"><div class="step-num">1</div><div class="step-body"><strong>Forward Pass</strong><p>Input flows layer-by-layer: each layer computes <code>z = W·x + b</code>, then applies <code>a = σ(z)</code>. The final layer outputs prediction ŷ.</p></div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-body"><strong>Loss Calculation</strong><p>Compare ŷ against label y using the chosen loss function. The result is a single number — the error signal for this batch.</p></div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-body"><strong>Backward Pass (Backpropagation)</strong><p>Using the <strong>chain rule</strong>, gradients flow from the output back to the input layer. Each weight receives ∂L/∂w.</p></div></div>
+          <div class="step-item"><div class="step-num">4</div><div class="step-body"><strong>Weight Update</strong><p>The optimiser nudges every weight: <code>w ← w − η · ∂L/∂w</code></p></div></div>
+        </div>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="d3-f" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#4B70F5"/></marker>
+              <marker id="d3-b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#7F77DD"/></marker>
+              <marker id="d3-l" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#9AA5B8"/></marker>
+            </defs>
+            <rect x="6"   y="14" width="104" height="52" rx="9" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="136" y="14" width="112" height="52" rx="9" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="272" y="14" width="96"  height="52" rx="9" fill="#FFF0E8" stroke="#F5844B" stroke-width="1.2"/>
+            <rect x="392" y="14" width="148" height="52" rx="9" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <rect x="560" y="14" width="134" height="52" rx="9" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="58"  y="36" text-anchor="middle" fill="#4B70F5">Input Batch</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="58"  y="53" text-anchor="middle" fill="#7B97F8">n samples</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="192" y="36" text-anchor="middle" fill="#4B70F5">Forward Pass</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="192" y="53" text-anchor="middle" fill="#7B97F8">produce ŷ</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="320" y="36" text-anchor="middle" fill="#D4820A">Loss  L</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="320" y="53" text-anchor="middle" fill="#F5844B">L(y, ŷ)</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="466" y="33" text-anchor="middle" fill="#7F77DD">Back-</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="466" y="46" text-anchor="middle" fill="#7F77DD">propagation</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="466" y="59" text-anchor="middle" fill="#7F77DD">compute ∂L/∂w</text>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="627" y="36" text-anchor="middle" fill="#1D9E75">Weight Update</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="627" y="53" text-anchor="middle" fill="#1D9E75">w ← w − η∇L</text>
+            <line x1="111" y1="40" x2="133" y2="40" stroke="#4B70F5" stroke-width="1.4" marker-end="url(#d3-f)"/>
+            <line x1="249" y1="40" x2="269" y2="40" stroke="#4B70F5" stroke-width="1.4" marker-end="url(#d3-f)"/>
+            <line x1="369" y1="40" x2="389" y2="40" stroke="#7F77DD" stroke-width="1.4" marker-end="url(#d3-b)"/>
+            <line x1="541" y1="40" x2="557" y2="40" stroke="#7F77DD" stroke-width="1.4" marker-end="url(#d3-b)"/>
+            <line x1="693" y1="66" x2="693" y2="102" stroke="#9AA5B8" stroke-width="1.2" stroke-dasharray="5 3"/>
+            <line x1="693" y1="102" x2="10"  y2="102" stroke="#9AA5B8" stroke-width="1.2" stroke-dasharray="5 3"/>
+            <line x1="10" y1="102" x2="10" y2="69" stroke="#9AA5B8" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#d3-l)"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="600" x="350" y="115" text-anchor="middle" fill="#9AA5B8">repeat for every iteration</text>
+          </svg>
+        </div>
+
+        <div class="subsec-title">Part 3 · Training Control</div>
+
+        <h3>Optimisers — SGD, Momentum &amp; Adam</h3>
+        <p>The <strong>optimiser</strong> decides how to take the gradient step. Adam is the de-facto default for most construction deep learning tasks.</p>
+        <table class="compare-table">
+          <thead><tr><th>Optimiser</th><th>Update unit</th><th>Characteristic</th><th>Construction AI use</th></tr></thead>
+          <tbody>
+            <tr><td>Vanilla GD</td><td>Full dataset</td><td>Stable but extremely slow</td><td>Rarely used in practice</td></tr>
+            <tr><td>SGD</td><td>Mini-batch</td><td>Fast, can be noisy</td><td>With momentum for CNNs</td></tr>
+            <tr><td>SGD + Momentum</td><td>Mini-batch</td><td>Smooths oscillations via velocity</td><td>Fine-tuning pre-trained backbones</td></tr>
+            <tr><td><strong>Adam</strong></td><td>Mini-batch</td><td>Adaptive per-weight lr, robust</td><td>Default for site image models</td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box">
+          <div class="formula-label">Adam — core idea</div>
+          <div class="formula-main">w ← w − η · m̂ / (√v̂ + ε)</div>
+          <div class="formula-sub"><strong>m̂</strong> = bias-corrected EMA of gradients (momentum term)<br><strong>v̂</strong> = bias-corrected EMA of squared gradients (scale normaliser)</div>
+        </div>
+
+        <h3>Learning Rate &amp; Schedulers</h3>
+        <p>The learning rate η controls how large each update step is. Too large → training diverges; too small → converges slowly. Decaying η over training epochs — using a <strong>scheduler</strong> — almost always improves final performance.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 206" xmlns="http://www.w3.org/2000/svg">
+            <line x1="60" y1="20" x2="60"  y2="160" stroke="#C8CBD8" stroke-width="1.2"/>
+            <line x1="60" y1="160" x2="584" y2="160" stroke="#C8CBD8" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="322" y="178" text-anchor="middle" fill="#8A8FA8">Epoch</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="22" y="92" text-anchor="middle" fill="#8A8FA8" transform="rotate(-90,22,92)">Learning Rate  η</text>
+            <line x1="60"  y1="160" x2="60"  y2="166" stroke="#C8CBD8" stroke-width="1"/><line x1="190" y1="160" x2="190" y2="166" stroke="#C8CBD8" stroke-width="1"/><line x1="320" y1="160" x2="320" y2="166" stroke="#C8CBD8" stroke-width="1"/><line x1="450" y1="160" x2="450" y2="166" stroke="#C8CBD8" stroke-width="1"/><line x1="580" y1="160" x2="580" y2="166" stroke="#C8CBD8" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="60"  y="176" text-anchor="middle" fill="#C8CBD8">0</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="190" y="176" text-anchor="middle" fill="#C8CBD8">25</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="320" y="176" text-anchor="middle" fill="#C8CBD8">50</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="450" y="176" text-anchor="middle" fill="#C8CBD8">75</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="580" y="176" text-anchor="middle" fill="#C8CBD8">100</text>
+            <line x1="54" y1="40"  x2="60" y2="40"  stroke="#C8CBD8" stroke-width="1"/><line x1="54" y1="100" x2="60" y2="100" stroke="#C8CBD8" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="50" y="43"  text-anchor="end" fill="#C8CBD8">high</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="50" y="103" text-anchor="end" fill="#C8CBD8">low</text>
+            <line x1="60" y1="76" x2="580" y2="76" stroke="#C8CBD8" stroke-width="1.1" stroke-dasharray="5 4"/>
+            <polyline points="60,52 190,52 190,82 320,82 320,110 450,110 450,132 580,132" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square"/>
+            <path d="M 60,46 C 160,46 200,94 320,122 C 420,144 510,148 580,150" fill="none" stroke="#4B70F5" stroke-width="2.2"/>
+            <polyline points="60,158 138,44 190,60 300,96 430,130 580,152" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="7 3"/>
+            <line x1="60"  y1="20" x2="138" y2="20" stroke="#1D9E75" stroke-width="1" stroke-dasharray="3 2"/><line x1="60"  y1="18" x2="60"  y2="22" stroke="#1D9E75" stroke-width="1"/><line x1="138" y1="18" x2="138" y2="22" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="99" y="15" text-anchor="middle" fill="#1D9E75">warmup</text>
+            <line x1="592" y1="69" x2="612" y2="69" stroke="#C8CBD8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="616" y="72" dominant-baseline="central" fill="#8A8FA8">Constant</text>
+            <line x1="592" y1="106" x2="612" y2="106" stroke="#7F77DD" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="616" y="109" dominant-baseline="central" fill="#7F77DD">Step decay</text>
+            <line x1="592" y1="126" x2="612" y2="126" stroke="#4B70F5" stroke-width="2.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="616" y="129" dominant-baseline="central" fill="#4B70F5">Cosine anneal</text>
+            <line x1="592" y1="146" x2="612" y2="146" stroke="#1D9E75" stroke-width="2" stroke-dasharray="6 3"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="616" y="149" dominant-baseline="central" fill="#1D9E75">Warmup+decay</text>
+          </svg>
+        </div>
+
+        <h3>Epoch / Batch / Iteration</h3>
+        <p>These three terms describe <em>how much data</em> the model processes at different granularities. Getting them confused is one of the most common sources of miscommunication when reading papers or debugging code.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 132" xmlns="http://www.w3.org/2000/svg">
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="10" y="16" fill="#3A3A3A">Full dataset — N = 12 samples, batch size = 4</text>
+            <rect x="10"  y="28" width="48" height="42" rx="7" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/><rect x="64"  y="28" width="48" height="42" rx="7" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/><rect x="118" y="28" width="48" height="42" rx="7" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/><rect x="172" y="28" width="48" height="42" rx="7" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="34"  y="49" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₁</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="88"  y="49" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₂</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="142" y="49" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₃</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="196" y="49" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">x₄</text>
+            <rect x="232" y="28" width="48" height="42" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><rect x="286" y="28" width="48" height="42" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><rect x="340" y="28" width="48" height="42" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><rect x="394" y="28" width="48" height="42" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="256" y="49" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">x₅</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="310" y="49" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">x₆</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="364" y="49" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">x₇</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="418" y="49" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">x₈</text>
+            <rect x="454" y="28" width="48" height="42" rx="7" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/><rect x="508" y="28" width="48" height="42" rx="7" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/><rect x="562" y="28" width="48" height="42" rx="7" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/><rect x="616" y="28" width="48" height="42" rx="7" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="478" y="49" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">x₉</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="532" y="49" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">x₁₀</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="586" y="49" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">x₁₁</text><text font-family="Sora,sans-serif" font-size="14" font-weight="600" x="640" y="49" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">x₁₂</text>
+            <line x1="10"  y1="80" x2="220" y2="80" stroke="#4B70F5" stroke-width="1.4"/><line x1="10"  y1="78" x2="10"  y2="82" stroke="#4B70F5" stroke-width="1.4"/><line x1="220" y1="78" x2="220" y2="82" stroke="#4B70F5" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="115" y="95" text-anchor="middle" fill="#4B70F5">Batch 1</text>
+            <line x1="232" y1="80" x2="442" y2="80" stroke="#7F77DD" stroke-width="1.4"/><line x1="232" y1="78" x2="232" y2="82" stroke="#7F77DD" stroke-width="1.4"/><line x1="442" y1="78" x2="442" y2="82" stroke="#7F77DD" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="337" y="95" text-anchor="middle" fill="#7F77DD">Batch 2</text>
+            <line x1="454" y1="80" x2="664" y2="80" stroke="#1D9E75" stroke-width="1.4"/><line x1="454" y1="78" x2="454" y2="82" stroke="#1D9E75" stroke-width="1.4"/><line x1="664" y1="78" x2="664" y2="82" stroke="#1D9E75" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="559" y="95" text-anchor="middle" fill="#1D9E75">Batch 3</text>
+            <text font-family="Sora,sans-serif" font-size="9.5" x="10" y="113" fill="#8A8FA8"><tspan font-weight="700" fill="#3A3A3A">1 Iteration</tspan>  =  process 1 mini-batch  →  1 weight update</text>
+            <text font-family="Sora,sans-serif" font-size="9.5" x="10" y="128" fill="#8A8FA8"><tspan font-weight="700" fill="#4B70F5">1 Epoch</tspan>  =  full pass through all N samples  =  N / batch_size  iterations  (here: 12 / 4 = 3 iterations / epoch)</text>
+          </svg>
+        </div>
+        <p>Overfitting occurs when the model memorises training data rather than generalising. The <strong>validation loss curve</strong> is the primary diagnostic — not training loss alone.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 188" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8"   y="8" width="214" height="172" rx="11" fill="#F7F8FC" stroke="#E0E2EE" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="115" y="30" text-anchor="middle" fill="#F5844B">Underfitting</text>
+            <text font-family="Sora,sans-serif" font-size="9.5" x="115" y="46" text-anchor="middle" fill="#8A8FA8">model too simple</text>
+            <line x1="24"  y1="154" x2="210" y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <line x1="24"  y1="60"  x2="24"  y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <circle cx="42"  cy="146" r="3.5" fill="#B8BCCE"/><circle cx="68"  cy="128" r="3.5" fill="#B8BCCE"/><circle cx="90"  cy="110" r="3.5" fill="#B8BCCE"/><circle cx="116" cy="120" r="3.5" fill="#B8BCCE"/><circle cx="138" cy="96"  r="3.5" fill="#B8BCCE"/><circle cx="162" cy="104" r="3.5" fill="#B8BCCE"/><circle cx="186" cy="82"  r="3.5" fill="#B8BCCE"/>
+            <line x1="24" y1="143" x2="206" y2="95" stroke="#F5844B" stroke-width="2.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="115" y="172" text-anchor="middle" fill="#F5844B">High train &amp; val loss</text>
+            <rect x="244" y="8" width="214" height="172" rx="11" fill="#F7F8FC" stroke="#E0E2EE" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="351" y="30" text-anchor="middle" fill="#1D9E75">Good Fit</text>
+            <text font-family="Sora,sans-serif" font-size="9.5" x="351" y="46" text-anchor="middle" fill="#8A8FA8">balanced complexity</text>
+            <line x1="260" y1="154" x2="446" y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <line x1="260" y1="60"  x2="260" y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <circle cx="278" cy="146" r="3.5" fill="#B8BCCE"/><circle cx="304" cy="128" r="3.5" fill="#B8BCCE"/><circle cx="326" cy="110" r="3.5" fill="#B8BCCE"/><circle cx="352" cy="120" r="3.5" fill="#B8BCCE"/><circle cx="374" cy="96"  r="3.5" fill="#B8BCCE"/><circle cx="398" cy="104" r="3.5" fill="#B8BCCE"/><circle cx="422" cy="82"  r="3.5" fill="#B8BCCE"/>
+            <path d="M 260,148 Q 296,124 326,108 Q 356,92 384,94 Q 410,96 442,82" fill="none" stroke="#1D9E75" stroke-width="2.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="351" y="172" text-anchor="middle" fill="#1D9E75">Train ≈ Val loss  (both low)</text>
+            <rect x="480" y="8" width="214" height="172" rx="11" fill="#F7F8FC" stroke="#E0E2EE" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="12" font-weight="700" x="587" y="30" text-anchor="middle" fill="#7F77DD">Overfitting</text>
+            <text font-family="Sora,sans-serif" font-size="9.5" x="587" y="46" text-anchor="middle" fill="#8A8FA8">model memorises noise</text>
+            <line x1="496" y1="154" x2="682" y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <line x1="496" y1="60"  x2="496" y2="154" stroke="#E0E2EE" stroke-width="0.8"/>
+            <circle cx="514" cy="146" r="3.5" fill="#B8BCCE"/><circle cx="540" cy="128" r="3.5" fill="#B8BCCE"/><circle cx="562" cy="110" r="3.5" fill="#B8BCCE"/><circle cx="588" cy="120" r="3.5" fill="#B8BCCE"/><circle cx="610" cy="96"  r="3.5" fill="#B8BCCE"/><circle cx="634" cy="104" r="3.5" fill="#B8BCCE"/><circle cx="658" cy="82"  r="3.5" fill="#B8BCCE"/>
+            <path d="M 496,148 C 510,138 514,148 540,126 C 558,110 558,128 588,120 C 616,112 618,86 634,104 C 648,120 652,76 682,80" fill="none" stroke="#7F77DD" stroke-width="2.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="587" y="172" text-anchor="middle" fill="#7F77DD">Train loss ↓   Val loss ↑</text>
+          </svg>
+        </div>
+
+        <h3>Train / Validation / Test Split</h3>
+        <p>Splitting into three distinct sets allows fair hyperparameter tuning and an unbiased final performance report. In construction, <strong>always split by project, not by image</strong> — mixing images from the same site across train and test is a data leakage problem that inflates reported metrics.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 96" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="16" width="680" height="40" rx="9" fill="#F0F1F6"/>
+            <rect x="10"  y="16" width="476" height="40" rx="9" fill="#4B70F5"/>
+            <rect x="466" y="16" width="20"  height="40" fill="#4B70F5"/>
+            <rect x="486" y="16" width="102" height="40" fill="#7B97F8"/>
+            <rect x="588" y="16" width="92"  height="40" fill="#1D9E75"/>
+            <rect x="670" y="16" width="20"  height="40" rx="9" fill="#1D9E75"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="248" y="36" text-anchor="middle" dominant-baseline="central" fill="#fff">Training  —  70%</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="537" y="36" text-anchor="middle" dominant-baseline="central" fill="#fff">Validation  15%</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="600" x="635" y="36" text-anchor="middle" dominant-baseline="central" fill="#fff">Test  15%</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="248" y="68" text-anchor="middle" fill="#4B70F5">used for weight updates</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="537" y="68" text-anchor="middle" fill="#7B97F8">hyperparameter tuning</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="635" y="68" text-anchor="middle" fill="#1D9E75">final evaluation</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="635" y="82" text-anchor="middle" fill="#1D9E75">(once only)</text>
+          </svg>
+        </div>
+
+        <h3>Dropout &amp; Regularisation</h3>
+        <p><strong>Dropout</strong> randomly deactivates a fraction p of neurons during each training step. <strong>L2 regularisation</strong> adds a weight-magnitude penalty to the loss.</p>
+        <div class="formula-row">
+          <div class="formula-box">
+            <div class="formula-label">Dropout</div>
+            <div class="formula-main">Each neuron: off with prob  p</div>
+            <div class="formula-sub">At inference: all neurons on, outputs scaled by (1 − p).<br>Typical p = 0.3–0.5.</div>
+          </div>
+          <div class="formula-box">
+            <div class="formula-label">L2 Regularisation</div>
+            <div class="formula-main">L<sub>total</sub> = L + λ · Σ wᵢ²</div>
+            <div class="formula-sub">λ controls penalty strength. Equivalent to weight decay: <code>w ← w · (1 − λη)</code></div>
+          </div>
+        </div>
+
+        <div class="subsec-title">Part 4 · Construction Domain Connections</div>
+
+        <h3>Transfer Learning</h3>
+        <p>A model pre-trained on ImageNet has already learned to detect edges, textures, and shapes. <strong>Fine-tuning</strong> uses this as a starting point — freezing the backbone and training only a new task-specific head on a small construction dataset.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 136" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="d8-g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#C8CBD8"/></marker>
+              <marker id="d8-b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#4B70F5"/></marker>
+            </defs>
+            <rect x="8"   y="16" width="178" height="104" rx="10" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="97" y="38" text-anchor="middle" fill="#7F77DD">Pre-trained Model</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="97" y="56" text-anchor="middle" fill="#8A8FA8">ResNet / EfficientNet</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="97" y="72" text-anchor="middle" fill="#8A8FA8">Trained on ImageNet</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="97" y="88" text-anchor="middle" fill="#8A8FA8">1.2 M images, 1 000 classes</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="97" y="108" text-anchor="middle" fill="#7F77DD">✓  generic feature extractor</text>
+            <line x1="187" y1="68" x2="224" y2="68" stroke="#C8CBD8" stroke-width="1.4" marker-end="url(#d8-g)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="205" y="60" text-anchor="middle" fill="#8A8FA8">freeze</text>
+            <rect x="228" y="16" width="176" height="104" rx="10" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1.2" stroke-dasharray="6 3"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="316" y="38" text-anchor="middle" fill="#8A8FA8">Backbone Layers</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="316" y="56" text-anchor="middle" fill="#C8CBD8">weights frozen (no backprop)</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="316" y="72" text-anchor="middle" fill="#C8CBD8">low-level features re-used</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="316" y="88" text-anchor="middle" fill="#C8CBD8">edges · textures · shapes</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="316" y="108" text-anchor="middle" fill="#C8CBD8">as-is  →</text>
+            <line x1="405" y1="68" x2="442" y2="68" stroke="#4B70F5" stroke-width="1.6" marker-end="url(#d8-b)"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="423" y="60" text-anchor="middle" fill="#4B70F5">fine-tune</text>
+            <rect x="446" y="16" width="248" height="104" rx="10" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="570" y="38" text-anchor="middle" fill="#1D9E75">New Task Head</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="570" y="56" text-anchor="middle" fill="#8A8FA8">Few hundred–few thousand site images</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="570" y="72" text-anchor="middle" fill="#8A8FA8">Labels: PPE ✓ / No-PPE ✗ / Hard-hat</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="570" y="88" text-anchor="middle" fill="#8A8FA8">New FC layers — trained from scratch</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="570" y="108" text-anchor="middle" fill="#1D9E75">✓  domain-adapted classifier</text>
+          </svg>
+        </div>
+
+        <h3>Data Augmentation</h3>
+        <p>Construction images vary dramatically in lighting, camera angle, and weather. Augmentation <strong>artificially diversifies</strong> the training set by applying random transforms at training time.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 700 112" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="d9-a" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#C8CBD8"/></marker>
+            </defs>
+            <rect x="8" y="12" width="84" height="72" rx="8" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.4"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="50" y="44" text-anchor="middle" fill="#4B70F5">Original</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="50" y="60" text-anchor="middle" fill="#8A8FA8">site image</text>
+            <line x1="93" y1="48" x2="112" y2="48" stroke="#C8CBD8" stroke-width="1.3" marker-end="url(#d9-a)"/>
+            <rect x="116" y="12" width="96" height="72" rx="7" fill="#F0F0FE" stroke="#7F77DD" stroke-width="1.1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="164" y="38" text-anchor="middle" fill="#7F77DD">Horizontal</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="164" y="52" text-anchor="middle" fill="#7F77DD">Flip</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="164" y="74" text-anchor="middle" fill="#8A8FA8">mirrors viewpoint</text>
+            <rect x="220" y="12" width="96" height="72" rx="7" fill="#FFF0E8" stroke="#F5844B" stroke-width="1.1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="268" y="38" text-anchor="middle" fill="#F5844B">Random</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="268" y="52" text-anchor="middle" fill="#F5844B">Crop</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="268" y="74" text-anchor="middle" fill="#8A8FA8">camera framing</text>
+            <rect x="324" y="12" width="96" height="72" rx="7" fill="#FFFBE8" stroke="#D4B800" stroke-width="1.1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="372" y="38" text-anchor="middle" fill="#A38700">Brightness</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="372" y="52" text-anchor="middle" fill="#A38700">&amp; Contrast</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="372" y="74" text-anchor="middle" fill="#8A8FA8">day / night / overcast</text>
+            <rect x="428" y="12" width="96" height="72" rx="7" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="476" y="38" text-anchor="middle" fill="#1D9E75">Gaussian</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="476" y="52" text-anchor="middle" fill="#1D9E75">Noise / Blur</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="476" y="74" text-anchor="middle" fill="#8A8FA8">camera quality</text>
+            <rect x="532" y="12" width="96" height="72" rx="7" fill="#F7F0FF" stroke="#9966CC" stroke-width="1.1"/>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="580" y="38" text-anchor="middle" fill="#9966CC">Rotation</text>
+            <text font-family="Sora,sans-serif" font-size="10" font-weight="700" x="580" y="52" text-anchor="middle" fill="#9966CC">± 30°</text>
+            <text font-family="Sora,sans-serif" font-size="9"  x="580" y="74" text-anchor="middle" fill="#8A8FA8">camera tilt / lean</text>
+            <text font-family="Sora,sans-serif" font-size="20" x="650" y="52" text-anchor="middle" dominant-baseline="central" fill="#C8CBD8">…</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="350" y="102" text-anchor="middle" fill="#8A8FA8">Transforms are applied randomly at training time — no new labels needed</text>
+          </svg>
+        </div>
+
+        <h3>Class Imbalance</h3>
+        <p>In safety monitoring datasets, <strong>violation images can account for fewer than 5% of all frames</strong>. A naive model that always predicts "safe" achieves 95% accuracy — yet is completely useless in practice.</p>
+        <div class="callout callout-warn">
+          <span class="callout-icon">⚠️</span>
+          <p><strong>Never rely on accuracy alone</strong> in imbalanced settings. Always report <strong>Precision, Recall, and F1-score</strong> per class. In safety monitoring, a missed detection (false negative) is typically far more costly than a false alarm.</p>
+        </div>
+        <table class="compare-table">
+          <thead><tr><th>Strategy</th><th>How it works</th><th>Construction application</th></tr></thead>
+          <tbody>
+            <tr><td>Oversampling</td><td>Duplicate minority-class samples, or synthesise via SMOTE</td><td>Augment violation images before retraining</td></tr>
+            <tr><td>Class Weights</td><td>Assign higher loss weight to the minority class</td><td><code>w = N<sub>safe</sub> / N<sub>violation</sub></code></td></tr>
+            <tr><td>Focal Loss</td><td>Down-weights easy samples, focusing on hard ones</td><td>Effective for rare or ambiguous site violations</td></tr>
+            <tr><td>Threshold Tuning</td><td>Lower the classification threshold below 0.5</td><td>Prefer false alarm over missed hazard in live monitoring</td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout-green">
+          <span class="callout-icon">✅</span>
+          <p>Combining <strong>transfer learning + data augmentation + class weights</strong> is the most practical starting point for construction vision models when you have only a few hundred labelled images.</p>
+        </div>
+      </div>
+
+      <div class="post-section" id="sec4">
+        <div class="section-label">Section 04</div>
+        <h2>CNN — Seeing the Site</h2>
+
+        <h3>Why CNNs? The Problem with Flattening Pixels</h3>
+        <p>Construction sites produce an enormous volume of visual data — CCTV feeds, drone footage, on-helmet cameras. A standard fully-connected network processes images by flattening them into a 1D vector, which destroys all spatial relationships between pixels. A <strong>Convolutional Neural Network (CNN)</strong> preserves that 2D structure: it slides small learned filters across the image, detecting edges, textures, and shapes wherever they appear — regardless of position.</p>
+        <p>This property, called <strong>translation invariance</strong>, is exactly what a construction site demands. A hardhat is a hardhat whether it sits in the top-left corner of the frame or the bottom-right, in bright noon light or overcast shadow.</p>
+
+        <div class="diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 165">
+            <defs>
+              <marker id="ab" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="#4B70F5"/></marker>
+              <marker id="ag" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="#1D9E75"/></marker>
+            </defs>
+            <rect x="10" y="32" width="74" height="74" rx="6" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <line x1="10" y1="57" x2="84" y2="57" stroke="#C8CBD8" stroke-width="0.5"/><line x1="10" y1="82" x2="84" y2="82" stroke="#C8CBD8" stroke-width="0.5"/><line x1="35" y1="32" x2="35" y2="106" stroke="#C8CBD8" stroke-width="0.5"/><line x1="60" y1="32" x2="60" y2="106" stroke="#C8CBD8" stroke-width="0.5"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="47" y="120" text-anchor="middle" fill="#8A8FA8">Input Image</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="47" y="131" text-anchor="middle" fill="#8A8FA8">640×640×3</text>
+            <line x1="88" y1="69" x2="110" y2="69" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#ab)"/>
+            <rect x="114" y="40" width="58" height="58" rx="6" fill="#4B70F5" opacity="0.1" stroke="#4B70F5" stroke-width="1.2"/>
+            <rect x="124" y="50" width="20" height="20" rx="3" fill="#4B70F5" opacity="0.75"/>
+            <text font-family="Sora,sans-serif" font-size="8" x="128" y="82" fill="#4B70F5" font-weight="700">3×3 filter</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="143" y="120" text-anchor="middle" fill="#8A8FA8">Conv Layer</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="143" y="131" text-anchor="middle" fill="#8A8FA8">slides &amp; learns</text>
+            <line x1="176" y1="69" x2="198" y2="69" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#ab)"/>
+            <rect x="202" y="36" width="50" height="50" rx="5" fill="#7B97F8" opacity="0.2" stroke="#7B97F8" stroke-width="0.8"/>
+            <rect x="208" y="42" width="50" height="50" rx="5" fill="#7B97F8" opacity="0.25" stroke="#7B97F8" stroke-width="0.8"/>
+            <rect x="214" y="48" width="50" height="50" rx="5" fill="#7B97F8" opacity="0.45" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="239" y="120" text-anchor="middle" fill="#8A8FA8">Feature Maps</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="239" y="131" text-anchor="middle" fill="#8A8FA8">320×320×64</text>
+            <line x1="268" y1="69" x2="290" y2="69" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#ab)"/>
+            <rect x="294" y="45" width="48" height="48" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <rect x="306" y="53" width="11" height="11" rx="2" fill="#7F77DD" opacity="0.9"/><rect x="319" y="53" width="11" height="11" rx="2" fill="#7F77DD" opacity="0.25"/><rect x="306" y="67" width="11" height="11" rx="2" fill="#7F77DD" opacity="0.25"/><rect x="319" y="67" width="11" height="11" rx="2" fill="#7F77DD" opacity="0.1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="318" y="120" text-anchor="middle" fill="#8A8FA8">Max Pooling</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="318" y="131" text-anchor="middle" fill="#8A8FA8">160×160×64</text>
+            <line x1="346" y1="69" x2="368" y2="69" stroke="#4B70F5" stroke-width="1.5" marker-end="url(#ab)"/>
+            <rect x="372" y="40" width="34" height="54" rx="5" fill="#E1F5EE" opacity="0.5" stroke="#1D9E75" stroke-width="0.8"/>
+            <rect x="378" y="46" width="34" height="42" rx="5" fill="#E1F5EE" opacity="0.6" stroke="#1D9E75" stroke-width="0.8"/>
+            <rect x="384" y="52" width="34" height="32" rx="5" fill="#1D9E75" opacity="0.45" stroke="#1D9E75" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="401" y="120" text-anchor="middle" fill="#8A8FA8">Deep Features</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="401" y="131" text-anchor="middle" fill="#8A8FA8">abstract repr.</text>
+            <line x1="422" y1="69" x2="444" y2="69" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#ag)"/>
+            <rect x="448" y="38" width="222" height="62" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="559" y="59" text-anchor="middle" fill="#1D9E75">helmet (wearing)  0.93</text>
+            <line x1="458" y1="67" x2="660" y2="67" stroke="#1D9E75" stroke-width="0.5" opacity="0.35"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="559" y="83" text-anchor="middle" fill="#8A8FA8">head (no helmet)  0.07</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="559" y="120" text-anchor="middle" fill="#8A8FA8">Detection output</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="559" y="131" text-anchor="middle" fill="#8A8FA8">bbox + class probability</text>
+          </svg>
+        </div>
+
+        <h3>YOLOv8 Architecture: Backbone → Neck → Head</h3>
+        <p>Object detection models are split into three functional stages. The <strong>Backbone</strong> extracts hierarchical features from the image. The <strong>Neck</strong> fuses features across multiple scales — critical when you need to detect a distant worker (small object) and a nearby excavator (large object) in the same frame. The <strong>Head</strong> outputs the final bounding box coordinates and class probabilities.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Component</th><th>Role</th><th>Why it matters on-site</th></tr></thead>
+          <tbody>
+            <tr><td>Backbone (CSPDarknet)</td><td>Hierarchical feature extraction</td><td>Learns helmet shape, texture, and color invariantly</td></tr>
+            <tr><td>Neck (PANet / FPN)</td><td>Multi-scale feature fusion</td><td>Detects far workers and near machinery simultaneously</td></tr>
+            <tr><td>Head (Decoupled)</td><td>BBox regression + classification</td><td>Outputs pixel location + PPE compliance probability</td></tr>
+            <tr><td>Transfer Learning</td><td>Reuses ImageNet-pretrained weights</td><td>Converges fast even with limited site-specific data</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <p><strong>Transfer Learning in one sentence:</strong> the backbone's early layers already know how to detect edges, textures, and shapes from ImageNet's 1.2 M images — we only fine-tune the upper layers on construction site data.</p>
+        </div>
+
+        <h3>Hands-On: PPE Detection with YOLOv8 + Roboflow</h3>
+        <p>The code below runs end-to-end in Google Colab — no local GPU required. It fetches the public <em>Hard Hat Workers</em> dataset (~5,000 images, two classes: <code>helmet</code> / <code>head</code>) via the Roboflow API, trains YOLOv8n with transfer learning, and visualises predictions on the test set.</p>
+
+        <div class="callout">
+          <span class="callout-icon">⚙️</span>
+          <p><strong>Before running:</strong> set the Colab runtime to <strong>GPU (T4)</strong> via Runtime → Change runtime type. A free Roboflow account is needed — sign up at <strong>app.roboflow.com</strong> and copy your API key from Settings → API Keys.</p>
+        </div>
+
+        <div class="step-list">
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">0</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Verify GPU</div>
+              <div class="step-desc">Confirm CUDA is available before starting.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc0')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc0">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 0 · Verify GPU</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> <span class="tok-plain">torch</span>
+
+<span class="tok-func">print</span>(<span class="tok-string">"PyTorch:"</span>, torch.__version__)
+<span class="tok-func">print</span>(<span class="tok-string">"CUDA available:"</span>, torch.cuda.is_available())
+<span class="tok-keyword">if</span> torch.cuda.is_available():
+    <span class="tok-func">print</span>(<span class="tok-string">"GPU:"</span>, torch.cuda.get_device_name(<span class="tok-number">0</span>))
+<span class="tok-keyword">else</span>:
+    <span class="tok-func">print</span>(<span class="tok-string">"⚠ No GPU — Runtime → Change runtime type → T4 GPU"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">1</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Install packages</div>
+              <div class="step-desc"><code>ultralytics</code> · <code>roboflow</code> · <code>supervision</code></div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc1')"><span class="toggle-arrow">▶</span> Bash</button>
+              <div class="step-inline-code" id="sc1">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Bash</span><span class="code-label">Step 1 · Install packages</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-op">!</span>pip install ultralytics roboflow supervision <span class="tok-op">--</span>quiet
+<span class="tok-func">print</span>(<span class="tok-string">"✅ Installation complete"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">2</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Download dataset</div>
+              <div class="step-desc">Roboflow API → Hard Hat Workers v12 in YOLOv8 format.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc2')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc2">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 2 · Download dataset from Roboflow</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">from</span> <span class="tok-plain">roboflow</span> <span class="tok-keyword">import</span> <span class="tok-cls">Roboflow</span>
+
+<span class="tok-comment"># Get your free API key: app.roboflow.com → Settings → API Keys</span>
+<span class="tok-var">API_KEY</span> <span class="tok-op">=</span> <span class="tok-string">"YOUR_API_KEY"</span>
+
+<span class="tok-var">rf</span>      <span class="tok-op">=</span> <span class="tok-cls">Roboflow</span>(api_key<span class="tok-op">=</span><span class="tok-var">API_KEY</span>)
+<span class="tok-var">project</span> <span class="tok-op">=</span> rf.workspace(<span class="tok-string">"joseph-nelson"</span>).project(<span class="tok-string">"hard-hat-workers"</span>)
+<span class="tok-var">dataset</span> <span class="tok-op">=</span> project.version(<span class="tok-number">12</span>).download(<span class="tok-string">"yolov8"</span>)
+
+<span class="tok-func">print</span>(<span class="tok-string">"✅ Dataset saved to:"</span>, dataset.location)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">3</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Explore the data (EDA)</div>
+              <div class="step-desc">Visualise sample images with ground-truth bounding boxes. Notice lighting variation, occlusion, and distance diversity.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc3')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc3">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 3 · Explore the data (EDA)</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> <span class="tok-plain">os, glob, random, yaml</span>
+<span class="tok-keyword">import</span> <span class="tok-plain">matplotlib.pyplot</span> <span class="tok-keyword">as</span> <span class="tok-plain">plt</span>
+<span class="tok-keyword">import</span> <span class="tok-plain">matplotlib.patches</span> <span class="tok-keyword">as</span> <span class="tok-plain">patches</span>
+<span class="tok-keyword">from</span>   <span class="tok-plain">PIL</span> <span class="tok-keyword">import</span> <span class="tok-cls">Image</span>
+
+<span class="tok-var">DATA_DIR</span> <span class="tok-op">=</span> dataset.location
+<span class="tok-var">COLORS</span>   <span class="tok-op">=</span> [<span class="tok-string">"#4B70F5"</span>, <span class="tok-string">"#FF6B35"</span>, <span class="tok-string">"#1D9E75"</span>]
+
+<span class="tok-keyword">for</span> split <span class="tok-keyword">in</span> [<span class="tok-string">"train"</span>, <span class="tok-string">"valid"</span>, <span class="tok-string">"test"</span>]:
+    n <span class="tok-op">=</span> <span class="tok-func">len</span>(glob.glob(os.path.join(<span class="tok-var">DATA_DIR</span>, split, <span class="tok-string">"images"</span>, <span class="tok-string">"*.*"</span>)))
+    <span class="tok-func">print</span>(<span class="tok-string">f"{split:8}: {n:4} images"</span>)
+
+<span class="tok-keyword">with</span> <span class="tok-func">open</span>(os.path.join(<span class="tok-var">DATA_DIR</span>, <span class="tok-string">"data.yaml"</span>)) <span class="tok-keyword">as</span> f:
+    cfg <span class="tok-op">=</span> yaml.safe_load(f)
+<span class="tok-var">class_names</span> <span class="tok-op">=</span> cfg.get(<span class="tok-string">"names"</span>, [])
+<span class="tok-func">print</span>(<span class="tok-string">"Classes:"</span>, <span class="tok-var">class_names</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">4</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Train YOLOv8n</div>
+              <div class="step-desc">30 epochs, AdamW optimiser, brightness &amp; mosaic augmentation for site-condition variety.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc4')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc4">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 4 · Train YOLOv8n</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">from</span> <span class="tok-plain">ultralytics</span> <span class="tok-keyword">import</span> <span class="tok-cls">YOLO</span>
+
+<span class="tok-comment"># Pretrained backbone — transfer learning from ImageNet</span>
+<span class="tok-var">model</span> <span class="tok-op">=</span> <span class="tok-cls">YOLO</span>(<span class="tok-string">"yolov8n.pt"</span>)   <span class="tok-comment"># nano: fastest  |  swap → yolov8s.pt for +mAP</span>
+
+<span class="tok-var">results</span> <span class="tok-op">=</span> <span class="tok-var">model</span>.train(
+    data      <span class="tok-op">=</span> os.path.join(<span class="tok-var">DATA_DIR</span>, <span class="tok-string">"data.yaml"</span>),
+    epochs    <span class="tok-op">=</span> <span class="tok-number">30</span>,
+    imgsz     <span class="tok-op">=</span> <span class="tok-number">640</span>,
+    batch     <span class="tok-op">=</span> <span class="tok-number">16</span>,
+    optimizer <span class="tok-op">=</span> <span class="tok-string">"AdamW"</span>,
+    lr0       <span class="tok-op">=</span> <span class="tok-number">0.001</span>,
+    patience  <span class="tok-op">=</span> <span class="tok-number">10</span>,
+    mosaic    <span class="tok-op">=</span> <span class="tok-number">1.0</span>,
+    degrees   <span class="tok-op">=</span> <span class="tok-number">10.0</span>,
+    hsv_v     <span class="tok-op">=</span> <span class="tok-number">0.4</span>,
+    fliplr    <span class="tok-op">=</span> <span class="tok-number">0.5</span>,
+    project   <span class="tok-op">=</span> <span class="tok-string">"ppe_detection"</span>,
+    name      <span class="tok-op">=</span> <span class="tok-string">"yolov8n_run1"</span>,
+    exist_ok  <span class="tok-op">=</span> <span class="tok-cls">True</span>,
+)
+<span class="tok-func">print</span>(<span class="tok-string">"✅ Training complete →"</span>, results.save_dir)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Evaluate on test set</div>
+              <div class="step-desc">mAP@0.5, Precision, Recall — and understand why Recall matters more for safety.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc5')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc5">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Evaluate on test set</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> <span class="tok-plain">pandas</span> <span class="tok-keyword">as</span> <span class="tok-plain">pd</span>
+
+<span class="tok-var">best_pt</span>    <span class="tok-op">=</span> os.path.join(results.save_dir, <span class="tok-string">"weights"</span>, <span class="tok-string">"best.pt"</span>)
+<span class="tok-var">best_model</span> <span class="tok-op">=</span> <span class="tok-cls">YOLO</span>(<span class="tok-var">best_pt</span>)
+
+<span class="tok-var">val</span> <span class="tok-op">=</span> <span class="tok-var">best_model</span>.val(
+    data    <span class="tok-op">=</span> os.path.join(<span class="tok-var">DATA_DIR</span>, <span class="tok-string">"data.yaml"</span>),
+    split   <span class="tok-op">=</span> <span class="tok-string">"test"</span>,
+    imgsz   <span class="tok-op">=</span> <span class="tok-number">640</span>,
+    verbose <span class="tok-op">=</span> <span class="tok-cls">False</span>,
+)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50      : {val.box.map50:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50:0.95 : {val.box.map:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"Precision     : {val.box.mp:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"Recall        : {val.box.mr:.4f}"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">6</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Visualise predictions</div>
+              <div class="step-desc">Overlay bounding boxes on test images using <code>supervision</code>.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('sc6')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="sc6">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 6 · Visualise predictions</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> <span class="tok-plain">supervision</span> <span class="tok-keyword">as</span> <span class="tok-plain">sv</span>
+<span class="tok-keyword">import</span> <span class="tok-plain">cv2</span>
+
+<span class="tok-var">box_ann</span> <span class="tok-op">=</span> sv.<span class="tok-cls">BoxAnnotator</span>(
+    color<span class="tok-op">=</span>sv.<span class="tok-cls">ColorPalette</span>.from_hex([<span class="tok-string">"#4B70F5"</span>, <span class="tok-string">"#FF6B35"</span>]), thickness<span class="tok-op">=</span><span class="tok-number">2</span>)
+<span class="tok-var">lbl_ann</span> <span class="tok-op">=</span> sv.<span class="tok-cls">LabelAnnotator</span>(
+    color<span class="tok-op">=</span>sv.<span class="tok-cls">ColorPalette</span>.from_hex([<span class="tok-string">"#4B70F5"</span>, <span class="tok-string">"#FF6B35"</span>]), text_scale<span class="tok-op">=</span><span class="tok-number">0.5</span>)
+
+<span class="tok-var">test_imgs</span> <span class="tok-op">=</span> glob.glob(os.path.join(<span class="tok-var">DATA_DIR</span>, <span class="tok-string">"test"</span>, <span class="tok-string">"images"</span>, <span class="tok-string">"*.*"</span>))
+fig, axes <span class="tok-op">=</span> plt.subplots(<span class="tok-number">2</span>, <span class="tok-number">3</span>, figsize<span class="tok-op">=</span>(<span class="tok-number">15</span>, <span class="tok-number">9</span>))
+fig.patch.set_facecolor(<span class="tok-string">"#0F1117"</span>)
+
+<span class="tok-keyword">for</span> ax, path <span class="tok-keyword">in</span> <span class="tok-func">zip</span>(axes.flat, random.sample(<span class="tok-var">test_imgs</span>, <span class="tok-func">min</span>(<span class="tok-number">6</span>, <span class="tok-func">len</span>(<span class="tok-var">test_imgs</span>)))):
+    pred <span class="tok-op">=</span> <span class="tok-var">best_model</span>.predict(path, conf<span class="tok-op">=</span><span class="tok-number">0.3</span>, verbose<span class="tok-op">=</span><span class="tok-cls">False</span>)[<span class="tok-number">0</span>]
+    dets <span class="tok-op">=</span> sv.<span class="tok-cls">Detections</span>.from_ultralytics(pred)
+    img  <span class="tok-op">=</span> cv2.cvtColor(cv2.imread(path), cv2.<span class="tok-var">COLOR_BGR2RGB</span>)
+    img  <span class="tok-op">=</span> <span class="tok-var">box_ann</span>.annotate(img, dets)
+    ax.imshow(img); ax.axis(<span class="tok-string">"off"</span>); ax.set_facecolor(<span class="tok-string">"#0F1117"</span>)
+    ax.set_title(<span class="tok-string">f"{len(dets)} detections"</span>, color<span class="tok-op">=</span><span class="tok-string">"white"</span>, fontsize<span class="tok-op">=</span><span class="tok-number">10</span>)
+
+fig.suptitle(<span class="tok-string">"YOLOv8 — PPE Detection · Test Set"</span>,
+             color<span class="tok-op">=</span><span class="tok-string">"white"</span>, fontsize<span class="tok-op">=</span><span class="tok-number">13</span>, fontweight<span class="tok-op">=</span><span class="tok-string">"bold"</span>)
+plt.tight_layout(); plt.show()</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <h3>Reading the Results: Why Recall Comes First</h3>
+        <p>The two error types here are not symmetric. A <strong>false negative</strong> — missing a worker without a helmet — is a real injury risk. A <strong>false positive</strong> — flagging a compliant worker — is an annoyance. That asymmetry is why we use <code>conf=0.3</code>: a deliberately low threshold that trades some precision for higher recall.</p>
+
+        <div class="diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 188">
+            <rect x="20" y="16" width="295" height="156" rx="10" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="167" y="42" text-anchor="middle" fill="#4B70F5">Precision</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="167" y="60" text-anchor="middle" fill="#5A5F75">Of all detections made, how many are real?</text>
+            <circle cx="100" cy="108" r="36" fill="#4B70F5" opacity="0.1" stroke="#4B70F5" stroke-width="1" stroke-dasharray="4 2"/>
+            <circle cx="113" cy="108" r="25" fill="#4B70F5" opacity="0.65"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="113" y="108" text-anchor="middle" dominant-baseline="central" fill="white">TP</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="100" y="154" text-anchor="middle" fill="#8A8FA8">All detections</text>
+            <text font-family="Sora,sans-serif" font-size="14" font-weight="700" x="220" y="112" text-anchor="middle" fill="#4B70F5">TP / (TP+FP)</text>
+            <rect x="365" y="16" width="295" height="156" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="13" font-weight="700" x="512" y="42" text-anchor="middle" fill="#1D9E75">Recall  ← safety-critical</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="512" y="60" text-anchor="middle" fill="#5A5F75">Of all real violations, how many were caught?</text>
+            <circle cx="445" cy="108" r="36" fill="#1D9E75" opacity="0.1" stroke="#1D9E75" stroke-width="1" stroke-dasharray="4 2"/>
+            <circle cx="432" cy="108" r="25" fill="#1D9E75" opacity="0.65"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="432" y="108" text-anchor="middle" dominant-baseline="central" fill="white">TP</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="445" y="154" text-anchor="middle" fill="#8A8FA8">All actual violations</text>
+            <text font-family="Sora,sans-serif" font-size="14" font-weight="700" x="562" y="112" text-anchor="middle" fill="#1D9E75">TP / (TP+FN)</text>
+          </svg>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card"><div class="metric-val">~0.90</div><div class="metric-label">mAP@0.5</div><div class="metric-sub">expected after 30 epochs</div></div>
+          <div class="metric-card"><div class="metric-val">conf=0.3</div><div class="metric-label">Threshold</div><div class="metric-sub">recall-first setting</div></div>
+          <div class="metric-card"><div class="metric-val">yolov8n</div><div class="metric-label">Backbone</div><div class="metric-sub">swap → s / m for +mAP</div></div>
+          <div class="metric-card"><div class="metric-val">~15 k</div><div class="metric-label">Training Images</div><div class="metric-sub">Hard Hat Workers v12</div></div>
+        </div>
+
+        <h3>From Notebook to Job Site</h3>
+        <p>A high lab mAP does not guarantee field performance. When the deployment domain differs from the training data — different lighting, helmet brands, or tunnel interiors — accuracy degrades. This is called <strong>domain shift</strong> and it is the most common failure mode in construction AI. Always validate on images from the target site before going live, and schedule periodic re-training as site conditions evolve.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Consideration</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>Edge device</td><td>NVIDIA Jetson Orin or Raspberry Pi + Coral TPU for on-site real-time inference</td></tr>
+            <tr><td>Camera placement</td><td>Triangle coverage at entry gates; angled 15–30° downward to reduce occlusion</td></tr>
+            <tr><td>Alert pipeline</td><td>Violation detected → supervisor SMS / app notification → gate access control</td></tr>
+            <tr><td>Continuous learning</td><td>Collect new site images weekly → re-train → redeploy; annotate via Roboflow</td></tr>
+            <tr><td>Domain shift</td><td>Validate on local images before go-live; fine-tune if mAP drops &gt; 5 pp</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <span class="callout-icon">🔭</span>
+          <p><strong>Up next — Section 05:</strong> NLP for construction documents. We'll apply transformer models to safety reports, RFIs, and contract clauses — extracting structured information from the unstructured text that dominates project records.</p>
+        </div>
+      </div>
+
+      <div class="post-section" id="sec5">
+        <div class="section-label">Section 05</div>
+        <h2>NLP — Reading the Documents</h2>
+
+        <p>If CNN is the model that <em>sees</em> the site, NLP is the model that <em>reads</em> it. Every construction project generates an enormous volume of text: RFIs, incident reports, daily logs, contract clauses, meeting minutes. These documents contain critical information that is currently processed manually — slowly, inconsistently, and at scale impossible for any human team to sustain. Natural Language Processing changes that.</p>
+
+        <div class="callout">
+          <span class="callout-icon">📄</span>
+          <p>A mid-size building project generates <strong>thousands of RFIs, hundreds of incident reports, and tens of thousands of email threads</strong> over its lifetime. NLP models can read, classify, and extract structured information from all of it — automatically.</p>
+        </div>
+
+        <h3>Part 1 · Why Text is Hard for Computers</h3>
+
+        <p>Images have a clear numeric structure — pixels on a 2D grid. Text does not. Words carry meaning only in relation to other words, and the same word can mean entirely different things depending on context. Construction language compounds this with dense abbreviations, code numbers, and domain-specific jargon that general-purpose models have never seen.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Challenge</th><th>General language</th><th>Construction domain</th></tr></thead>
+          <tbody>
+            <tr><td>Ambiguity</td><td>"bank" = river bank or financial bank</td><td>"load" = structural load, truck load, or software load</td></tr>
+            <tr><td>Abbreviations</td><td>Common (e.g. USA, CEO)</td><td>Dense: RFI, NCR, PCO, MEP, ASTM A615 Gr.60</td></tr>
+            <tr><td>Format variation</td><td>Sentences follow grammar rules</td><td>"weather hold – ext pour suspended 5d" is valid</td></tr>
+            <tr><td>Vocabulary size</td><td>~170 k English words</td><td>Spec numbers, grid codes, equipment models not in dict</td></tr>
+          </tbody>
+        </table>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg">
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">Same word, different meaning — the ambiguity problem</text>
+            <rect x="20" y="34" width="290" height="40" rx="8" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="165" y="50" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">"The <tspan font-weight="700">crane</tspan> was delayed due to maintenance."</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="165" y="66" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">→ tower crane  (construction equipment)</text>
+            <rect x="370" y="34" width="290" height="40" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="515" y="50" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">"A <tspan font-weight="700">crane</tspan> was spotted nesting near site."</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="515" y="66" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">→ bird  (completely different meaning)</text>
+            <text font-family="Sora,sans-serif" font-size="22" x="340" y="54" text-anchor="middle" dominant-baseline="central" fill="#C8CBD8">≠</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="98" text-anchor="middle" fill="#8A8FA8">A keyword search for "crane" matches both. A contextual model distinguishes them.</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="112" text-anchor="middle" fill="#C8CBD8">Same principle applies to: load · run · tie · grade · stem · pitch · strike</text>
+          </svg>
+        </div>
+
+        <h3>Part 2 · Tokenisation &amp; Embeddings</h3>
+
+        <p>Before a model can process text, it must convert words into numbers. This happens in two stages: <strong>tokenisation</strong> splits text into manageable units, and <strong>embeddings</strong> map those units to dense numeric vectors that capture meaning.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 680 148" xmlns="http://www.w3.org/2000/svg">
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">Tokenisation — word-level vs. subword (BPE)</text>
+            <rect x="20" y="28" width="640" height="28" rx="6" fill="#F0F1F6" stroke="#C8CBD8" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="11" x="340" y="42" text-anchor="middle" dominant-baseline="central" fill="#5A5F75">"ASTM A615 rebar preconstruction inspection failed"</text>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="20" y="74" fill="#F5844B">Word-level</text>
+            <rect x="80"  y="64" width="64" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1"/>
+            <rect x="150" y="64" width="46" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1"/>
+            <rect x="202" y="64" width="40" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1"/>
+            <rect x="248" y="64" width="130" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1.8"/>
+            <rect x="384" y="64" width="72" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1"/>
+            <rect x="462" y="64" width="54" height="24" rx="5" fill="#FFF0E8" stroke="#F5844B" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="112" y="76" text-anchor="middle" dominant-baseline="central" fill="#D4820A">ASTM</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="173" y="76" text-anchor="middle" dominant-baseline="central" fill="#D4820A">A615</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="222" y="76" text-anchor="middle" dominant-baseline="central" fill="#D4820A">rebar</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="313" y="76" text-anchor="middle" dominant-baseline="central" fill="#F5844B" font-weight="700">[UNK]</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="420" y="76" text-anchor="middle" dominant-baseline="central" fill="#D4820A">inspect</text>
+            <text font-family="Sora,sans-serif" font-size="10" x="489" y="76" text-anchor="middle" dominant-baseline="central" fill="#D4820A">failed</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="313" y="94" text-anchor="middle" fill="#F5844B">long compound word → unknown</text>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="20" y="118" fill="#1D9E75">Subword (BPE)</text>
+            <rect x="80"  y="108" width="36" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="120" y="108" width="24" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="148" y="108" width="28" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="180" y="108" width="32" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="216" y="108" width="36" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="256" y="108" width="28" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="288" y="108" width="58" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="350" y="108" width="58" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="412" y="108" width="40" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <rect x="456" y="108" width="40" height="24" rx="5" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="98"  y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">AS</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="132" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">##T</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="164" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">##M</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="196" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">A615</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="234" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">re</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="272" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">##bar</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="319" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">pre</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="379" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">##construct</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="432" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">##ion</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="476" y="120" text-anchor="middle" dominant-baseline="central" fill="#1D9E75">…</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="340" y="140" text-anchor="middle" fill="#8A8FA8">Subword tokenisation handles unseen construction terms without [UNK] fallback</text>
+          </svg>
+        </div>
+
+        <p><strong>Embeddings</strong> convert each token into a dense vector where semantically similar tokens are close in space. Early methods like Word2Vec use a single fixed vector per word. Modern <em>contextual embeddings</em> (BERT, etc.) produce a different vector for the same word depending on the surrounding context — critical for construction terms that are inherently polysemous.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="emb-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#C8CBD8"/></marker>
+            </defs>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">Contextual embeddings — same word, different vector</text>
+            <rect x="20" y="32" width="290" height="36" rx="7" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="165" y="50" text-anchor="middle" dominant-baseline="central" fill="#5A5F75">"The steel <tspan font-weight="700" fill="#4B70F5">beam</tspan> failed the load test."</text>
+            <rect x="370" y="32" width="290" height="36" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="10" x="515" y="50" text-anchor="middle" dominant-baseline="central" fill="#5A5F75">"The laser <tspan font-weight="700" fill="#7F77DD">beam</tspan> aligned the survey."</text>
+            <line x1="165" y1="68" x2="165" y2="88" stroke="#4B70F5" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#emb-arr)"/>
+            <line x1="515" y1="68" x2="515" y2="88" stroke="#7F77DD" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#emb-arr)"/>
+            <rect x="90"  y="90" width="150" height="24" rx="5" fill="#4B70F5" opacity="0.15" stroke="#4B70F5" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="165" y="102" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">[0.82, −0.11, 0.44, 0.63, …]</text>
+            <rect x="440" y="90" width="150" height="24" rx="5" fill="#7F77DD" opacity="0.15" stroke="#7F77DD" stroke-width="1"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="515" y="102" text-anchor="middle" dominant-baseline="central" fill="#7F77DD">[−0.23, 0.71, −0.38, 0.09, …]</text>
+            <line x1="240" y1="102" x2="438" y2="102" stroke="#C8CBD8" stroke-width="1" stroke-dasharray="4 3"/>
+            <rect x="280" y="92" width="120" height="20" rx="4" fill="#F0F1F6"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="340" y="102" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">cosine sim ≈ 0.18  (far apart)</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="134" text-anchor="middle" fill="#8A8FA8">Static embeddings (Word2Vec) produce the same vector for both. BERT produces different ones.</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="148" text-anchor="middle" fill="#C8CBD8">This distinction matters enormously for RFI classification, NER, and clause retrieval.</text>
+          </svg>
+        </div>
+
+        <h3>Part 3 · Key NLP Architectures</h3>
+
+        <p>Three architectural generations underpin modern construction NLP. Each solved a problem the previous one could not.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arch-arr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#C8CBD8"/></marker>
+            </defs>
+            <line x1="60" y1="100" x2="628" y2="100" stroke="#E8E9F0" stroke-width="2"/>
+            <circle cx="140" cy="100" r="14" fill="#4B70F5" stroke="#fff" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="140" y="100" text-anchor="middle" dominant-baseline="central" fill="#fff">1</text>
+            <rect x="80" y="24" width="120" height="62" rx="8" fill="#EEF1FF" stroke="#4B70F5" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="140" y="42" text-anchor="middle" fill="#4B70F5">RNN / LSTM</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="140" y="57" text-anchor="middle" fill="#5A5F75">processes tokens</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="140" y="70" text-anchor="middle" fill="#5A5F75">sequentially</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="140" y="128" text-anchor="middle" fill="#8A8FA8">vanishing gradient</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="140" y="140" text-anchor="middle" fill="#8A8FA8">on long sequences</text>
+            <circle cx="340" cy="100" r="14" fill="#7F77DD" stroke="#fff" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="340" y="100" text-anchor="middle" dominant-baseline="central" fill="#fff">2</text>
+            <rect x="280" y="24" width="120" height="62" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.2"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="42" text-anchor="middle" fill="#7F77DD">Attention</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="57" text-anchor="middle" fill="#5A5F75">each token attends</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="70" text-anchor="middle" fill="#5A5F75">to all others</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="340" y="128" text-anchor="middle" fill="#8A8FA8">added on top of</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="340" y="140" text-anchor="middle" fill="#8A8FA8">recurrent layers</text>
+            <circle cx="548" cy="100" r="14" fill="#1D9E75" stroke="#fff" stroke-width="2"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="548" y="100" text-anchor="middle" dominant-baseline="central" fill="#fff">3</text>
+            <rect x="488" y="24" width="120" height="62" rx="8" fill="#EDFAF4" stroke="#1D9E75" stroke-width="1.5"/>
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="548" y="42" text-anchor="middle" fill="#1D9E75">Transformer</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="548" y="57" text-anchor="middle" fill="#5A5F75">attention only,</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="548" y="70" text-anchor="middle" fill="#5A5F75">fully parallel</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="548" y="128" text-anchor="middle" fill="#1D9E75" font-weight="700">BERT · GPT · LLMs</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="548" y="140" text-anchor="middle" fill="#8A8FA8">current standard</text>
+            <line x1="160" y1="100" x2="222" y2="100" stroke="#C8CBD8" stroke-width="1.2" marker-end="url(#arch-arr)"/>
+            <line x1="360" y1="100" x2="422" y2="100" stroke="#C8CBD8" stroke-width="1.2" marker-end="url(#arch-arr)"/>
+            <text font-family="Sora,sans-serif" font-size="9" font-weight="700" x="340" y="166" text-anchor="middle" fill="#3A3A3A">Self-Attention: Q · Kᵀ / √d_k → softmax → weighted sum of V</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="182" text-anchor="middle" fill="#8A8FA8">Query Q asks "what am I looking for?",  Key K answers "what do I contain?",  Value V carries the information</text>
+          </svg>
+        </div>
+
+        <p><strong>The Transformer</strong> removes recurrence entirely. Every token attends to every other token in parallel, which makes training dramatically faster and allows the model to capture long-range dependencies — essential for a clause at the start of a 200-page contract that qualifies a clause at the end.</p>
+
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 680 186" xmlns="http://www.w3.org/2000/svg">
+            <text font-family="Sora,sans-serif" font-size="11" font-weight="700" x="340" y="16" text-anchor="middle" fill="#3A3A3A">Attention weights — incident sentence</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="30" text-anchor="middle" fill="#8A8FA8">"Worker fell from scaffolding on level 3 due to missing guardrail"</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="44" text-anchor="middle" fill="#8A8FA8">What does "fell" attend to? (darker = higher attention weight)</text>
+            <text font-family="Sora,sans-serif" font-size="8" font-weight="700" x="20" y="90" text-anchor="middle" fill="#7F77DD" transform="rotate(-90,20,90)">query: "fell"</text>
+            <rect x="42"  y="62" width="68" height="50" rx="4" fill="#4B70F5" opacity="0.08"/>
+            <rect x="116" y="62" width="68" height="50" rx="4" fill="#4B70F5" opacity="0.30"/>
+            <rect x="190" y="62" width="52" height="50" rx="4" fill="#4B70F5" opacity="0.05"/>
+            <rect x="248" y="62" width="84" height="50" rx="4" fill="#4B70F5" opacity="0.65"/>
+            <rect x="338" y="62" width="54" height="50" rx="4" fill="#4B70F5" opacity="0.12"/>
+            <rect x="398" y="62" width="36" height="50" rx="4" fill="#4B70F5" opacity="0.08"/>
+            <rect x="440" y="62" width="64" height="50" rx="4" fill="#4B70F5" opacity="0.58"/>
+            <rect x="510" y="62" width="84" height="50" rx="4" fill="#4B70F5" opacity="0.85"/>
+            <text font-family="Sora,sans-serif" font-size="9" x="76"  y="124" text-anchor="middle" fill="#8A8FA8">Worker</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="150" y="124" text-anchor="middle" fill="#4B70F5" font-weight="700">fell</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="216" y="124" text-anchor="middle" fill="#8A8FA8">from</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="290" y="124" text-anchor="middle" fill="#4B70F5">scaffolding</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="365" y="124" text-anchor="middle" fill="#8A8FA8">level 3</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="472" y="124" text-anchor="middle" fill="#4B70F5">missing</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="552" y="124" text-anchor="middle" fill="#4B70F5" font-weight="700">guardrail</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="76"  y="90" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">0.08</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="150" y="90" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.30</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="216" y="90" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">0.05</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="290" y="90" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.65</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="365" y="90" text-anchor="middle" dominant-baseline="central" fill="#8A8FA8">0.12</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="472" y="90" text-anchor="middle" dominant-baseline="central" fill="#4B70F5">0.58</text>
+            <text font-family="Sora,sans-serif" font-size="8" x="552" y="90" text-anchor="middle" dominant-baseline="central" fill="#fff" font-weight="700">0.85</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="148" text-anchor="middle" fill="#8A8FA8">"fell" strongly attends to "guardrail", "missing", and "scaffolding" — the causal chain of the incident.</text>
+            <text font-family="Sora,sans-serif" font-size="9" x="340" y="164" text-anchor="middle" fill="#C8CBD8">This is how a transformer model learns to connect cause and effect across a sentence without explicit rules.</text>
+          </svg>
+        </div>
+
+        <h3>Part 4 · NLP in Construction — Real Applications</h3>
+
+        <p>Four tasks cover the majority of practical NLP use cases in construction. Each lab below runs end-to-end in Google Colab. The dependency cell is shared — run it once before starting.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Task</th><th>Input</th><th>Output</th><th>Construction example</th></tr></thead>
+          <tbody>
+            <tr><td>Classification</td><td>Text document</td><td>Category label</td><td>RFI → design / scope / schedule / quality / safety</td></tr>
+            <tr><td>NER</td><td>Free-form sentence</td><td>Entity tags</td><td>Extract equipment, location codes, dates from incident reports</td></tr>
+            <tr><td>Semantic search</td><td>Natural language query</td><td>Ranked clauses</td><td>"What happens if we're late?" → relevant contract clause</td></tr>
+            <tr><td>Zero-shot</td><td>Text + label list</td><td>Category label</td><td>Classify without any labelled data — useful for new project types</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <span class="callout-icon">⚙️</span>
+          <p><strong>Before running:</strong> set the Colab runtime to <strong>GPU (T4)</strong> via Runtime → Change runtime type. Lab G2 (fine-tuning) benefits most; Labs G1, H, and I run fine on CPU.</p>
+        </div>
+
+        <div class="step-list">
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">0</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Install dependencies</div>
+              <div class="step-desc">Run once per Colab session. ~2 min on a fresh instance.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('nlp0')"><span class="toggle-arrow">▶</span> Bash</button>
+              <div class="step-inline-code" id="nlp0">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Bash</span><span class="code-label">Step 0 · Install</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-comment"># ── Install all dependencies for Labs G1, G2, H, I ──────────────</span>
+<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">"transformers[torch]==4.40.*"</span>
+<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">"datasets==2.19.*"</span>
+<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">"sentence-transformers==2.7.*"</span>
+<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> <span class="tok-string">"accelerate==0.30.*"</span>
+<span class="tok-op">!</span>pip install <span class="tok-op">-q</span> seaborn matplotlib scikit-learn
+
+<span class="tok-keyword">import</span> torch, transformers, sentence_transformers
+device <span class="tok-op">=</span> <span class="tok-string">"cuda"</span> <span class="tok-keyword">if</span> torch.cuda.is_available() <span class="tok-keyword">else</span> <span class="tok-string">"cpu"</span>
+<span class="tok-func">print</span>(<span class="tok-string">f"torch            : {torch.__version__}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"transformers     : {transformers.__version__}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"sent-transformers: {sentence_transformers.__version__}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"device           : {device}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">"✓ Environment ready"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">G1</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Zero-shot RFI classification</div>
+              <div class="step-desc">No training data required. Uses NLI to judge category plausibility. CPU-friendly.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('nlpG1')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="nlpG1">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Lab G1 · Zero-shot classification</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">from</span> transformers <span class="tok-keyword">import</span> pipeline
+
+classifier <span class="tok-op">=</span> <span class="tok-func">pipeline</span>(
+    <span class="tok-string">"zero-shot-classification"</span>,
+    model<span class="tok-op">=</span><span class="tok-string">"facebook/bart-large-mnli"</span>,
+    device<span class="tok-op">=</span><span class="tok-number">0</span> <span class="tok-keyword">if</span> device <span class="tok-op">==</span> <span class="tok-string">"cuda"</span> <span class="tok-keyword">else</span> <span class="tok-op">-</span><span class="tok-number">1</span>
+)
+
+labels <span class="tok-op">=</span> [<span class="tok-string">"design"</span>, <span class="tok-string">"scope"</span>, <span class="tok-string">"schedule"</span>, <span class="tok-string">"quality"</span>, <span class="tok-string">"safety"</span>]
+
+rfis <span class="tok-op">=</span> [
+    <span class="tok-string">"Please clarify the beam connection detail at grid A-3 per structural drawing S-14."</span>,
+    <span class="tok-string">"Owner requested additional MEP rough-in scope for server room on floor 4."</span>,
+    <span class="tok-string">"Steel delivery delayed 2 weeks due to mill production backlog."</span>,
+    <span class="tok-string">"Core sample results show 28-day compressive strength of 2,850 psi, below spec of 3,000 psi."</span>,
+    <span class="tok-string">"Scaffolding on the north face lacks toe boards; workers are at risk of falling objects."</span>,
+]
+
+<span class="tok-func">print</span>(<span class="tok-string">f"{'RFI (first 55 chars)':<56} {'Predicted':<10} Score"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">"-"</span> <span class="tok-op">*</span> <span class="tok-number">78</span>)
+<span class="tok-keyword">for</span> rfi <span class="tok-keyword">in</span> rfis:
+    result    <span class="tok-op">=</span> <span class="tok-func">classifier</span>(rfi, candidate_labels<span class="tok-op">=</span>labels)
+    top_label <span class="tok-op">=</span> result[<span class="tok-string">"labels"</span>][<span class="tok-number">0</span>]
+    top_score <span class="tok-op">=</span> result[<span class="tok-string">"scores"</span>][<span class="tok-number">0</span>]
+    <span class="tok-func">print</span>(<span class="tok-string">f"{rfi[:55]:<56} {top_label:<10} {top_score:.2f}"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">G2</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Fine-tuned BERT for RFI classification</div>
+              <div class="step-desc">Train bert-base-uncased on 25 labelled RFIs (5 per class). Uses stratified split. ~1 min on T4 GPU.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('nlpG2')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="nlpG2">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Lab G2 · Fine-tune BERT</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">import</span> torch, random
+<span class="tok-keyword">from</span> collections <span class="tok-keyword">import</span> defaultdict
+<span class="tok-keyword">from</span> torch.utils.data <span class="tok-keyword">import</span> Dataset, DataLoader
+<span class="tok-keyword">from</span> transformers <span class="tok-keyword">import</span> (AutoTokenizer, AutoModelForSequenceClassification,
+                            AdamW, get_linear_schedule_with_warmup)
+<span class="tok-keyword">from</span> sklearn.metrics <span class="tok-keyword">import</span> classification_report
+
+LABEL2ID <span class="tok-op">=</span> {<span class="tok-string">"design"</span>:<span class="tok-number">0</span>, <span class="tok-string">"scope"</span>:<span class="tok-number">1</span>, <span class="tok-string">"schedule"</span>:<span class="tok-number">2</span>, <span class="tok-string">"quality"</span>:<span class="tok-number">3</span>, <span class="tok-string">"safety"</span>:<span class="tok-number">4</span>}
+ID2LABEL <span class="tok-op">=</span> {v: k <span class="tok-keyword">for</span> k, v <span class="tok-keyword">in</span> LABEL2ID.items()}
+
+raw_data <span class="tok-op">=</span> [
+    <span class="tok-comment"># design (5)</span>
+    (<span class="tok-string">"Clarify shear wall reinforcement at grid B-4 per drawing S-22."</span>, <span class="tok-string">"design"</span>),
+    (<span class="tok-string">"Column footing detail conflicts with architectural plan on floor 1."</span>, <span class="tok-string">"design"</span>),
+    (<span class="tok-string">"Staircase handrail height does not comply with IBC 1014.2."</span>, <span class="tok-string">"design"</span>),
+    (<span class="tok-string">"Curtain wall anchor spacing differs between MEP and structural drawings."</span>, <span class="tok-string">"design"</span>),
+    (<span class="tok-string">"Confirm fire-rated assembly spec for corridor wall type W-3."</span>, <span class="tok-string">"design"</span>),
+    <span class="tok-comment"># scope (5)</span>
+    (<span class="tok-string">"Owner requests additional electrical outlets in conference rooms."</span>, <span class="tok-string">"scope"</span>),
+    (<span class="tok-string">"Added scope for roof drainage upgrade not in original contract."</span>, <span class="tok-string">"scope"</span>),
+    (<span class="tok-string">"Client wants security camera coverage extended to parking level B2."</span>, <span class="tok-string">"scope"</span>),
+    (<span class="tok-string">"Landscape scope expanded to include irrigation system on east plot."</span>, <span class="tok-string">"scope"</span>),
+    (<span class="tok-string">"Fit-out of lobby expanded per revised architectural program."</span>, <span class="tok-string">"scope"</span>),
+    <span class="tok-comment"># schedule (5)</span>
+    (<span class="tok-string">"Structural steel fabrication delayed 3 weeks; revised delivery date TBD."</span>, <span class="tok-string">"schedule"</span>),
+    (<span class="tok-string">"Weather hold suspended exterior concrete pours for 5 days."</span>, <span class="tok-string">"schedule"</span>),
+    (<span class="tok-string">"MEP rough-in on floor 8 cannot start until rebar inspection clears."</span>, <span class="tok-string">"schedule"</span>),
+    (<span class="tok-string">"Subcontractor manpower shortage pushing tile installation by 2 weeks."</span>, <span class="tok-string">"schedule"</span>),
+    (<span class="tok-string">"Permit approval from authority delayed; foundation work on hold."</span>, <span class="tok-string">"schedule"</span>),
+    <span class="tok-comment"># quality (5)</span>
+    (<span class="tok-string">"Concrete cylinder test at 28 days failed to achieve 4,000 psi design strength."</span>, <span class="tok-string">"quality"</span>),
+    (<span class="tok-string">"Weld inspection identified incomplete fusion on column splice at level 5."</span>, <span class="tok-string">"quality"</span>),
+    (<span class="tok-string">"Waterproofing membrane shows blistering on podium deck area C."</span>, <span class="tok-string">"quality"</span>),
+    (<span class="tok-string">"Formwork deflection exceeded allowable tolerance during pour."</span>, <span class="tok-string">"quality"</span>),
+    (<span class="tok-string">"Rebar spacing on slab grid 3-5 deviates from approved shop drawing."</span>, <span class="tok-string">"quality"</span>),
+    <span class="tok-comment"># safety (5)</span>
+    (<span class="tok-string">"Missing guardrail on scaffold west face creates fall hazard above 6 m."</span>, <span class="tok-string">"safety"</span>),
+    (<span class="tok-string">"Excavation edge near crane path lacks adequate shoring; collapse risk."</span>, <span class="tok-string">"safety"</span>),
+    (<span class="tok-string">"Workers observed not wearing PPE in designated hard-hat zone."</span>, <span class="tok-string">"safety"</span>),
+    (<span class="tok-string">"Temporary power cables on floor 3 are not properly secured; trip hazard."</span>, <span class="tok-string">"safety"</span>),
+    (<span class="tok-string">"Hot-work permit not issued before welding commenced in level B1."</span>, <span class="tok-string">"safety"</span>),
+]
+
+random.seed(<span class="tok-number">42</span>)
+by_class <span class="tok-op">=</span> defaultdict(list)
+<span class="tok-keyword">for</span> text, label <span class="tok-keyword">in</span> raw_data:
+    by_class[label].append((text, label))
+
+train_data, val_data <span class="tok-op">=</span> [], []
+<span class="tok-keyword">for</span> label, samples <span class="tok-keyword">in</span> by_class.items():
+    random.shuffle(samples)
+    val_data.append(samples[<span class="tok-number">0</span>])
+    train_data.extend(samples[<span class="tok-number">1</span>:])
+random.shuffle(train_data)
+
+MODEL_NAME <span class="tok-op">=</span> <span class="tok-string">"bert-base-uncased"</span>
+tokenizer  <span class="tok-op">=</span> AutoTokenizer.from_pretrained(MODEL_NAME)
+
+<span class="tok-keyword">class</span> <span class="tok-cls">RFIDataset</span>(Dataset):
+    <span class="tok-keyword">def</span> <span class="tok-func">__init__</span>(self, data):
+        self.enc <span class="tok-op">=</span> tokenizer([d[<span class="tok-number">0</span>] <span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> data],
+                             truncation<span class="tok-op">=</span>True, padding<span class="tok-op">=</span>True,
+                             max_length<span class="tok-op">=</span><span class="tok-number">128</span>, return_tensors<span class="tok-op">=</span><span class="tok-string">"pt"</span>)
+        self.labels <span class="tok-op">=</span> torch.tensor([LABEL2ID[d[<span class="tok-number">1</span>]] <span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> data])
+    <span class="tok-keyword">def</span> <span class="tok-func">__len__</span>(self):  <span class="tok-keyword">return</span> len(self.labels)
+    <span class="tok-keyword">def</span> <span class="tok-func">__getitem__</span>(self, i):
+        <span class="tok-keyword">return</span> {k: v[i] <span class="tok-keyword">for</span> k, v <span class="tok-keyword">in</span> self.enc.items()}, self.labels[i]
+
+train_loader <span class="tok-op">=</span> DataLoader(RFIDataset(train_data), batch_size<span class="tok-op">=</span><span class="tok-number">8</span>, shuffle<span class="tok-op">=</span>True)
+val_loader   <span class="tok-op">=</span> DataLoader(RFIDataset(val_data),   batch_size<span class="tok-op">=</span><span class="tok-number">8</span>)
+
+model <span class="tok-op">=</span> AutoModelForSequenceClassification.from_pretrained(
+    MODEL_NAME, num_labels<span class="tok-op">=</span><span class="tok-number">5</span>, id2label<span class="tok-op">=</span>ID2LABEL, label2id<span class="tok-op">=</span>LABEL2ID).to(device)
+EPOCHS    <span class="tok-op">=</span> <span class="tok-number">5</span>
+optimizer <span class="tok-op">=</span> AdamW(model.parameters(), lr<span class="tok-op">=</span><span class="tok-number">2e-5</span>, weight_decay<span class="tok-op">=</span><span class="tok-number">0.01</span>)
+scheduler <span class="tok-op">=</span> get_linear_schedule_with_warmup(
+    optimizer,
+    num_warmup_steps<span class="tok-op">=</span>len(train_loader) <span class="tok-op">*</span> EPOCHS <span class="tok-op">//</span> <span class="tok-number">10</span>,
+    num_training_steps<span class="tok-op">=</span>len(train_loader) <span class="tok-op">*</span> EPOCHS)
+
+<span class="tok-keyword">for</span> epoch <span class="tok-keyword">in</span> range(EPOCHS):
+    model.train(); total_loss <span class="tok-op">=</span> <span class="tok-number">0</span>
+    <span class="tok-keyword">for</span> batch, labels <span class="tok-keyword">in</span> train_loader:
+        batch   <span class="tok-op">=</span> {k: v.to(device) <span class="tok-keyword">for</span> k, v <span class="tok-keyword">in</span> batch.items()}
+        labels  <span class="tok-op">=</span> labels.to(device)
+        outputs <span class="tok-op">=</span> model(<span class="tok-op">**</span>batch, labels<span class="tok-op">=</span>labels)
+        outputs.loss.backward()
+        optimizer.step(); scheduler.step(); optimizer.zero_grad()
+        total_loss <span class="tok-op">+=</span> outputs.loss.item()
+    <span class="tok-func">print</span>(<span class="tok-string">f"Epoch {epoch+1}/{EPOCHS}  loss={total_loss/len(train_loader):.4f}"</span>)
+
+model.eval(); preds, trues <span class="tok-op">=</span> [], []
+<span class="tok-keyword">with</span> torch.no_grad():
+    <span class="tok-keyword">for</span> batch, labels <span class="tok-keyword">in</span> val_loader:
+        logits <span class="tok-op">=</span> model(<span class="tok-op">**</span>{k: v.to(device) <span class="tok-keyword">for</span> k, v <span class="tok-keyword">in</span> batch.items()}).logits
+        preds.extend(logits.argmax(<span class="tok-op">-</span><span class="tok-number">1</span>).cpu().tolist())
+        trues.extend(labels.tolist())
+
+<span class="tok-func">print</span>(classification_report(trues, preds,
+      labels<span class="tok-op">=</span>list(LABEL2ID.values()),
+      target_names<span class="tok-op">=</span>list(LABEL2ID.keys()), zero_division<span class="tok-op">=</span><span class="tok-number">0</span>))</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">H</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">NER — incident report parsing</div>
+              <div class="step-desc">Extract named entities from free-form incident prose. Also shows the domain gap — what a general model misses, and why fine-tuning matters.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('nlpH')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="nlpH">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Lab H · NER incident report</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">from</span> transformers <span class="tok-keyword">import</span> pipeline
+<span class="tok-keyword">from</span> collections <span class="tok-keyword">import</span> defaultdict
+
+ner <span class="tok-op">=</span> pipeline(
+    <span class="tok-string">"ner"</span>,
+    model<span class="tok-op">=</span><span class="tok-string">"dbmdz/bert-large-cased-finetuned-conll03-english"</span>,
+    aggregation_strategy<span class="tok-op">=</span><span class="tok-string">"simple"</span>,
+    device<span class="tok-op">=</span><span class="tok-number">0</span> <span class="tok-keyword">if</span> device <span class="tok-op">==</span> <span class="tok-string">"cuda"</span> <span class="tok-keyword">else</span> <span class="tok-op">-</span><span class="tok-number">1</span>
+)
+
+report <span class="tok-op">=</span> <span class="tok-string">"""
+Incident Report #IR-2024-047
+On March 15, 2024, worker Ahmed Al-Rashid sustained a laceration while
+operating a Hilti TE 60-ATC rotary hammer on Level 7 of Tower B, near
+Grid C-5. The incident occurred at 14:30. Supervisor David Park was
+notified immediately. The worker was transported to Seoul Medical Center.
+A Makita angle grinder was also involved. OSHA Form 300 filing required.
+Investigation led by HSE Manager Sarah Cho.
+"""</span>
+
+entities <span class="tok-op">=</span> ner(report)
+grouped  <span class="tok-op">=</span> defaultdict(list)
+<span class="tok-keyword">for</span> ent <span class="tok-keyword">in</span> entities:
+    grouped[ent[<span class="tok-string">"entity_group"</span>]].append(ent[<span class="tok-string">"word"</span>])
+
+<span class="tok-func">print</span>(<span class="tok-string">"═══ Extracted by general NER ════════════════════"</span>)
+<span class="tok-keyword">for</span> etype, words <span class="tok-keyword">in</span> sorted(grouped.items()):
+    <span class="tok-func">print</span>(<span class="tok-string">f"  {etype:<6}: {', '.join(dict.fromkeys(words))}"</span>)
+
+<span class="tok-func">print</span>(<span class="tok-string">"\n═══ Construction entities the model MISSED ══════"</span>)
+domain_gaps <span class="tok-op">=</span> {
+    <span class="tok-string">"EQUIPMENT    "</span>: [<span class="tok-string">"Hilti TE 60-ATC"</span>, <span class="tok-string">"Makita angle grinder"</span>],
+    <span class="tok-string">"LOCATION_CODE"</span>: [<span class="tok-string">"Level 7"</span>, <span class="tok-string">"Tower B"</span>, <span class="tok-string">"Grid C-5"</span>],
+    <span class="tok-string">"REGULATION   "</span>: [<span class="tok-string">"OSHA Form 300"</span>],
+    <span class="tok-string">"REPORT_ID    "</span>: [<span class="tok-string">"IR-2024-047"</span>],
+}
+<span class="tok-keyword">for</span> etype, expected <span class="tok-keyword">in</span> domain_gaps.items():
+    <span class="tok-func">print</span>(<span class="tok-string">f"  {etype}: {expected}  ← needs domain fine-tuning"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-spine"><div class="step-dot">I</div><div class="step-line"></div></div>
+            <div class="step-body">
+              <div class="step-title">Semantic contract clause search</div>
+              <div class="step-desc">Find the most relevant clause for a natural-language question using sentence embeddings and cosine similarity — no keyword matching. This is the retrieval step of the RAG pipeline that Section 6 builds on.</div>
+              <button class="step-code-toggle" onclick="toggleStepCode('nlpI')"><span class="toggle-arrow">▶</span> Python</button>
+              <div class="step-inline-code" id="nlpI">
+                <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Lab I · Semantic clause retrieval</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre class="code-body"><span class="tok-keyword">from</span> sentence_transformers <span class="tok-keyword">import</span> SentenceTransformer, util
+<span class="tok-keyword">import</span> torch
+
+embed_model <span class="tok-op">=</span> SentenceTransformer(<span class="tok-string">"all-MiniLM-L6-v2"</span>)
+
+clauses <span class="tok-op">=</span> [
+    (<span class="tok-string">"3.1"</span>, <span class="tok-string">"Contractor shall provide written notice of any anticipated delay within 14 days."</span>),
+    (<span class="tok-string">"3.2"</span>, <span class="tok-string">"Liquidated damages of USD 5,000 per calendar day apply for schedule overrun beyond the Completion Date."</span>),
+    (<span class="tok-string">"4.1"</span>, <span class="tok-string">"All structural concrete shall comply with ACI 318-19. Minimum compressive strength is 4,000 psi at 28 days."</span>),
+    (<span class="tok-string">"4.2"</span>, <span class="tok-string">"Reinforcing steel shall conform to ASTM A615 Grade 60. Mill certificates must be submitted prior to delivery."</span>),
+    (<span class="tok-string">"5.1"</span>, <span class="tok-string">"Owner reserves the right to inspect any portion of the Work at any time without prior notice."</span>),
+    (<span class="tok-string">"5.2"</span>, <span class="tok-string">"Defective work identified during inspection shall be corrected within 7 days at no additional cost to the Owner."</span>),
+    (<span class="tok-string">"6.1"</span>, <span class="tok-string">"Contractor is responsible for all safety measures, including fall protection for any work above 1.8 m."</span>),
+    (<span class="tok-string">"7.1"</span>, <span class="tok-string">"Contractor shall maintain all-risk insurance with a minimum coverage of USD 10 million."</span>),
+    (<span class="tok-string">"8.1"</span>, <span class="tok-string">"Any scope change must be authorised via a written Change Order signed by both parties before work commences."</span>),
+]
+
+clause_ids   <span class="tok-op">=</span> [c[<span class="tok-number">0</span>] <span class="tok-keyword">for</span> c <span class="tok-keyword">in</span> clauses]
+clause_texts <span class="tok-op">=</span> [c[<span class="tok-number">1</span>] <span class="tok-keyword">for</span> c <span class="tok-keyword">in</span> clauses]
+clause_embs  <span class="tok-op">=</span> embed_model.encode(clause_texts, convert_to_tensor<span class="tok-op">=</span>True)
+
+<span class="tok-keyword">def</span> <span class="tok-func">search</span>(query, top_k<span class="tok-op">=</span><span class="tok-number">2</span>):
+    q_emb  <span class="tok-op">=</span> embed_model.encode(query, convert_to_tensor<span class="tok-op">=</span>True)
+    scores <span class="tok-op">=</span> util.cos_sim(q_emb, clause_embs)[<span class="tok-number">0</span>]
+    top    <span class="tok-op">=</span> torch.topk(scores, k<span class="tok-op">=</span>top_k)
+    <span class="tok-func">print</span>(<span class="tok-string">f'\nQuery: "{query}"'</span>)
+    <span class="tok-func">print</span>(<span class="tok-string">"─"</span> <span class="tok-op">*</span> <span class="tok-number">70</span>)
+    <span class="tok-keyword">for</span> score, idx <span class="tok-keyword">in</span> zip(top.values, top.indices):
+        i <span class="tok-op">=</span> idx.item()
+        <span class="tok-func">print</span>(<span class="tok-string">f"  Clause {clause_ids[i]}  |  score={score:.3f}"</span>)
+        <span class="tok-func">print</span>(<span class="tok-string">f"  {clause_texts[i]}\n"</span>)
+
+search(<span class="tok-string">"What happens if we finish late?"</span>)
+search(<span class="tok-string">"What are the concrete strength requirements?"</span>)
+search(<span class="tok-string">"Can the owner visit the site unannounced?"</span>)
+search(<span class="tok-string">"Who is responsible if a worker falls from height?"</span>)</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card"><div class="metric-val">G1</div><div class="metric-label">Zero-shot</div><div class="metric-sub">no labels needed · ~0.80 F1</div></div>
+          <div class="metric-card"><div class="metric-val">G2</div><div class="metric-label">Fine-tuned BERT</div><div class="metric-sub">25 samples · improves to ~0.95</div></div>
+          <div class="metric-card"><div class="metric-val">H</div><div class="metric-label">NER</div><div class="metric-sub">general vs domain gap</div></div>
+          <div class="metric-card"><div class="metric-val">I</div><div class="metric-label">Semantic Search</div><div class="metric-sub">RAG retrieval foundation</div></div>
+        </div>
+
+        <h3>Data Realities &amp; Limitations</h3>
+
+        <table class="compare-table">
+          <thead><tr><th>Challenge</th><th>Why it matters</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Inconsistent format</td><td>RFIs, NCRs, and daily reports differ by company and engineer</td><td>Build a preprocessing pipeline before any modelling</td></tr>
+            <tr><td>Legal sensitivity</td><td>Contracts and claims contain confidential information</td><td>On-premise deployment; avoid sending raw docs to public APIs</td></tr>
+            <tr><td>Domain vocabulary gap</td><td>General models miss spec numbers, grid codes, equipment models</td><td>Fine-tune on 200–500 labelled construction documents</td></tr>
+            <tr><td>Scarce labelled data</td><td>Annotating RFIs and incidents is expensive</td><td>Zero-shot first; active learning to label high-value examples</td></tr>
+            <tr><td>Multi-language sites</td><td>Large projects generate documents in Korean, Arabic, English</td><td>Use multilingual models (mBERT, XLM-R) or translate first</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <span class="callout-icon">🔭</span>
+          <p><strong>Up next — Section 06:</strong> LLM &amp; RAG. Lab I retrieved the most relevant clause — but just printed it. Section 6 plugs a large language model in as the answer generator, completing the full pipeline: <em>retrieve relevant context → generate a natural-language answer</em>.</p>
+        </div>
+      </div>
+
       <div class="page-footer-nav">
         <a class="nav-back" href="../index.html#posts">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -350,10 +1705,10 @@
   </div>
 
   <footer>
-    <p>© 2025 Jungwon LEE · <a href="mailto:ok122800@gmail.com">ok122800@gmail.com</a></p>
+    <p>© 2025 Jungwon LEE · <a href="/cdn-cgi/l/email-protection#701f1b41424248404030171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="7b14104a4949434b4b3b1c161a121755181416">[email&#160;protected]</span></a></p>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -375,23 +1730,65 @@
     });
     const tocLinks = document.querySelectorAll('.toc-sidebar a[href^="#"]');
     const sections = document.querySelectorAll('.post-section[id]');
-    const onScroll = () => {
-      let current = '';
-      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
-      tocLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+
+    // 스크롤 위치 기반 하이라이트 (IntersectionObserver 방식)
+    const activateLink = (id) => {
+      tocLinks.forEach(a => {
+        const isActive = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('active', isActive);
+      });
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) activateLink(e.target.id);
+      });
+    }, {
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    });
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // 페이지 최하단 도달 시 마지막 섹션 하이라이트
+    window.addEventListener('scroll', () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        const last = sections[sections.length - 1];
+        if (last) activateLink(last.id);
+      }
+    }, { passive: true });
+
+    // 초기 하이라이트
+    const firstVisible = [...sections].find(s => s.getBoundingClientRect().top >= 0);
+    if (firstVisible) activateLink(firstVisible.id);
+    else if (sections.length) activateLink(sections[0].id);
+
+    // 애니메이션 옵저버
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
       });
     }, { threshold: 0.06 });
     document.querySelectorAll('.post-section').forEach(el => {
-      el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      el.style.opacity = '0'; el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity .7s ease, transform .7s ease';
       observer.observe(el);
     });
+
+    function copyCode(btn) {
+      const pre = btn.closest('.step-inline-code') ? btn.closest('.step-inline-code').querySelector('pre') : btn.closest('.code-block-wrap').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    function toggleStepCode(id) {
+      const code = document.getElementById(id);
+      const btn  = code.previousElementSibling;
+      const isOpen = code.classList.contains('open');
+      code.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+    }
   </script>
 </body>
 </html>
