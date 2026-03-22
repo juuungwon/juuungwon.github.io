@@ -2861,4 +2861,15 @@ TEST_QS <span class="tok-op">=</span> [
     }
 
     function copyCode(btn) {
-      const pre = btn.closest('.step-i
+      const pre = btn.closest('.step-inner-wrap') || btn.closest('.diagram-wrap');
+      if (!pre) return;
+      const code = pre.querySelector('pre') || pre;
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+  </script>
+</body>
+</html>
