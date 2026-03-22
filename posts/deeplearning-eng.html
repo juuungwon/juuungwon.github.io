@@ -78,8 +78,9 @@
       padding: 4px 0;
       display: flex;
       flex-direction: column;
+      z-index: 50;
     }
-    .post-content { max-width: 680px; margin: 0 auto; }
+    .post-content { max-width: 680px; margin: 0 auto; position: relative; }
     @media (max-width: 1200px) { .toc-sidebar { display: none; } }
     .toc-title {
       font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800;
@@ -710,6 +711,7 @@
             <text font-family="Sora,sans-serif" font-size="9.5" x="10" y="128" fill="#8A8FA8"><tspan font-weight="700" fill="#4B70F5">1 Epoch</tspan>  =  full pass through all N samples  =  N / batch_size  iterations  (here: 12 / 4 = 3 iterations / epoch)</text>
           </svg>
         </div>
+        <h3>Overfitting &amp; Underfitting</h3>
         <p>Overfitting occurs when the model memorises training data rather than generalising. The <strong>validation loss curve</strong> is the primary diagnostic — not training loss alone.</p>
 
         <div class="diagram-wrap">
@@ -1072,7 +1074,7 @@
             <div class="step-spine"><div class="step-dot">5</div><div class="step-line"></div></div>
             <div class="step-body">
               <div class="step-title">Evaluate on test set</div>
-              <div class="step-desc"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86ebc7d6c6b6a8b3">[email&#160;protected]</a>, Precision, Recall — and understand why Recall matters more for safety.</div>
+              <div class="step-desc">mAP@0.50, Precision, Recall — and understand why Recall matters more for safety.</div>
               <button class="step-code-toggle" onclick="toggleStepCode('sc5')"><span class="toggle-arrow">▶</span> Python</button>
               <div class="step-inline-code" id="sc5">
                 <div class="code-block-header"><div class="code-block-header-left"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Python</span><span class="code-label">Step 5 · Evaluate on test set</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -1087,8 +1089,8 @@
     imgsz   <span class="tok-op">=</span> <span class="tok-number">640</span>,
     verbose <span class="tok-op">=</span> <span class="tok-cls">False</span>,
 )
-<span class="tok-func">print</span>(<span class="tok-string">f"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8de0ccddcdbda3b8bd">[email&#160;protected]</a>      : {val.box.map50:.4f}"</span>)
-<span class="tok-func">print</span>(<span class="tok-string">f"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f8d4c5d5a5bba0a5">[email&#160;protected]</a>:0.95 : {val.box.map:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50      : {val.box.map50:.4f}"</span>)
+<span class="tok-func">print</span>(<span class="tok-string">f"mAP@0.50:0.95 : {val.box.map:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Precision     : {val.box.mp:.4f}"</span>)
 <span class="tok-func">print</span>(<span class="tok-string">f"Recall        : {val.box.mr:.4f}"</span>)</pre>
               </div>
