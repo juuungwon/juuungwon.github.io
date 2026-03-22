@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development of a Cognitive Agent System for Automated Construction Site Safety Management · Jungwon LEE</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦺</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #3A3A3A;
+      --accent: #4B70F5;
+      --accent-light: #EEF1FF;
+      --accent-mid: #7B97F8;
+      --bg: #F7F8FC;
+      --white: #FFFFFF;
+      --gray-1: #F0F1F6;
+      --gray-2: #C8CBD8;
+      --gray-3: #8A8FA8;
+      --gray-4: #5A5F75;
+      --card-bg: #FFFFFF;
+      --border: rgba(75,112,245,0.10);
+      --shadow-sm: 0 2px 12px rgba(75,112,245,0.07);
+      --shadow-md: 0 8px 32px rgba(75,112,245,0.12);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --nav-h: 68px;
+      --nav-bg: rgba(247,248,252,0.82);
+    }
+    [data-theme="dark"] {
+      --black: #E8E9F0;
+      --accent-light: #1E2540;
+      --bg: #0F1117;
+      --white: #1A1D27;
+      --gray-1: #1E2130;
+      --gray-2: #2E3248;
+      --gray-3: #5A5F75;
+      --gray-4: #8A8FA8;
+      --card-bg: #1A1D27;
+      --border: rgba(75,112,245,0.15);
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+      --nav-bg: rgba(15,17,23,0.88);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --black: #E8E9F0;
+        --accent-light: #1E2540;
+        --bg: #0F1117;
+        --white: #1A1D27;
+        --gray-1: #1E2130;
+        --gray-2: #2E3248;
+        --gray-3: #5A5F75;
+        --gray-4: #8A8FA8;
+        --card-bg: #1A1D27;
+        --border: rgba(75,112,245,0.15);
+        --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+        --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+        --nav-bg: rgba(15,17,23,0.88);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', 'Sora', sans-serif;
+      background: var(--bg); color: var(--black);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent-mid); border-radius: 99px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 80px);
+      background: var(--nav-bg); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.15rem;
+      color: var(--accent); letter-spacing: -0.02em; text-decoration: none;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.875rem; font-weight: 500; color: var(--gray-4);
+      text-decoration: none; padding: 7px 16px; border-radius: 99px;
+      background: var(--gray-1); transition: background .2s, color .2s;
+    }
+    .nav-back:hover { background: var(--accent-light); color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .theme-toggle {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.2rem; padding: 6px; border-radius: 50%;
+      transition: background .2s; display: flex; align-items: center; justify-content: center;
+    }
+    .theme-toggle:hover { background: var(--gray-1); }
+
+    /* MAIN */
+    main {
+      max-width: 860px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 56px) clamp(20px, 4vw, 0px) 120px;
+    }
+
+    /* HERO BANNER */
+    .project-hero {
+      margin-bottom: 56px;
+      animation: fadeUp .8s ease both;
+    }
+    .project-meta {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .badge {
+      font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.08em; color: #fff; background: var(--accent);
+      padding: 5px 13px; border-radius: 99px;
+    }
+    .badge.ongoing {
+      background: #22c55e; color: #fff;
+    }
+    .badge.funder {
+      background: var(--accent-light); color: var(--accent);
+    }
+    .project-hero h1 {
+      font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700; letter-spacing: -0.03em; color: var(--black);
+      line-height: 1.3; margin-bottom: 16px;
+    }
+    .project-hero h1 span { color: var(--accent); }
+    .project-subtitle {
+      font-size: 1rem; color: var(--gray-3); font-weight: 500; line-height: 1.7;
+      max-width: 680px;
+    }
+
+    /* INFO ROW */
+    .info-row {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 56px;
+      animation: fadeUp .8s ease .05s both;
+    }
+    .info-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 12px 18px;
+      box-shadow: var(--shadow-sm); flex: 1; min-width: 150px;
+    }
+    .info-chip-icon { font-size: 1.15rem; flex-shrink: 0; }
+    .info-chip-label { font-size: 0.75rem; color: var(--gray-3); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px; }
+    .info-chip-value { font-size: 0.9rem; color: var(--black); font-weight: 600; font-family: 'Sora', sans-serif; }
+
+    /* SECTION BLOCKS */
+    .section-block {
+      margin-bottom: 48px;
+      animation: fadeUp .7s ease both;
+    }
+    .section-block:nth-child(3) { animation-delay: .08s; }
+    .section-block:nth-child(4) { animation-delay: .12s; }
+    .section-block:nth-child(5) { animation-delay: .16s; }
+    .section-block:nth-child(6) { animation-delay: .20s; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    .section-label::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+    .section-block h2 {
+      font-family: 'Sora', sans-serif; font-size: 1.35rem; font-weight: 700;
+      letter-spacing: -0.02em; color: var(--black); margin-bottom: 20px;
+    }
+
+    /* CONTENT CARD */
+    .content-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      padding: 28px 32px;
+    }
+    .content-card p {
+      font-size: 0.93rem; color: var(--gray-4); line-height: 1.9;
+    }
+    .content-card p + p { margin-top: 14px; }
+
+    /* MOTIVATION LIST */
+    .motivation-list {
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .motivation-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--card-bg); border-radius: var(--radius-sm);
+      border: 1px solid var(--border); padding: 18px 22px;
+      box-shadow: var(--shadow-sm); transition: all .2s;
+    }
+    .motivation-item:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+    .motivation-num {
+      flex-shrink: 0; width: 28px; height: 28px; background: var(--accent);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-size: 0.75rem; font-weight: 700; color: #fff;
+      margin-top: 1px;
+    }
+    .motivation-item p { font-size: 0.9rem; color: var(--gray-4); line-height: 1.8; }
+
+    /* OBJECTIVE HIGHLIGHT */
+    .objective-card {
+      background: linear-gradient(135deg, var(--accent-light) 0%, var(--bg) 100%);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius); padding: 32px 36px;
+      box-shadow: var(--shadow-md);
+    }
+    .objective-card p {
+      font-size: 0.97rem; color: var(--black); line-height: 1.95; font-weight: 500;
+    }
+    .objective-card strong { color: var(--accent); font-weight: 700; }
+
+    /* SYSTEM FIGURE */
+    .figure-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .figure-card img {
+      width: 100%; display: block;
+    }
+    .figure-caption {
+      padding: 14px 24px; font-size: 0.82rem; color: var(--gray-3);
+      border-top: 1px solid var(--border); text-align: center;
+    }
+
+    /* TAGS ROW */
+    .tags-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag { font-size: 0.78rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 5px 13px; border-radius: 99px; }
+
+    /* FOOTER NAV */
+    .page-footer-nav {
+      display: flex; justify-content: flex-start; margin-top: 64px;
+      padding-top: 32px; border-top: 1px solid var(--border);
+    }
+
+    footer {
+      text-align: center; padding: 48px 24px;
+      color: var(--gray-3); font-size: 0.85rem; border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .info-row { gap: 8px; }
+      .info-chip { min-width: calc(50% - 4px); }
+      .content-card, .objective-card { padding: 20px 22px; }
+      .motivation-item { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">JL.</a>
+    <div class="nav-right">
+      <a class="nav-back" href="index.html#research">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Research
+      </a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☀️</button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <div class="project-hero">
+      <div class="project-meta">
+        <span class="badge funder">NRF</span>
+        <span class="badge ongoing">Ongoing</span>
+      </div>
+      <h1>Development of a Cognitive Agent System for<br><span>Automated Construction Site Safety Management</span></h1>
+      <p class="project-subtitle">
+        An integrated AI framework combining a dynamic ontology foundry, construction safety knowledge DB,
+        and multimodal models to automate and elevate safety decision-making on construction sites.
+      </p>
+    </div>
+
+    <!-- INFO CHIPS -->
+    <div class="info-row">
+      <div class="info-chip">
+        <span class="info-chip-icon">🏛️</span>
+        <div>
+          <div class="info-chip-label">Funder</div>
+          <div class="info-chip-value">NRF (Korea)</div>
+        </div>
+      </div>
+      <div class="info-chip">
+        <span class="info-chip-icon">📅</span>
+        <div>
+          <div class="info-chip-label">Period</div>
+          <div class="info-chip-value">2025 — Present</div>
+        </div>
+      </div>
+      <div class="info-chip">
+        <span class="info-chip-icon">🏫</span>
+        <div>
+          <div class="info-chip-label">Institution</div>
+          <div class="info-chip-value">Hongik University</div>
+          <div style="font-size:0.78rem; color:var(--gray-3); margin-top:2px;">PI: Prof. Seungjun AHN</div>
+        </div>
+      </div>
+      <div class="info-chip">
+        <span class="info-chip-icon">👤</span>
+        <div>
+          <div class="info-chip-label">Role</div>
+          <div class="info-chip-value">Student Coordinator</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYSTEM FIGURE -->
+    <div class="section-block">
+      <div class="section-label">Overview</div>
+      <h2>System Architecture</h2>
+      <div class="figure-card">
+        <img src="images/cas_overview.png" alt="CAS — Cognitive Agent System architecture diagram" />
+        <p class="figure-caption">
+          Fig. 1 — Overall architecture of the Cognitive Agent System (CAS), integrating a Dynamic Ontology Foundry,
+          Construction Safety Knowledge DB, and Multimodal AI Model.
+        </p>
+      </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div class="section-block">
+      <div class="section-label">Research Background</div>
+      <h2>Why This Research?</h2>
+      <div class="motivation-list">
+        <div class="motivation-item">
+          <div class="motivation-num">1</div>
+          <p>
+            The expanded enforcement of the <strong>Serious Accidents Punishment Act</strong> in 2024 has
+            significantly increased demand for qualified safety managers at construction sites.
+            Although the government introduced a <em>Shared Safety Manager Support Program</em> to address
+            this gap, the supply of safety personnel remains insufficient to meet the growing need.
+          </p>
+        </div>
+        <div class="motivation-item">
+          <div class="motivation-num">2</div>
+          <p>
+            While safety management technologies using <strong>BIM and machine learning</strong> have been
+            developed both domestically and internationally, they are largely limited to
+            image- and sensor-based hazard detection or predictive risk assessment, falling short
+            of supporting the full scope of on-site decision-making.
+          </p>
+        </div>
+        <div class="motivation-item">
+          <div class="motivation-num">3</div>
+          <p>
+            Emerging <strong>generative AI-based</strong> safety management tools have also failed to adequately
+            reflect the actual workflows and logical judgment processes of human safety managers,
+            limiting their practical applicability in real construction environments.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJECTIVE -->
+    <div class="section-block">
+      <div class="section-label">Research Objective</div>
+      <h2>What We Aim to Build</h2>
+      <div class="objective-card">
+        <p>
+          This research aims to develop a <strong>Cognitive Agent System (CAS)</strong> for automating and
+          advancing safety management at construction sites. The system integrates three core
+          components — a <strong>Dynamic Ontology Foundry</strong>, a <strong>Construction Safety Knowledge DB</strong>,
+          and a <strong>Multimodal AI Model</strong> — into a unified cognitive framework.
+        </p>
+        <p style="margin-top: 16px;">
+          By coupling this system with an <strong>autonomous adaptive learning module</strong> and an
+          <strong>AI–human collaboration framework</strong>, the research seeks to enable
+          real-time risk prediction, automated generation of response measures, and
+          a sophisticated safety management agent that reflects the actual logic of expert decision-making.
+        </p>
+        <div class="tags-row">
+          <span class="tag">Cognitive Agent</span>
+          <span class="tag">Dynamic Ontology</span>
+          <span class="tag">Multimodal AI</span>
+          <span class="tag">Construction Safety</span>
+          <span class="tag">Real-time Risk Prediction</span>
+          <span class="tag">AI–Human Collaboration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER NAV -->
+    <div class="page-footer-nav">
+      <a class="nav-back" href="index.html#research">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Research
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2025 Jungwon LEE · <a href="mailto:ok122800@gmail.com">ok122800@gmail.com</a></p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function getEffectiveTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved;
+      return systemDark.matches ? 'dark' : 'light';
+    }
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+    applyTheme(getEffectiveTheme());
+    toggle.addEventListener('click', () => {
+      const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+    systemDark.addEventListener('change', () => {
+      if (!localStorage.getItem('theme')) applyTheme(getEffectiveTheme());
+    });
+
+    // Scroll-in animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('.section-block').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
