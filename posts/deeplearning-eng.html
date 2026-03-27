@@ -1936,7 +1936,7 @@ search(<span class="tok-string">"Who is responsible if a worker falls from heigh
 
         <div class="callout">
           <span class="callout-icon">💡</span>
-          <p><strong>Context window</strong> is the maximum number of tokens an LLM can process at once. Gemini 2.5 Flash supports up to <strong>1 million tokens</strong> — roughly 700,000 words. Even so, RAG is still preferable for long document collections: it's faster, cheaper, and forces the model to cite its sources.</p>
+          <p><strong>Context window</strong> is the maximum number of tokens an LLM can process at once. Gemini 3.1 Flash-Lite supports up to <strong>1 million tokens</strong> — roughly 700,000 words. Even so, RAG is still preferable for long document collections: it's faster, cheaper, and forces the model to cite its sources.</p>
         </div>
 
         <h3>The RAG Pipeline</h3>
@@ -2014,7 +2014,7 @@ search(<span class="tok-string">"Who is responsible if a worker falls from heigh
         </table>
 
         <h3>Hands-On: Construction Safety Q&amp;A with Gemini + ChromaDB</h3>
-        <p>The code below builds a full RAG pipeline in Google Colab — no GPU required. It downloads the OSHA Fall Protection guideline PDF, chunks and embeds it into ChromaDB, then uses <strong>Gemini 2.5 Flash</strong> (free tier) to answer construction safety questions grounded in the document.</p>
+        <p>The code below builds a full RAG pipeline in Google Colab — no GPU required. It downloads the OSHA Fall Protection guideline PDF, chunks and embeds it into ChromaDB, then uses <strong>Gemini 3.1 Flash-Lite</strong> (free tier) to answer construction safety questions grounded in the document.</p>
 
         <div class="callout">
           <span class="callout-icon">⚙️</span>
@@ -2051,7 +2051,7 @@ search(<span class="tok-string">"Who is responsible if a worker falls from heigh
 <span class="tok-var">GEMINI_API_KEY</span> <span class="tok-op">=</span> <span class="tok-string">"YOUR_API_KEY"</span>
 
 genai.configure(api_key<span class="tok-op">=</span><span class="tok-var">GEMINI_API_KEY</span>)
-<span class="tok-var">model</span> <span class="tok-op">=</span> genai.<span class="tok-cls">GenerativeModel</span>(<span class="tok-string">"gemini-2.5-flash"</span>)
+<span class="tok-var">model</span> <span class="tok-op">=</span> genai.<span class="tok-cls">GenerativeModel</span>(<span class="tok-string">"gemini-3.1-flash-lite-preview"</span>)
 
 resp <span class="tok-op">=</span> <span class="tok-var">model</span>.generate_content(<span class="tok-string">"Say hello in one sentence."</span>)
 <span class="tok-func">print</span>(<span class="tok-string">"✅ Gemini connected:"</span>, resp.text)</pre>
@@ -2861,13 +2861,42 @@ TEST_QS <span class="tok-op">=</span> [
     }
 
     function copyCode(btn) {
-      const pre = btn.closest('.step-inner-wrap') || btn.closest('.diagram-wrap');
-      if (!pre) return;
-      const code = pre.querySelector('pre') || pre;
-      navigator.clipboard.writeText(code.innerText).then(() => {
+      // header 바로 다음 형제인 pre를 먼저 시도, 없으면 가장 가까운 컨테이너 안에서 찾기
+      const header = btn.closest('.code-block-header');
+      let codeEl = null;
+      if (header) {
+        // code-block-header의 다음 형제가 pre인 경우 (step-inline-code 구조)
+        codeEl = header.nextElementSibling;
+        if (!codeEl || codeEl.tagName !== 'PRE') {
+          // 형제가 pre가 아니면 부모 컨테이너 안에서 pre 탐색
+          const wrap = header.closest('.step-inline-code') || header.closest('.code-block-wrap') || header.closest('.diagram-wrap');
+          codeEl = wrap ? wrap.querySelector('pre') : null;
+        }
+      }
+      if (!codeEl) {
+        // 최후 수단: 가장 가까운 래퍼에서 pre 탐색
+        const wrap = btn.closest('.step-inline-code') || btn.closest('.code-block-wrap') || btn.closest('.diagram-wrap');
+        codeEl = wrap ? wrap.querySelector('pre') : null;
+      }
+      if (!codeEl) return;
+      navigator.clipboard.writeText(codeEl.innerText).then(() => {
         const orig = btn.textContent;
         btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = orig, 1500);
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+      }).catch(() => {
+        // clipboard API 실패 시 fallback
+        const range = document.createRange();
+        range.selectNodeContents(codeEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
       });
     }
   </script>
